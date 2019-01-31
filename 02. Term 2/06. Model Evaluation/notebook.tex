@@ -1,0 +1,1992 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Aditya\_GCD\_Term2\_InsuranceData\_ModelComparison}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Model evaluation on Insurance Data - Aditya - GCD - Term
+2}\label{model-evaluation-on-insurance-data---aditya---gcd---term-2}
+
+    \subsection{Table of Content}\label{table-of-content}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Section \ref{section1}
+\item
+  Section \ref{section2}
+\item
+  Section \ref{section3}
+\item
+  Section \ref{section4}
+\item
+  Section \ref{section5}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    5.1 Section \ref{section501}
+  \item
+    5.2 Section \ref{section502}
+  \item
+    5.3 Section \ref{section503}
+  \item
+    5.4 Section \ref{section504}
+  \item
+    5.5 Section \ref{section505}
+  \item
+    5.6 Section \ref{section506}
+  \item
+    5.7 Section \ref{section507}
+  \end{itemize}
+\end{enumerate}
+
+    
+
+    \subsection{1. Problem Statement}\label{problem-statement}
+
+Given the dataset containing \textbf{Life Insurance Data}, use multiple
+models to predict the response which is a measure of risk in 8 level.
+Evaluate the model using possible \textbf{model evaluation techniques}.
+
+Steps to be followed: a. Data Cleaning and EDA. b. Try out various
+machine learning models using train test and model evaluation techniques
+and choose the best model for output prediction. You may also use
+RandomisedSearchCV or GridSearchCV for hyperparameter tuning of the
+estimator at your own discretion.
+
+    
+
+    \subsection{2. Data Loading and
+Description}\label{data-loading-and-description}
+
+    Insurance has become an indispensable part of our lives in recent years
+and people are paying more attention on it. For this project, the data
+comes from prudential life insurance on kaggle with over a hundred
+variables describing attributes of life insurance applicants.. The
+challenge part for them is that the application process time is
+antiquated and the goal for this project is to help them to enhance the
+efficiency of processing time as well as reduce labor intensive for new
+and existing customers. The task is to accurately predict the "Response"
+variable for each Id in the test set. "Response" is an ordinal measure
+of risk that has 8 levels.
+
+The dataset consists of \textbf{59K rows}. Below is a table having brief
+description of features present in the dataset.
+
+    \section{Data fields}\label{data-fields}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.35\columnwidth}\raggedright\strut
+Variable\strut
+\end{minipage} & \begin{minipage}[b]{0.59\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Id\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A unique identifier associated with an application.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Product\_Info\_1-7\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of normalized variables relating to the product applied for\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Ins\_Age\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+Normalized age of applicant\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Ht\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+Normalized height of applicant\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Wt\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+Normalized weight of applicant\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+BMI\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+Normalized BMI of applicant\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Employment\_Info\_1-6\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of normalized variables relating to the employment history of the
+applicant.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+InsuredInfo\_1-6\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of normalized variables providing information about the
+applicant.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Insurance\_History\_1-9\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of normalized variables relating to the insurance history of the
+applicant.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Family\_Hist\_1-5\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of normalized variables relating to the family history of the
+applicant.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Medical\_History\_1-41\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of normalized variables relating to the medical history of the
+applicant.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Medical\_Keyword\_1-48\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+A set of dummy variables relating to the presence of/absence of a
+medical keyword being associated with the application.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.35\columnwidth}\raggedright\strut
+Response\strut
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright\strut
+This is the target variable, an ordinal variable relating to the final
+decision associated with an application\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+The following variables are all \textbf{categorical (nominal)}:
+
+Product\_Info\_1, Product\_Info\_2, Product\_Info\_3, Product\_Info\_5,
+Product\_Info\_6, Product\_Info\_7, Employment\_Info\_2,
+Employment\_Info\_3, Employment\_Info\_5, InsuredInfo\_1,
+InsuredInfo\_2, InsuredInfo\_3, InsuredInfo\_4, InsuredInfo\_5,
+InsuredInfo\_6, InsuredInfo\_7, Insurance\_History\_1,
+Insurance\_History\_2, Insurance\_History\_3, Insurance\_History\_4,
+Insurance\_History\_7, Insurance\_History\_8, Insurance\_History\_9,
+Family\_Hist\_1, Medical\_History\_2, Medical\_History\_3,
+Medical\_History\_4, Medical\_History\_5, Medical\_History\_6,
+Medical\_History\_7, Medical\_History\_8, Medical\_History\_9,
+Medical\_History\_11, Medical\_History\_12, Medical\_History\_13,
+Medical\_History\_14, Medical\_History\_16, Medical\_History\_17,
+Medical\_History\_18, Medical\_History\_19, Medical\_History\_20,
+Medical\_History\_21, Medical\_History\_22, Medical\_History\_23,
+Medical\_History\_25, Medical\_History\_26, Medical\_History\_27,
+Medical\_History\_28, Medical\_History\_29, Medical\_History\_30,
+Medical\_History\_31, Medical\_History\_33, Medical\_History\_34,
+Medical\_History\_35, Medical\_History\_36, Medical\_History\_37,
+Medical\_History\_38, Medical\_History\_39, Medical\_History\_40,
+Medical\_History\_41
+
+The following variables are \textbf{continuous}:
+
+Product\_Info\_4, Ins\_Age, Ht, Wt, BMI, Employment\_Info\_1,
+Employment\_Info\_4, Employment\_Info\_6, Insurance\_History\_5,
+Family\_Hist\_2, Family\_Hist\_3, Family\_Hist\_4, Family\_Hist\_5
+
+The following variables are \textbf{discrete}:
+
+Medical\_History\_1, Medical\_History\_10, Medical\_History\_15,
+Medical\_History\_24, Medical\_History\_32
+
+Medical\_Keyword\_1-48 are \textbf{dummy variables}.
+
+    \textbf{Importing Packages}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}241}]:} \PY{k+kn}{from} \PY{n+nn}{collections} \PY{k}{import} \PY{n}{Counter}
+          
+          \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+          \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+          
+          \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k}{import} \PY{n}{metrics}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{LabelEncoder}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{accuracy\PYZus{}score}\PY{p}{,}\PY{n}{confusion\PYZus{}matrix}\PY{p}{,} \PY{n}{f1\PYZus{}score}\PY{p}{,} \PY{n}{accuracy\PYZus{}score}\PY{p}{,} \PY{n}{precision\PYZus{}score}\PY{p}{,} \PY{n}{recall\PYZus{}score}\PY{p}{,} \PY{n}{precision\PYZus{}recall\PYZus{}fscore\PYZus{}support}\PY{p}{,} \PY{n}{roc\PYZus{}curve}\PY{p}{,} \PY{n}{auc}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{LabelBinarizer}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{cross\PYZus{}val\PYZus{}score}\PY{p}{,}\PY{n}{GridSearchCV}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{multiclass} \PY{k}{import} \PY{n}{OneVsRestClassifier}
+          
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LinearRegression}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LogisticRegression}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{tree} \PY{k}{import} \PY{n}{DecisionTreeClassifier}
+          \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{RandomForestClassifier}
+          
+          \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt} 
+          \PY{n}{plt}\PY{o}{.}\PY{n}{rc}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{font}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+          
+          \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{white}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whitegrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{color\PYZus{}codes}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Importing the Dataset}\label{importing-the-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}242}]:} \PY{n}{insurance} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://raw.githubusercontent.com/insaid2018/Term\PYZhy{}2/master/Projects/insurance\PYZus{}data.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{insurance}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}242}]:}    Id  Product\_Info\_1 Product\_Info\_2  Product\_Info\_3  Product\_Info\_4  \textbackslash{}
+          0   2               1             D3              10        0.076923   
+          1   5               1             A1              26        0.076923   
+          2   6               1             E1              26        0.076923   
+          3   7               1             D4              10        0.487179   
+          4   8               1             D2              26        0.230769   
+          
+             Product\_Info\_5  Product\_Info\_6  Product\_Info\_7   Ins\_Age        Ht  \textbackslash{}
+          0               2               1               1  0.641791  0.581818   
+          1               2               3               1  0.059701  0.600000   
+          2               2               3               1  0.029851  0.745455   
+          3               2               3               1  0.164179  0.672727   
+          4               2               3               1  0.417910  0.654545   
+          
+               {\ldots}     Medical\_Keyword\_40  Medical\_Keyword\_41  Medical\_Keyword\_42  \textbackslash{}
+          0    {\ldots}                      0                   0                   0   
+          1    {\ldots}                      0                   0                   0   
+          2    {\ldots}                      0                   0                   0   
+          3    {\ldots}                      0                   0                   0   
+          4    {\ldots}                      0                   0                   0   
+          
+             Medical\_Keyword\_43  Medical\_Keyword\_44  Medical\_Keyword\_45  \textbackslash{}
+          0                   0                   0                   0   
+          1                   0                   0                   0   
+          2                   0                   0                   0   
+          3                   0                   0                   0   
+          4                   0                   0                   0   
+          
+             Medical\_Keyword\_46  Medical\_Keyword\_47  Medical\_Keyword\_48  Response  
+          0                   0                   0                   0         8  
+          1                   0                   0                   0         4  
+          2                   0                   0                   0         8  
+          3                   0                   0                   0         8  
+          4                   0                   0                   0         8  
+          
+          [5 rows x 128 columns]
+\end{Verbatim}
+            
+    
+
+    \subsection{3. Exploratory Data
+Analysis}\label{exploratory-data-analysis}
+
+    \paragraph{Check the shape of the
+dataset}\label{check-the-shape-of-the-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}243}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}243}]:} (59381, 128)
+\end{Verbatim}
+            
+    \paragraph{Check the columns present in the
+dataset}\label{check-the-columns-present-in-the-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}244}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{columns}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}244}]:} Index(['Id', 'Product\_Info\_1', 'Product\_Info\_2', 'Product\_Info\_3',
+                 'Product\_Info\_4', 'Product\_Info\_5', 'Product\_Info\_6', 'Product\_Info\_7',
+                 'Ins\_Age', 'Ht',
+                 {\ldots}
+                 'Medical\_Keyword\_40', 'Medical\_Keyword\_41', 'Medical\_Keyword\_42',
+                 'Medical\_Keyword\_43', 'Medical\_Keyword\_44', 'Medical\_Keyword\_45',
+                 'Medical\_Keyword\_46', 'Medical\_Keyword\_47', 'Medical\_Keyword\_48',
+                 'Response'],
+                dtype='object', length=128)
+\end{Verbatim}
+            
+    \paragraph{Check the descriptive statistics of the
+dataset}\label{check-the-descriptive-statistics-of-the-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}245}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}245}]:}                  Id  Product\_Info\_1  Product\_Info\_3  Product\_Info\_4  \textbackslash{}
+          count  59381.000000    59381.000000    59381.000000    59381.000000   
+          mean   39507.211515        1.026355       24.415655        0.328952   
+          std    22815.883089        0.160191        5.072885        0.282562   
+          min        2.000000        1.000000        1.000000        0.000000   
+          25\%    19780.000000        1.000000       26.000000        0.076923   
+          50\%    39487.000000        1.000000       26.000000        0.230769   
+          75\%    59211.000000        1.000000       26.000000        0.487179   
+          max    79146.000000        2.000000       38.000000        1.000000   
+          
+                 Product\_Info\_5  Product\_Info\_6  Product\_Info\_7       Ins\_Age  \textbackslash{}
+          count    59381.000000    59381.000000    59381.000000  59381.000000   
+          mean         2.006955        2.673599        1.043583      0.405567   
+          std          0.083107        0.739103        0.291949      0.197190   
+          min          2.000000        1.000000        1.000000      0.000000   
+          25\%          2.000000        3.000000        1.000000      0.238806   
+          50\%          2.000000        3.000000        1.000000      0.402985   
+          75\%          2.000000        3.000000        1.000000      0.567164   
+          max          3.000000        3.000000        3.000000      1.000000   
+          
+                           Ht            Wt      {\ldots}       Medical\_Keyword\_40  \textbackslash{}
+          count  59381.000000  59381.000000      {\ldots}             59381.000000   
+          mean       0.707283      0.292587      {\ldots}                 0.056954   
+          std        0.074239      0.089037      {\ldots}                 0.231757   
+          min        0.000000      0.000000      {\ldots}                 0.000000   
+          25\%        0.654545      0.225941      {\ldots}                 0.000000   
+          50\%        0.709091      0.288703      {\ldots}                 0.000000   
+          75\%        0.763636      0.345188      {\ldots}                 0.000000   
+          max        1.000000      1.000000      {\ldots}                 1.000000   
+          
+                 Medical\_Keyword\_41  Medical\_Keyword\_42  Medical\_Keyword\_43  \textbackslash{}
+          count        59381.000000        59381.000000        59381.000000   
+          mean             0.010054            0.045536            0.010710   
+          std              0.099764            0.208479            0.102937   
+          min              0.000000            0.000000            0.000000   
+          25\%              0.000000            0.000000            0.000000   
+          50\%              0.000000            0.000000            0.000000   
+          75\%              0.000000            0.000000            0.000000   
+          max              1.000000            1.000000            1.000000   
+          
+                 Medical\_Keyword\_44  Medical\_Keyword\_45  Medical\_Keyword\_46  \textbackslash{}
+          count        59381.000000        59381.000000        59381.000000   
+          mean             0.007528            0.013691            0.008488   
+          std              0.086436            0.116207            0.091737   
+          min              0.000000            0.000000            0.000000   
+          25\%              0.000000            0.000000            0.000000   
+          50\%              0.000000            0.000000            0.000000   
+          75\%              0.000000            0.000000            0.000000   
+          max              1.000000            1.000000            1.000000   
+          
+                 Medical\_Keyword\_47  Medical\_Keyword\_48      Response  
+          count        59381.000000        59381.000000  59381.000000  
+          mean             0.019905            0.054496      5.636837  
+          std              0.139676            0.226995      2.456833  
+          min              0.000000            0.000000      1.000000  
+          25\%              0.000000            0.000000      4.000000  
+          50\%              0.000000            0.000000      6.000000  
+          75\%              0.000000            0.000000      8.000000  
+          max              1.000000            1.000000      8.000000  
+          
+          [8 rows x 127 columns]
+\end{Verbatim}
+            
+    \paragraph{Check the info of the
+dataset}\label{check-the-info-of-the-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}246}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 59381 entries, 0 to 59380
+Columns: 128 entries, Id to Response
+dtypes: float64(18), int64(109), object(1)
+memory usage: 58.0+ MB
+
+    \end{Verbatim}
+
+    \paragraph{Check the missing values present in the
+dataset.}\label{check-the-missing-values-present-in-the-dataset.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}247}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{insurance}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{!=}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}247}]:} Employment\_Info\_1         19
+          Employment\_Info\_4       6779
+          Employment\_Info\_6      10854
+          Insurance\_History\_5    25396
+          Family\_Hist\_2          28656
+          Family\_Hist\_3          34241
+          Family\_Hist\_4          19184
+          Family\_Hist\_5          41811
+          Medical\_History\_1       8889
+          Medical\_History\_10     58824
+          Medical\_History\_15     44596
+          Medical\_History\_24     55580
+          Medical\_History\_32     58274
+          dtype: int64
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}248}]:} \PY{n}{missing} \PY{o}{=} \PY{n}{insurance}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{insurance}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{!=}\PY{l+m+mi}{0}\PY{p}{]}
+          \PY{n}{missing} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{missing}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          \PY{n}{missing}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{index}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{features}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{missing\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{missing}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{missing\PYZus{}count\PYZus{}percentage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{missing}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{missing\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{insurance}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{100}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{y} \PY{o}{=} \PY{n}{missing}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{features}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{x} \PY{o}{=} \PY{n}{missing}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{missing\PYZus{}count\PYZus{}percentage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}248}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x206aae3d550>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Impute the missing values - Analyze the outliers to choose
+either Median or
+Mean}\label{impute-the-missing-values---analyze-the-outliers-to-choose-either-median-or-mean}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}249}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}249}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x2061b9827b8>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}250}]:} \PY{c+c1}{\PYZsh{} Employment\PYZus{}Info\PYZus{}1 has lots of outliers \PYZhy{} Median}
+          \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} 
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}251}]:} \PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}251}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x206173199b0>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}252}]:} \PY{c+c1}{\PYZsh{} Employment\PYZus{}Info\PYZus{}4 has most of the values centered close to zero, huge presence of outliers }
+          \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}253}]:} \PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}253}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x206172291d0>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}254}]:} \PY{c+c1}{\PYZsh{} Employment\PYZus{}Info\PYZus{}6 has no outliers \PYZhy{} Mean should do the job here}
+          \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}255}]:} \PY{c+c1}{\PYZsh{} Though Insurance\PYZus{}History\PYZus{}5 has high number of missing values, instead of dropping it, let us impute as this is insurance dataset}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Insurance\PYZus{}History\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}255}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x20616c00400>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}256}]:} \PY{c+c1}{\PYZsh{} Insurance\PYZus{}History\PYZus{}5 also has most of the values centered close to zero, huge presence of outliers }
+          \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Insurance\PYZus{}History\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Insurance\PYZus{}History\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}257}]:} \PY{n}{sns}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}257}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x20619ea95f8>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}258}]:} \PY{c+c1}{\PYZsh{} Medical\PYZus{}History\PYZus{}1 also has presence of outliers with majority of data from 20 \PYZhy{} 150}
+          \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}259}]:} \PY{c+c1}{\PYZsh{}lets drop 8 columns with very high number of missing values }
+          \PY{n}{insurance}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}10}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}15}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}24}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Medical\PYZus{}History\PYZus{}32}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Family\PYZus{}Hist\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Family\PYZus{}Hist\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Family\PYZus{}Hist\PYZus{}4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Family\PYZus{}Hist\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}260}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{insurance}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} \PY{o}{!=}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}260}]:} Series([], dtype: int64)
+\end{Verbatim}
+            
+    \subsubsection{There is one Column which has string type data, let us
+convert it into numeric
+data}\label{there-is-one-column-which-has-string-type-data-let-us-convert-it-into-numeric-data}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}261}]:} \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Product\PYZus{}Info\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}261}]:} array(['D3', 'A1', 'E1', 'D4', 'D2', 'A8', 'A2', 'D1', 'A7', 'A6', 'A3',
+                 'A5', 'C4', 'C1', 'B2', 'C3', 'C2', 'A4', 'B1'], dtype=object)
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}262}]:} \PY{n}{le} \PY{o}{=} \PY{n}{LabelEncoder}\PY{p}{(}\PY{p}{)}
+          \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Product\PYZus{}Info\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{le}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Product\PYZus{}Info\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}263}]:} \PY{n}{insurance}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}263}]:}    Id  Product\_Info\_1  Product\_Info\_2  Product\_Info\_3  Product\_Info\_4  \textbackslash{}
+          0   2               1              16              10        0.076923   
+          1   5               1               0              26        0.076923   
+          2   6               1              18              26        0.076923   
+          3   7               1              17              10        0.487179   
+          4   8               1              15              26        0.230769   
+          
+             Product\_Info\_5  Product\_Info\_6  Product\_Info\_7   Ins\_Age        Ht  \textbackslash{}
+          0               2               1               1  0.641791  0.581818   
+          1               2               3               1  0.059701  0.600000   
+          2               2               3               1  0.029851  0.745455   
+          3               2               3               1  0.164179  0.672727   
+          4               2               3               1  0.417910  0.654545   
+          
+               {\ldots}     Medical\_Keyword\_40  Medical\_Keyword\_41  Medical\_Keyword\_42  \textbackslash{}
+          0    {\ldots}                      0                   0                   0   
+          1    {\ldots}                      0                   0                   0   
+          2    {\ldots}                      0                   0                   0   
+          3    {\ldots}                      0                   0                   0   
+          4    {\ldots}                      0                   0                   0   
+          
+             Medical\_Keyword\_43  Medical\_Keyword\_44  Medical\_Keyword\_45  \textbackslash{}
+          0                   0                   0                   0   
+          1                   0                   0                   0   
+          2                   0                   0                   0   
+          3                   0                   0                   0   
+          4                   0                   0                   0   
+          
+             Medical\_Keyword\_46  Medical\_Keyword\_47  Medical\_Keyword\_48  Response  
+          0                   0                   0                   0         8  
+          1                   0                   0                   0         4  
+          2                   0                   0                   0         8  
+          3                   0                   0                   0         8  
+          4                   0                   0                   0         8  
+          
+          [5 rows x 120 columns]
+\end{Verbatim}
+            
+    \subsection{Some actual EDA on the data set to understand
+more}\label{some-actual-eda-on-the-data-set-to-understand-more}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}264}]:} \PY{n}{CATEGORICAL\PYZus{}COLUMNS} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}7}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employment\PYZus{}Info\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employment\PYZus{}Info\PYZus{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employment\PYZus{}Info\PYZus{}5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}4}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{InsuredInfo\PYZus{}7}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}3}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}4}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}7}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                                 \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}9}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Family\PYZus{}Hist\PYZus{}1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+          
+          \PY{n}{CONTINUOUS\PYZus{}COLUMNS} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Product\PYZus{}Info\PYZus{}4}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ins\PYZus{}Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ht}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Wt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{BMI}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                                \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employment\PYZus{}Info\PYZus{}1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employment\PYZus{}Info\PYZus{}4}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Employment\PYZus{}Info\PYZus{}6}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                                \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Insurance\PYZus{}History\PYZus{}5}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+          
+          \PY{n}{MEDICAL\PYZus{}COLUMNS} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Medical\PYZus{}Keyword\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{48}\PY{p}{)}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}265}]:} \PY{k}{def} \PY{n+nf}{plot\PYZus{}categoricals}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{:}
+              \PY{n}{ncols} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+              \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{p}{(}\PY{n}{ncols} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{5} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+              \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{col} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{cnt} \PY{o}{=} \PY{n}{Counter}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{p}{)}
+                  \PY{n}{keys} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{cnt}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{vals} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{cnt}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{ncols} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{5} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{keys}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{vals}\PY{p}{,} \PY{n}{align}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{center}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{keys}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{keys}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{n}{col}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+              \PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+              \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+          
+          \PY{n}{plot\PYZus{}categoricals}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{n}{CATEGORICAL\PYZus{}COLUMNS}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}266}]:} \PY{k}{def} \PY{n+nf}{plot\PYZus{}histgrams}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{:}
+              \PY{n}{ncols} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{)}
+              \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{5} \PY{o}{*} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{5} \PY{o}{*} \PY{p}{(}\PY{n}{ncols} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{5} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+              \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{col} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{n}{ncols} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{5} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PYZbs{}
+                           \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{black}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidth}\PY{o}{=}\PY{l+m+mf}{2.0}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{n}{col}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+                  \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+              \PY{n}{fig}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+              \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+          
+          \PY{n}{plot\PYZus{}histgrams}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{n}{CONTINUOUS\PYZus{}COLUMNS}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_45_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}267}]:} \PY{n}{plot\PYZus{}categoricals}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{n}{MEDICAL\PYZus{}COLUMNS}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_46_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Correlation between
+variables}\label{correlation-between-variables}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}268}]:} \PY{n}{axis1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{data}\PY{o}{=}\PY{n}{insurance}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}268}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x20616ba3940>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_48_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{Age - Response
+Correlation}\label{age---response-correlation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}269}]:} \PY{n}{facet} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{FacetGrid}\PY{p}{(}\PY{n}{insurance}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{aspect}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ins\PYZus{}Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlim}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ins\PYZus{}Age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{add\PYZus{}legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}269}]:} <seaborn.axisgrid.FacetGrid at 0x20616b9a7b8>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_50_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}270}]:} \PY{n}{sns}\PY{o}{.}\PY{n}{distplot}\PY{p}{(}\PY{n}{insurance}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ins\PYZus{}Age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}\PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{kde}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}RaviRohanChaitu\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}matplotlib\textbackslash{}axes\textbackslash{}\_axes.py:6462: UserWarning: The 'normed' kwarg is deprecated, and has been replaced by the 'density' kwarg.
+  warnings.warn("The 'normed' kwarg is deprecated, and has been "
+
+    \end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}270}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x20616c20470>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_51_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{Employment Info}\label{employment-info}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}271}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{axis1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{insurance}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis1}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}271}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x20617315470>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_53_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}272}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{axis1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{insurance}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis1}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}272}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x2061c3ec080>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_54_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}273}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{axis1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Employment\PYZus{}Info\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{insurance}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis1}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}273}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x20619a88208>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_55_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Ht Wt and BMI}\label{ht-wt-and-bmi}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}274}]:} \PY{n}{facet} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{FacetGrid}\PY{p}{(}\PY{n}{insurance}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{aspect}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ht}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlim}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ht}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{add\PYZus{}legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}274}]:} <seaborn.axisgrid.FacetGrid at 0x20616973780>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_57_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}275}]:} \PY{n}{facet} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{FacetGrid}\PY{p}{(}\PY{n}{insurance}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{aspect}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlim}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{add\PYZus{}legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}275}]:} <seaborn.axisgrid.FacetGrid at 0x206197e6d68>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_58_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}276}]:} \PY{n}{facet} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{FacetGrid}\PY{p}{(}\PY{n}{insurance}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{aspect}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BMI}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlim}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{insurance}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BMI}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{add\PYZus{}legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}276}]:} <seaborn.axisgrid.FacetGrid at 0x206197e6978>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_59_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsubsection{Insurance Info}\label{insurance-info}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}277}]:} \PY{n}{fig}\PY{p}{,} \PY{n}{axis1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+          \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{InsuredInfo\PYZus{}6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{insurance}\PY{p}{,} 
+                        \PY{n}{ax}\PY{o}{=}\PY{n}{axis1}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}277}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x2060624fe80>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_61_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}278}]:} \PY{n}{facet} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{FacetGrid}\PY{p}{(}\PY{n}{insurance}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{aspect}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{hue\PYZus{}order}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RdBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Insurance\PYZus{}History\PYZus{}5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlim}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{0.004}\PY{p}{)}\PY{p}{)}
+          \PY{n}{facet}\PY{o}{.}\PY{n}{add\PYZus{}legend}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}278}]:} <seaborn.axisgrid.FacetGrid at 0x206171ded68>
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_62_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    
+
+    \subsection{4. Models Comparison}\label{models-comparison}
+
+    \paragraph{Preparing X and y using
+pandas}\label{preparing-x-and-y-using-pandas}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}279}]:} \PY{n}{X} \PY{o}{=} \PY{n}{insurance}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Response}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{X}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}279}]:}    Id  Product\_Info\_1  Product\_Info\_2  Product\_Info\_3  Product\_Info\_4  \textbackslash{}
+          0   2               1              16              10        0.076923   
+          1   5               1               0              26        0.076923   
+          2   6               1              18              26        0.076923   
+          3   7               1              17              10        0.487179   
+          4   8               1              15              26        0.230769   
+          
+             Product\_Info\_5  Product\_Info\_6  Product\_Info\_7   Ins\_Age        Ht  \textbackslash{}
+          0               2               1               1  0.641791  0.581818   
+          1               2               3               1  0.059701  0.600000   
+          2               2               3               1  0.029851  0.745455   
+          3               2               3               1  0.164179  0.672727   
+          4               2               3               1  0.417910  0.654545   
+          
+                    {\ldots}          Medical\_Keyword\_39  Medical\_Keyword\_40  \textbackslash{}
+          0         {\ldots}                           0                   0   
+          1         {\ldots}                           0                   0   
+          2         {\ldots}                           0                   0   
+          3         {\ldots}                           0                   0   
+          4         {\ldots}                           0                   0   
+          
+             Medical\_Keyword\_41  Medical\_Keyword\_42  Medical\_Keyword\_43  \textbackslash{}
+          0                   0                   0                   0   
+          1                   0                   0                   0   
+          2                   0                   0                   0   
+          3                   0                   0                   0   
+          4                   0                   0                   0   
+          
+             Medical\_Keyword\_44  Medical\_Keyword\_45  Medical\_Keyword\_46  \textbackslash{}
+          0                   0                   0                   0   
+          1                   0                   0                   0   
+          2                   0                   0                   0   
+          3                   0                   0                   0   
+          4                   0                   0                   0   
+          
+             Medical\_Keyword\_47  Medical\_Keyword\_48  
+          0                   0                   0  
+          1                   0                   0  
+          2                   0                   0  
+          3                   0                   0  
+          4                   0                   0  
+          
+          [5 rows x 119 columns]
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}280}]:} \PY{n}{y} \PY{o}{=} \PY{n}{insurance}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Response}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+          \PY{n}{y}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}280}]:} 0    8
+          1    4
+          2    8
+          3    8
+          4    8
+          Name: Response, dtype: int64
+\end{Verbatim}
+            
+    \paragraph{Spliting X and y into train and test
+dataset.}\label{spliting-x-and-y-into-train-and-test-dataset.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}281}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+          \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Checking the shape of X and y of train
+dataset}\label{checking-the-shape-of-x-and-y-of-train-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}282}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{y\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(44535, 119)
+(44535,)
+
+    \end{Verbatim}
+
+    \paragraph{Checking the shape of X and y of test
+dataset}\label{checking-the-shape-of-x-and-y-of-test-dataset}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}283}]:} \PY{n+nb}{print}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(14846, 119)
+(14846,)
+
+    \end{Verbatim}
+
+    \subsubsection{Linear Regression}\label{linear-regression}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}284}]:} \PY{n}{linreg} \PY{o}{=} \PY{n}{LinearRegression}\PY{p}{(}\PY{p}{)}
+          \PY{n}{linreg} \PY{o}{=} \PY{n}{linreg}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)} 
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}285}]:} \PY{n}{y\PYZus{}pred\PYZus{}test} \PY{o}{=} \PY{n}{linreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}286}]:} \PY{n}{MAE\PYZus{}test} \PY{o}{=} \PY{n}{metrics}\PY{o}{.}\PY{n}{mean\PYZus{}absolute\PYZus{}error}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}test}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MAE for test set is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{MAE\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MAE for test set is 1.566757361757603
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}287}]:} \PY{n}{MSE\PYZus{}test} \PY{o}{=} \PY{n}{metrics}\PY{o}{.}\PY{n}{mean\PYZus{}squared\PYZus{}error}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}test}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MSE for test set is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{MSE\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MSE for test set is 4.044326583215771
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}288}]:} \PY{n}{RMSE\PYZus{}test} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{metrics}\PY{o}{.}\PY{n}{mean\PYZus{}squared\PYZus{}error}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}test}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RMSE for test set is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{RMSE\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+RMSE for test set is 2.0110511140236516
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}289}]:} \PY{n}{yhat} \PY{o}{=} \PY{n}{linreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+          \PY{n}{SS\PYZus{}Residual} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{o}{\PYZhy{}}\PY{n}{yhat}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{SS\PYZus{}Total} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{r\PYZus{}squared} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{n+nb}{float}\PY{p}{(}\PY{n}{SS\PYZus{}Residual}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{n}{SS\PYZus{}Total}
+          \PY{n}{adjusted\PYZus{}r\PYZus{}squared} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{r\PYZus{}squared}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{X\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{r\PYZus{}squared}\PY{p}{,} \PY{n}{adjusted\PYZus{}r\PYZus{}squared}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.33741830919764515 0.3320640228194379
+
+    \end{Verbatim}
+
+    \subsubsection{Logistic Regression}\label{logistic-regression}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}290}]:} \PY{n}{logreg} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}
+          \PY{n}{logreg} \PY{o}{=} \PY{n}{logreg}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}291}]:} \PY{n}{y\PYZus{}pred\PYZus{}train} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{)}  
+          \PY{n}{y\PYZus{}pred\PYZus{}test} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy score for test data is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred\PYZus{}test}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Accuracy score for test data is: 0.33510709955543583
+[[  72    0    0    0    0   47    0 1483]
+ [  57    0    0    0    0   54    0 1525]
+ [   3    0    0    0    0    3    0  254]
+ [   3    0    0    0    0    1    0  355]
+ [  26    0    0    0    0   24    0 1311]
+ [  23    0    0    0    0   54    0 2694]
+ [  13    0    0    0    0   25    0 1958]
+ [   5    0    0    0    0    7    0 4849]]
+
+    \end{Verbatim}
+
+    \subsubsection{Decision Tree Classifier}\label{decision-tree-classifier}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}292}]:} \PY{n}{param\PYZus{}grid} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{max\PYZus{}depth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{\PYZcb{}}
+          \PY{n}{DT} \PY{o}{=} \PY{n}{DecisionTreeClassifier}\PY{p}{(}\PY{p}{)}
+          \PY{n}{clf\PYZus{}DT} \PY{o}{=} \PY{n}{GridSearchCV}\PY{p}{(}\PY{n}{DT}\PY{p}{,} \PY{n}{param\PYZus{}grid}\PY{p}{,} \PY{n}{cv} \PY{o}{=} \PY{l+m+mi}{10}\PY{p}{,} \PY{n}{scoring}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n\PYZus{}jobs} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}293}]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{clf\PYZus{}DT}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+          \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}293}]:} 0.5164354034756837
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}294}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Confusion matrix for test data with DT is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Confusion matrix for test data with DT is:
+ [[ 216  196    6   14  161  402  197  410]
+ [ 146  322    4   12  208  413  149  382]
+ [   4   15    9   15   76  110    3   28]
+ [   6    2    0   37    2  171    8  133]
+ [  69  117    9    5  675  285   68  133]
+ [ 103   85    1   39  135 1413  343  652]
+ [  46   20    0    7    7  451  706  759]
+ [  14   21    0   36   11  340  150 4289]]
+
+    \end{Verbatim}
+
+    \subsubsection{Random Forest Classifier}\label{random-forest-classifier}
+
+    \paragraph{Instantiating Random Forest Classifier using scikit learn
+with default
+parameters.}\label{instantiating-random-forest-classifier-using-scikit-learn-with-default-parameters.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}295}]:} \PY{n}{model1} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Instantiating Random Forest Classifier using scikit learn
+with:}\label{instantiating-random-forest-classifier-using-scikit-learn-with}
+
+\begin{itemize}
+\tightlist
+\item
+  random\_state = 0,
+\item
+  max\_depth = 5,
+\item
+  min\_samples\_leaf = 5,
+\item
+  min\_samples\_split = 7,
+\item
+  min\_weight\_fraction\_leaf = 0.0,
+\item
+  n\_estimators = 12,
+\item
+  n\_jobs = -1
+\end{itemize}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}296}]:} \PY{n}{model2} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}
+                                          \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,}
+                                          \PY{n}{max\PYZus{}depth} \PY{o}{=} \PY{l+m+mi}{8}\PY{p}{,} 
+                                          \PY{n}{min\PYZus{}samples\PYZus{}leaf} \PY{o}{=} \PY{l+m+mi}{5}\PY{p}{,}
+                                          \PY{n}{min\PYZus{}samples\PYZus{}split} \PY{o}{=} \PY{l+m+mi}{7}\PY{p}{,}
+                                          \PY{n}{min\PYZus{}weight\PYZus{}fraction\PYZus{}leaf} \PY{o}{=} \PY{l+m+mf}{0.0}\PY{p}{,}
+                                          \PY{n}{n\PYZus{}estimators} \PY{o}{=} \PY{l+m+mi}{12}\PY{p}{,} 
+                                          \PY{n}{n\PYZus{}jobs} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}
+                                          \PY{p}{)} 
+\end{Verbatim}
+
+
+    \paragraph{Fitting the model on X\_train and
+y\_train}\label{fitting-the-model-on-x_train-and-y_train}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}297}]:} \PY{n}{model1}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}297}]:} RandomForestClassifier(bootstrap=True, class\_weight=None, criterion='gini',
+                      max\_depth=None, max\_features='auto', max\_leaf\_nodes=None,
+                      min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+                      min\_samples\_leaf=1, min\_samples\_split=2,
+                      min\_weight\_fraction\_leaf=0.0, n\_estimators=10, n\_jobs=1,
+                      oob\_score=False, random\_state=0, verbose=0, warm\_start=False)
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}298}]:} \PY{n}{model2}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,}\PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}298}]:} RandomForestClassifier(bootstrap=True, class\_weight=None, criterion='gini',
+                      max\_depth=8, max\_features='auto', max\_leaf\_nodes=None,
+                      min\_impurity\_decrease=0.0, min\_impurity\_split=None,
+                      min\_samples\_leaf=5, min\_samples\_split=7,
+                      min\_weight\_fraction\_leaf=0.0, n\_estimators=12, n\_jobs=-1,
+                      oob\_score=False, random\_state=0, verbose=0, warm\_start=False)
+\end{Verbatim}
+            
+    \paragraph{Using the model for
+prediction}\label{using-the-model-for-prediction}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}299}]:} \PY{n}{prediction1} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+          \PY{n}{prediction1} \PY{o}{=} \PY{n}{model1}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}300}]:} \PY{n}{prediction2} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+          \PY{n}{prediction2} \PY{o}{=} \PY{n}{model2}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    
+
+    \subsection{5. Model evaluation}\label{model-evaluation}
+
+    
+
+    \subsubsection{5.1 Model evaluation using accuracy
+score}\label{model-evaluation-using-accuracy-score}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}301}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy score for test data with DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy score for test data with model 1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction1}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy score for test data with model 2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Accuracy score for test data with DT is: 0.5164354034756837
+Accuracy score for test data with model 1 is: 0.47723292469352013
+Accuracy score for test data with model 2 is: 0.47514482015357673
+
+    \end{Verbatim}
+
+    \textbf{Accuracy score} of using Decision Trees is slightly greater than
+that of model 1 and model 2. Lets see some other evaluation techniques,
+to compare the two models.
+
+    
+
+    \subsubsection{5.2 Model evaluation using confusion
+matrix}\label{model-evaluation-using-confusion-matrix}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}302}]:} \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{conf\PYZus{}mat} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+          \PY{n}{conf\PYZus{}mat}\PY{o}{.}\PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Actual\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}\PY{p}{]}
+          \PY{n}{conf\PYZus{}mat}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Predicted\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}\PY{p}{]}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Confusion matrix for test data with DT is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{conf\PYZus{}mat}\PY{p}{)}
+          \PY{n}{conf\PYZus{}mat} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction1}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{conf\PYZus{}mat}\PY{o}{.}\PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Actual\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}\PY{p}{]}
+          \PY{n}{conf\PYZus{}mat}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Predicted\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}\PY{p}{]}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Confusion matrix for test data with model 1 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{conf\PYZus{}mat}\PY{p}{)}
+          \PY{n}{conf\PYZus{}mat} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction2}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{conf\PYZus{}mat}\PY{o}{.}\PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Actual\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}\PY{p}{]}
+          \PY{n}{conf\PYZus{}mat}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Predicted\PYZus{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}\PY{p}{]}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Confusion matrix for test data with model 2 is:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{conf\PYZus{}mat}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+================================================================
+================================================================
+Confusion matrix for test data with DT is:
+           Predicted\_1  Predicted\_2  Predicted\_3  Predicted\_4  Predicted\_5  \textbackslash{}
+Actual\_1          216          196            6           14          161   
+Actual\_2          146          322            4           12          208   
+Actual\_3            4           15            9           15           76   
+Actual\_4            6            2            0           37            2   
+Actual\_5           69          117            9            5          675   
+Actual\_6          103           85            1           39          135   
+Actual\_7           46           20            0            7            7   
+Actual\_8           14           21            0           36           11   
+
+          Predicted\_6  Predicted\_7  Predicted\_8  
+Actual\_1          402          197          410  
+Actual\_2          413          149          382  
+Actual\_3          110            3           28  
+Actual\_4          171            8          133  
+Actual\_5          285           68          133  
+Actual\_6         1413          343          652  
+Actual\_7          451          706          759  
+Actual\_8          340          150         4289  
+================================================================
+================================================================
+Confusion matrix for test data with model 1 is:
+           Predicted\_1  Predicted\_2  Predicted\_3  Predicted\_4  Predicted\_5  \textbackslash{}
+Actual\_1          400          295            5           11          150   
+Actual\_2          296          415            5           13          175   
+Actual\_3           28           34           12           13           59   
+Actual\_4           20           10            2           32            2   
+Actual\_5          129          224           12            4          586   
+Actual\_6          268          234            7           39          193   
+Actual\_7          132           84            6            8           51   
+Actual\_8          111           71            2           36           27   
+
+          Predicted\_6  Predicted\_7  Predicted\_8  
+Actual\_1          307          145          289  
+Actual\_2          338          123          271  
+Actual\_3           76           12           26  
+Actual\_4          141           27          125  
+Actual\_5          237           59          110  
+Actual\_6         1128          293          609  
+Actual\_7          474          593          648  
+Actual\_8          427          268         3919  
+================================================================
+================================================================
+Confusion matrix for test data with model 2 is:
+           Predicted\_1  Predicted\_2  Predicted\_3  Predicted\_4  Predicted\_5  \textbackslash{}
+Actual\_1          154          215            0            0          115   
+Actual\_2          105          277            0            0          185   
+Actual\_3            5           16            0            0           38   
+Actual\_4            2            0            0            0            0   
+Actual\_5           49          110            0            0          427   
+Actual\_6           55          109            0            0           80   
+Actual\_7           18            7            0            0           15   
+Actual\_8            5            2            0            0           15   
+
+          Predicted\_6  Predicted\_7  Predicted\_8  
+Actual\_1          480          132          506  
+Actual\_2          505           86          478  
+Actual\_3          115            5           81  
+Actual\_4          111            9          237  
+Actual\_5          431           45          299  
+Actual\_6         1344          146         1037  
+Actual\_7          657          362          937  
+Actual\_8          298           51         4490  
+================================================================
+================================================================
+
+    \end{Verbatim}
+
+    The confusion matrix looks little confusing. But upon study I found that
+since this is not a binary data but something that has 8 level
+prediction; the false positives and true positives are given per
+response level. Comparing confusion matrix for the two models: - In
+Model 2, there seem to be a less number of False Positives, but when it
+comes to Risk Assessment at level 8, more tendency is towards that. - In
+Model 1 and DT, it is more spread out with Decision Trees doing a better
+job
+
+Calculating Recall and precision score for a clearer picture of the
+scenario.
+
+    
+
+    \subsubsection{5.3. Model evaluation using precision
+score}\label{model-evaluation-using-precision-score}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}303}]:} \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Averaging method is None}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision score for test data using DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{precision}\PY{p}{)}
+          \PY{n}{precision1} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction1}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision score for test data using model1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{precision1}\PY{p}{)}
+          \PY{n}{precision2} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction2}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision score for test data using model2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{precision2}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Averaging method is weighted}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{precision} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision score for test data using DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{precision}\PY{p}{)}
+          \PY{n}{precision1} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction1}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision score for test data using model1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{precision1}\PY{p}{)}
+          \PY{n}{precision2} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction2}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Precision score for test data using model2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{precision2}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+================================================================
+Averaging method is None
+================================================================
+Precision score for test data using DT is: [0.35761589 0.41388175 0.31034483 0.22424242 0.52941176 0.39414226
+ 0.43472906 0.63203655]
+Precision score for test data using model1 is: [0.28901734 0.30358449 0.23529412 0.20512821 0.47144006 0.36061381
+ 0.39013158 0.65349341]
+Precision score for test data using model2 is: [0.39185751 0.3763587  0.         0.         0.488      0.3410302
+ 0.43301435 0.5567266 ]
+================================================================
+Averaging method is weighted
+================================================================
+Precision score for test data using DT is: 0.4825508797841149
+Precision score for test data using model1 is: 0.45067441842648936
+Precision score for test data using model2 is: 0.4326543081314556
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}RaviRohanChaitu\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}sklearn\textbackslash{}metrics\textbackslash{}classification.py:1135: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn\_for)
+C:\textbackslash{}Users\textbackslash{}RaviRohanChaitu\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}sklearn\textbackslash{}metrics\textbackslash{}classification.py:1135: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn\_for)
+
+    \end{Verbatim}
+
+    \textbf{Precision score for Decision Trees is little better than that of
+model1 and model2 }.
+
+    
+
+    \subsubsection{5.4 Model evaluation using recall
+score}\label{model-evaluation-using-recall-score}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}304}]:} \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Averaging method is None}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall score for test data using DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{)}   
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall score for test data using model1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction1}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{)}   
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall score for test data using model2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction2}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Averaging method is weighted}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall score for test data using DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}  
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall score for test data using model1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction1}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}   
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Recall score for test data using model2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{prediction2}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+================================================================
+Averaging method is None
+================================================================
+Recall score for test data using DT is: [0.13483146 0.19682152 0.03461538 0.10306407 0.49595885 0.50992422
+ 0.35370741 0.88232874]
+Recall score for test data using model1 is: [0.24968789 0.25366748 0.04615385 0.08913649 0.43056576 0.40707326
+ 0.29709419 0.80621271]
+Recall score for test data using model2 is: [0.09612984 0.1693154  0.         0.         0.3137399  0.48502346
+ 0.18136273 0.92367826]
+================================================================
+Averaging method is weighted
+================================================================
+Recall score for test data using DT is: 0.5164354034756837
+Recall score for test data using model1 is: 0.47723292469352013
+Recall score for test data using model2 is: 0.47514482015357673
+
+    \end{Verbatim}
+
+    Recall score of DT is more than that of model1 and model2.
+
+    
+
+    \subsubsection{5.5 Model evaluation using
+F1\_score}\label{model-evaluation-using-f1_score}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}305}]:} \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Averaging method is None}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1\PYZus{}score for test data using DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1\PYZus{}score for test data using model1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction1}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1\PYZus{}score for test data using model2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction2}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Averaging method is weighted}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{================================================================}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1\PYZus{}score for test data using DT is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1\PYZus{}score for test data using model1 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction1}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F1\PYZus{}score for test data using model2 is:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{prediction2}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+================================================================
+Averaging method is None
+================================================================
+F1\_score for test data using DT is: [0.19582956 0.26677713 0.06228374 0.14122137 0.51213961 0.44461926
+ 0.39005525 0.73649867]
+F1\_score for test data using model1 is: [0.26791695 0.27639028 0.07717042 0.12427184 0.4500768  0.3824377
+ 0.33731513 0.72186406]
+F1\_score for test data using model2 is: [0.15438596 0.23355818 0.         0.         0.38193202 0.40047676
+ 0.25564972 0.69472381]
+================================================================
+Averaging method is weighted
+================================================================
+F1\_score for test data using DT is: 0.47856600133927224
+F1\_score for test data using model1 is: 0.4580767179799158
+F1\_score for test data using model2 is: 0.4140029208249732
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}RaviRohanChaitu\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}sklearn\textbackslash{}metrics\textbackslash{}classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn\_for)
+C:\textbackslash{}Users\textbackslash{}RaviRohanChaitu\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}sklearn\textbackslash{}metrics\textbackslash{}classification.py:1135: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn\_for)
+
+    \end{Verbatim}
+
+    F1\_score for \textbf{DT} is much \textbf{higher} than that of model 1
+and model 2.
+
+    
+
+    \subsubsection{5.6 Model evaluation using ROC\_AUC
+curve}\label{model-evaluation-using-roc_auc-curve}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}306}]:} \PY{k}{def} \PY{n+nf}{class\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{y\PYZus{}score}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+              \PY{k}{if} \PY{n}{y\PYZus{}true}\PY{o}{.}\PY{n}{shape} \PY{o}{!=} \PY{n}{y\PYZus{}pred}\PY{o}{.}\PY{n}{shape}\PY{p}{:}
+                  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Error! y\PYZus{}true }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{ is not the same shape as y\PYZus{}pred }\PY{l+s+si}{\PYZpc{}s}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{p}{(}
+                        \PY{n}{y\PYZus{}true}\PY{o}{.}\PY{n}{shape}\PY{p}{,}
+                        \PY{n}{y\PYZus{}pred}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+                  \PY{p}{)}
+                  \PY{k}{return}
+          
+              \PY{n}{lb} \PY{o}{=} \PY{n}{LabelBinarizer}\PY{p}{(}\PY{p}{)}
+          
+              \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+                  \PY{n}{lb}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{)}
+          
+              \PY{c+c1}{\PYZsh{}Value counts of predictions}
+              \PY{n}{labels}\PY{p}{,} \PY{n}{cnt} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}
+                  \PY{n}{y\PYZus{}pred}\PY{p}{,}
+                  \PY{n}{return\PYZus{}counts}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+              \PY{n}{n\PYZus{}classes} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{labels}\PY{p}{)}
+              \PY{n}{pred\PYZus{}cnt} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{cnt}\PY{p}{,} \PY{n}{index}\PY{o}{=}\PY{n}{labels}\PY{p}{)}
+          
+              \PY{n}{metrics\PYZus{}summary} \PY{o}{=} \PY{n}{precision\PYZus{}recall\PYZus{}fscore\PYZus{}support}\PY{p}{(}
+                      \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}true}\PY{p}{,}
+                      \PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{y\PYZus{}pred}\PY{p}{,}
+                      \PY{n}{labels}\PY{o}{=}\PY{n}{labels}\PY{p}{)}
+          
+              \PY{n}{avg} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{precision\PYZus{}recall\PYZus{}fscore\PYZus{}support}\PY{p}{(}
+                      \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}true}\PY{p}{,} 
+                      \PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{y\PYZus{}pred}\PY{p}{,}
+                      \PY{n}{average}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weighted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+          
+              \PY{n}{metrics\PYZus{}sum\PYZus{}index} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{precision}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{recall}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f1\PYZhy{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{support}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+              \PY{n}{class\PYZus{}report\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+                  \PY{n+nb}{list}\PY{p}{(}\PY{n}{metrics\PYZus{}summary}\PY{p}{)}\PY{p}{,}
+                  \PY{n}{index}\PY{o}{=}\PY{n}{metrics\PYZus{}sum\PYZus{}index}\PY{p}{,}
+                  \PY{n}{columns}\PY{o}{=}\PY{n}{labels}\PY{p}{)}
+          
+              \PY{n}{support} \PY{o}{=} \PY{n}{class\PYZus{}report\PYZus{}df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{support}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+              \PY{n}{total} \PY{o}{=} \PY{n}{support}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)} 
+              \PY{n}{class\PYZus{}report\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{avg / total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{avg}\PY{p}{[}\PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{n}{total}\PY{p}{]}
+          
+              \PY{n}{class\PYZus{}report\PYZus{}df} \PY{o}{=} \PY{n}{class\PYZus{}report\PYZus{}df}\PY{o}{.}\PY{n}{T}
+              \PY{n}{class\PYZus{}report\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pred}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pred\PYZus{}cnt}
+              \PY{n}{class\PYZus{}report\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pred}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{total}
+          
+              \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{y\PYZus{}score} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{fpr} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+                  \PY{n}{tpr} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+                  \PY{n}{roc\PYZus{}auc} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{p}{)}
+                  \PY{k}{for} \PY{n}{label\PYZus{}it}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{labels}\PY{p}{)}\PY{p}{:}
+                      \PY{n}{fpr}\PY{p}{[}\PY{n}{label}\PY{p}{]}\PY{p}{,} \PY{n}{tpr}\PY{p}{[}\PY{n}{label}\PY{p}{]}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}
+                          \PY{p}{(}\PY{n}{y\PYZus{}true} \PY{o}{==} \PY{n}{label}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}\PY{p}{,} 
+                          \PY{n}{y\PYZus{}score}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{label\PYZus{}it}\PY{p}{]}\PY{p}{)}
+          
+                      \PY{n}{roc\PYZus{}auc}\PY{p}{[}\PY{n}{label}\PY{p}{]} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fpr}\PY{p}{[}\PY{n}{label}\PY{p}{]}\PY{p}{,} \PY{n}{tpr}\PY{p}{[}\PY{n}{label}\PY{p}{]}\PY{p}{)}
+          
+                  \PY{k}{if} \PY{n}{average} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{micro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+                      \PY{k}{if} \PY{n}{n\PYZus{}classes} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{2}\PY{p}{:}
+                          \PY{n}{fpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}
+                              \PY{n}{lb}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{,} 
+                              \PY{n}{y\PYZus{}score}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                      \PY{k}{else}\PY{p}{:}
+                          \PY{n}{fpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}
+                                  \PY{n}{lb}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{y\PYZus{}true}\PY{p}{)}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{,} 
+                                  \PY{n}{y\PYZus{}score}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+          
+                      \PY{n}{roc\PYZus{}auc}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{auc}\PY{p}{(}
+                          \PY{n}{fpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} 
+                          \PY{n}{tpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+          
+                  \PY{k}{elif} \PY{n}{average} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{macro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}
+                      \PY{c+c1}{\PYZsh{} First aggregate all false positive rates}
+                      \PY{n}{all\PYZus{}fpr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{[}
+                          \PY{n}{fpr}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{labels}\PY{p}{]}
+                      \PY{p}{)}\PY{p}{)}
+          
+                      \PY{c+c1}{\PYZsh{} Then interpolate all ROC curves at this points}
+                      \PY{n}{mean\PYZus{}tpr} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{all\PYZus{}fpr}\PY{p}{)}
+                      \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{labels}\PY{p}{:}
+                          \PY{n}{mean\PYZus{}tpr} \PY{o}{+}\PY{o}{=} \PY{n}{interp}\PY{p}{(}\PY{n}{all\PYZus{}fpr}\PY{p}{,} \PY{n}{fpr}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{tpr}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+          
+                      \PY{c+c1}{\PYZsh{} Finally average it and compute AUC}
+                      \PY{n}{mean\PYZus{}tpr} \PY{o}{/}\PY{o}{=} \PY{n}{n\PYZus{}classes}
+          
+                      \PY{n}{fpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{macro}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{all\PYZus{}fpr}
+                      \PY{n}{tpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{macro}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{mean\PYZus{}tpr}
+          
+                      \PY{n}{roc\PYZus{}auc}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{avg / total}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{macro}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{tpr}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{macro}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+          
+                  \PY{n}{class\PYZus{}report\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AUC}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n}{roc\PYZus{}auc}\PY{p}{)}
+          
+              \PY{k}{return} \PY{n}{class\PYZus{}report\PYZus{}df}
+\end{Verbatim}
+
+
+    \subsection{Decision Tree Classifier}\label{decision-tree-classifier}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}307}]:} \PY{n}{report\PYZus{}with\PYZus{}auc} \PY{o}{=} \PY{n}{class\PYZus{}report}\PY{p}{(}
+              \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{,} 
+              \PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{clf\PYZus{}DT}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} 
+              \PY{n}{y\PYZus{}score}\PY{o}{=}\PY{n}{clf\PYZus{}DT}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{report\PYZus{}with\PYZus{}auc}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score  support     pred       AUC
+1             0.357616  0.134831  0.195830   1602.0    604.0  0.684566
+2             0.413882  0.196822  0.266777   1636.0    778.0  0.694808
+3             0.310345  0.034615  0.062284    260.0     29.0  0.796473
+4             0.224242  0.103064  0.141221    359.0    165.0  0.859139
+5             0.529412  0.495959  0.512140   1361.0   1275.0  0.831261
+6             0.394142  0.509924  0.444619   2771.0   3585.0  0.751854
+7             0.434729  0.353707  0.390055   1996.0   1624.0  0.779100
+8             0.632037  0.882329  0.736499   4861.0   6786.0  0.885665
+avg / total   0.482551  0.516435  0.478566  14846.0  14846.0  0.850879
+
+    \end{Verbatim}
+
+    \subsection{Random Forest - Model 1}\label{random-forest---model-1}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}308}]:} \PY{n}{report\PYZus{}with\PYZus{}auc} \PY{o}{=} \PY{n}{class\PYZus{}report}\PY{p}{(}
+              \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{,} 
+              \PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{model1}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} 
+              \PY{n}{y\PYZus{}score}\PY{o}{=}\PY{n}{model1}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{report\PYZus{}with\PYZus{}auc}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score  support     pred       AUC
+1             0.289017  0.249688  0.267917   1602.0   1384.0  0.696414
+2             0.303584  0.253667  0.276390   1636.0   1367.0  0.687318
+3             0.235294  0.046154  0.077170    260.0     51.0  0.655551
+4             0.205128  0.089136  0.124272    359.0    156.0  0.708952
+5             0.471440  0.430566  0.450077   1361.0   1243.0  0.814211
+6             0.360614  0.407073  0.382438   2771.0   3128.0  0.691889
+7             0.390132  0.297094  0.337315   1996.0   1520.0  0.711612
+8             0.653493  0.806213  0.721864   4861.0   5997.0  0.875152
+avg / total   0.450674  0.477233  0.458077  14846.0  14846.0  0.815625
+
+    \end{Verbatim}
+
+    \subsection{Random Forest - Model 2}\label{random-forest---model-2}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}309}]:} \PY{n}{report\PYZus{}with\PYZus{}auc} \PY{o}{=} \PY{n}{class\PYZus{}report}\PY{p}{(}
+              \PY{n}{y\PYZus{}true}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{,} 
+              \PY{n}{y\PYZus{}pred}\PY{o}{=}\PY{n}{model2}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{,} 
+              \PY{n}{y\PYZus{}score}\PY{o}{=}\PY{n}{model2}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{report\PYZus{}with\PYZus{}auc}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score  support     pred       AUC
+1             0.391858  0.096130  0.154386   1602.0    393.0  0.749660
+2             0.376359  0.169315  0.233558   1636.0    736.0  0.734408
+5             0.488000  0.313740  0.381932   1361.0    875.0  0.691236
+6             0.341030  0.485023  0.400477   2771.0   3941.0  0.552248
+7             0.433014  0.181363  0.255650   1996.0    836.0  0.520012
+8             0.556727  0.923678  0.694724   4861.0   8065.0  0.207333
+avg / total   0.432654  0.475145  0.414003  14227.0  14227.0  0.844306
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}RaviRohanChaitu\textbackslash{}Anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}sklearn\textbackslash{}metrics\textbackslash{}classification.py:1135: UndefinedMetricWarning: Precision and F-score are ill-defined and being set to 0.0 in labels with no predicted samples.
+  'precision', 'predicted', average, warn\_for)
+
+    \end{Verbatim}
+
+    
+
+    \subsubsection{5.7 Choosing better model using all
+factors}\label{choosing-better-model-using-all-factors}
+
+    We have compared the performance of the models using various model
+evaluation techinques. Our objective is to \textbf{precisely predict
+Response} so that life insurance applications can be scrutinized easily.
+Judging all the factors including AUC, \textbf{Decision Tree Clasifier
+model} is more suitable for this datset.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

@@ -1,0 +1,62 @@
+4 Pillars Evaluation - 
+Robustness
+Explainability
+Fairness
+Lineage
+
+Addressing the value
+
+Missing Value Problem
+	Methods
+		Numerical (Mean/Median)
+			Model based - Accurate
+			Local Average
+			Default Value
+			Global Average - Simplistic
+			==> Play around SD, Variance, Kurtosis, Skewness
+		Categorical
+			Model based - Accurate
+			Local Mode
+			Default Value
+			Global Mode - Simplistic
+			==> Logistic - KNN
+			==> DNN
+			
+	
+
+
+Feature Engineering
+1. Scaling - Global
+2. Creation - Individual
+3. Selection - Global - Statistical Correlation or Model based selection - Feature importance
+4. Transformation - Individual - Log, Z, Polynomial, Square - Data was not linear; So to do linear regression, we transfrom the data into a new dimension where it becomes linear
+5. Pre-Processing - Global - Outlier detection, Removing Wierd Data
+6. Dimensionality Reduction - Global - PCA - Matrix transformation to create new columns to explain new concepts, Kernel Methods 
+
+
+Regression
+Numerical and Continuous
+Examples
+	Stock Prediction
+	Rainfall
+	Cricket Score
+	Credit Score
+	Sentiment Polarity of Movies/Reviews
+	Rating
+	Commodity Prices
+	Shipping Time
+	Personal Health Data
+	
+Model
+	Linear Regression
+	
+Accuracy
+	P-A
+	MSE
+	MAE
+	RMSE
+	R2 and Adjust R2
+
+
+Classfication
+Numerical Discrete OR Ordinal/NonOrdinal Category
