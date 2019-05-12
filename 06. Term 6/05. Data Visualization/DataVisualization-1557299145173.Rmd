@@ -1,0 +1,878 @@
+---
+title: "Data Visualization"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 5
+---
+
+# 1. Introduction to Data Visualization
+
+**Data Visualization** is a crucial component of any data related task. If you are a Business Analyst or Data Analyst, you need visualization to understand the data. If you are a Data Scientist, visualization is a critical component in your day-to-day tasks. R has been one of the go-to tools for visualizing data. ggplot2 is one of the best and reliable tools in R to create great graphs. 
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/viz.png"`)
+
+</center>
+
+___
+
+## 1.1 Demystifying Data Visualization
+
+We will outline some of the plots to be used in a dashboard. Note that aside from the below plots, you can find several others but these are some of the most widely employed plots in dashboards that help keep panels uncluttered. The same data can be displayed in one or more ways. 
+
+It all depends on the business objectives and what the audience wants to see. It's essential to have the end users of the dashboard in mind when preparing dashboards.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/data%20visualizations.jpg"`)
+
+</center>
+
+___
+
+### 1.1.1 Distributions
+
+The distribution of data shows all the possible values or intervals of the data and how often they occur. For analyzing the data distribution, we can use one of the below graphs:
+
+* Histograms 
+* Bar Plots
+* Line Plots
+* Scatter Plots
+
+### 1.1.2 Comparisions
+
+Most of the time, there are requirements when comparing two or more different attributes. We can use any of these types of graphs:
+
+* Bar Plots
+* Line Plots 
+* Pie Charts
+* Area Plots
+
+### 1.1.3 Relationships
+
+Relationship charts are well-suited for cases where we want to study the relationships between different variables. These type of charts can show how an attribute has positive, negative, or no effect on other characteristics. To establish such kinds of relationships, we can go with any of the below charts:
+
+* Scatter Plots 
+* Bubble Plots 
+* Line Plots
+
+### 1.1.4 Trends and Composition
+
+Trend graphs are used to analyze the tendency of data over a period. Trend graphs have a time dimension and give us information about how a particular attribute is performing during a specific period of time.
+
+* Line Plots
+* Stacked Bar Plots
+* Area Plots
+* Pie Charts
+
+___
+___
+
+# 2. Packages and Libraries
+
+There are variety of packages and libraries in R for data visualization. We are going to load some packages and libraries for visualization purpose.
+
+```{r}
+library(ggplot2)
+library(hexbin)
+library(RColorBrewer)
+library(corrplot)
+library(ggcorrplot)
+library(GGally)
+library(vcd)
+library(xkcd)
+```
+
+___
+___
+
+# 3. Loading Data
+
+___
+
+Lets load the data first.
+
+```{r}
+data("mtcars")
+```
+
+```{r}
+data("diamonds")
+```
+
+___
+
+Let us have a look at the data once.
+
+```{r}
+View(mtcars)
+```
+
+```{r}
+View(diamonds)
+```
+
+___
+
+Just in case if you want read more about the data and variables.
+
+```{r}
+help("mtcars")
+```
+
+```{r}
+help("diamonds")
+```
+
+___
+___
+
+# 4. Grammar of Graphics
+
+All graphics that you generate are made up of some aesthetics and data mapped on to those aesthetics. For example a scatter plot is nothing but a variable mapped to x axis and another to y axis. Lets define such a data layer with only these mappings and make a scatter plot.
+
+There are no graphics element yet, we have only created our data layer with some basic aesthetic mapping.
+
+```{r}
+plt = ggplot(mtcars,aes(x=wt,y=mpg))
+plt
+```
+
+___
+
+We need to add a geometric object layer on top of this to create a graphic. Lets start with a simple scatter plot by showing our data using points.
+
+```{r}
+plt + geom_point()
+```
+
+___
+
+You might have got a long list of these **geom** options, indeed there are many. But not all of them will make sense with current aesthetic mapping, in fact in some cases you'll get error stating some missing aesthetics mapping. 
+
+```{r}
+plt + geom_rect()
+```
+
+Some will produce a plot which is useless. Lets see more examples of geometric object which make sense or not with current aesthetics mapping.
+
+```{r}
+plt + geom_line()
+```
+
+Example of boxplot is one which gives you a result which is nonsensical in this context. You can not really have a boxplot taken two continuous numeric variables mapped to either axes.
+
+```{r}
+plt + geom_boxplot()
+```
+
+We'll take another example of boxplot. By now you must start to think what aesthetic will map to which
+data point in order to generate desired plot. 
+
+For example to generate a boxplot y axes should map to the variable in question and x axes should map to the grouping variable .
+
+```{r}
+ggplot(mtcars,aes(y=mpg,x=factor(am)))+geom_boxplot()
+```
+
+___
+
+Lets convert 'cyl' column from class **numeric** to class **factor** and visualize the box plots.
+
+```{r}
+mtcars = transform(mtcars, cyl=factor(cyl))
+
+class(mtcars$cyl) # 'cyl' is now a categorical variable
+
+boxplot(mpg~cyl, mtcars, xlab = 'Number of Cylinders', ylab = 'miles per gallon',
+        main = 'miles per gallon for varied cylinders in automobiles', cex.main = 1.2)
+```
+
+___
+
+Here **Violin** plots , in addition to your boxplot , provide how dense your points as well. 
+
+```{r}
+ggplot(mtcars,aes(y = mpg, x = factor(am))) + geom_violin()
+```
+
+___
+
+Even better will be to simply add a point layer and add little jitter to it.
+
+```{r}
+ggplot(mtcars, aes(y = mpg, x = factor(am), color = factor(am))) + geom_point() + geom_jitter()
+```
+
+___
+
+You can add multiple kind of geometric object layers at once as well, as long as it makes sense to add them together.
+
+```{r}
+plt = ggplot(mtcars,aes(x = wt, y = mpg))
+plt + geom_point() + geom_line() + geom_smooth()
+```
+
+___
+
+## 4.1 Geometric Objects and Aesthetics
+
+Here are some **aesthetics** of the common **geometric objects**:
+
+* **Points**
+    + Point Shape
+    + Point Size
+
+* **Lines**
+    + Line Type
+    + Line Weight
+    
+* **Bars**
+    + y minimum
+    + y maximum
+    
+* **Fill Color**
+    + Outline Color
+    
+* **Text**
+    + Label Value
+
+Now these aesthetic that we see, can be mapped to different geometric objects, few examples of which we
+have seen earlier. As you have seen, there are many geometric objects. All of these objects can have there own aesthetics as well. 
+
+```{r}
+plt = ggplot(mtcars,aes(x = wt, y = mpg, color = factor(vs), shape = factor(am), size = cyl))
+plt + geom_point()
+```
+
+If you haven't noticed yet, so-far all **geom_*** that we have added, had no inputs, they were inheriting all the aesthetic mapping from the data layer.
+
+___
+
+To visualise the covariation between categorical variables, you'll need to count the number of  observations for each combination. One way to do that is to rely on the built-in **geom_count()**
+
+```{r}
+ggplot(data = diamonds) +
+  geom_count(mapping = aes(x = cut, y = color))
+```
+
+The size of each circle in the plot displays how many observations occurred at each combination of values. Covariation will appear as a strong correlation between specific x values and specific y values.
+
+___
+
+Visualise the distribution of a single continuous variable by dividing the x axis into bins and counting the number of observations in each bin. **Frequency polygons** display the counts with lines and are more suitable when you want to compare the distribution across the levels of a categorical variable.
+
+For example, let's explore how the price of a diamond varies with its quality using the **geom_freqpoly()** function.
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = price)) + 
+  geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
+```
+
+___
+___
+
+# 5. Types of Data Visualizations
+
+Data is usually visualized and commonly shown in the 3 formats below:
+
+* Univariate - contains only one variable information
+* Bivariate - contains two variables information 
+* Trivariate - contains three variables information
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/data-viz.png"`)
+
+</center>
+
+___
+
+## 5.1 Univariate Analysis
+
+Univariate plots are plots of individual attributes without interactions. The goal is learn something about the distribution, central tendency, and spread of each attributes.
+
+___
+
+### 5.1.1 The plot() function
+
+The plot() function is a kind of a generic function for plotting of R objects.
+
+```{r}
+plot(mtcars$mpg)
+```
+
+Here, we get a scatter/dot plot here wherein each dot represents the value of the **mpg**
+
+___
+
+The plot function has an argument called **type** which can take in values like **p: points**, **l: lines**, **b: both** etc. This decides the shape of the output graph.
+
+```{r}
+plot(mtcars$mpg, type = "l")
+```
+
+___
+
+### 5.1.2 Histograms
+
+Histograms provide a bar chart of a numeric attribute split into bins with the height showing the number of instances that fall into each bin. They are useful to get an indication of the distribution of an attribute.
+
+```{r}
+plot(hist(mtcars$mpg))
+```
+
+___
+
+### 5.1.3 Density Plots
+
+We can smooth out the histograms to lines using a density plot. These are useful for a more abstract depiction of the distribution of each variable.
+
+```{r}
+plot(density(mtcars$mpg), main = "Fuel Mileage")
+```
+
+___
+___
+
+## 5.2 Bivariate Analysis
+
+Bivariate plots are designed to reveal the relationship between two variables. As was the case when examining single variables, there are several basic characteristics of the relationship between two variables that are of interest.
+
+### 5.2.1 Boxplots
+
+We can look at the distribution of the data in a different way using box plots. The box captures the middle 50% of the data, the line shows the median and the whiskers of the plots show the reasonable extent of data. Any dots outside the whiskers are good candidates for outliers.
+
+Now, lets look at some boxplots
+
+```{r}
+#Diamond price according to cut
+
+ggplot(diamonds, aes(factor(cut), price, fill=cut)) + geom_boxplot() + xlab("Cut") + ylab("Price")
+```
+
+It doesn't appear that **Cut** is a good way to determine the quality or whether or not a diamond will be expensive.
+
+```{r}
+#diamond price according to color
+
+ggplot(diamonds, aes(factor(color), price, fill=color)) + geom_boxplot() + xlab("Color") + ylab("Price") 
+```
+
+It looks like **Color** makes a difference in the quality or whether or not a diamond will be expensive as we would expect. *Color* is a meaningful variable as compared to *Cut*. 
+
+___
+
+Diamond price according to clarity
+
+```{r}
+ggplot(diamonds, aes(factor(clarity), price, fill=clarity)) + geom_boxplot() +  xlab("Clarity") + ylab("Price") 
+```
+
+Looks like this matters, **Clarity** is a meaningful variable as compared to **cut**.
+
+___
+
+Lets take a look at the price per Carat of diamonds across the various Colors using a boxplot. 
+
+```{r}
+ggplot(diamonds, aes(factor(color), (price/carat), fill=color)) + geom_boxplot() + xlab("Color") + ylab("Price")
+```
+
+I think the Carat weight comes into play here. Carat weight seems to be the single most determining factor in deciding the price of a diamond.
+
+___
+
+### 5.2.2 Bar Plots
+
+In datasets that have categorical rather than numeric attributes, we can create **barplots** that given an idea of the proportion of instances that belong to each category.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut))
+```
+
+___
+
+There's one more piece of magic associated with bar plots. You can colour a bar chart using either the **colour** aesthetic or more usefully, **fill**
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, colour = cut))
+```
+
+
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut)) +
+  scale_fill_brewer(palette = "Set1")
+```
+
+### 5.2.3 Horizontal Bar Plots
+
+```{r}
+bar <- ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = cut, fill = cut), 
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+bar + coord_flip()
+```
+
+___
+
+### 5.2.4 Coxcomb Plots
+
+**Coxcomb plots** are drawn on a polar coordinate grid. Each category or interval in the data is divided into segments on this radial chart.
+
+**coord_polar()** uses polar coordinates. Polar coordinates reveal an interesting connection between a bar chart and a **Coxcomb Plot**.
+
+```{r}
+bar <- ggplot(data = diamonds) + 
+  geom_bar(
+    mapping = aes(x = cut, fill = cut), 
+    width = 1
+  ) + 
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+bar + coord_polar()
+```
+
+___
+
+You might use **stat_summary()**, which summarises the y values for each unique x value, to draw attention to the summary that you're computing.
+
+```{r}
+ggplot(data = diamonds) + 
+  stat_summary(
+    mapping = aes(x = cut, y = depth),
+    fun.ymin = min,
+    fun.ymax = max,
+    fun.y = median
+  )
+```
+
+___
+
+### 5.2.5 Pie Charts
+
+So far the plots that we have seen, all have simple x-y coordinate system. By adding a **polar coordinate system**, we can convert  our bar plot to **pie charts**. This makes you realize that, pie charts are nothing but bar charts in a polar  coordinate system. 
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = clarity)) + geom_bar()
+```
+
+___
+
+What you need to remember here is that in the simple bar plot x axis belongs to different values taken by a categorical variable and y axis belongs to counts of those values in the data. By assigning theta
+to y or count, you are essentially making share of each type in the polar bands getting determined by their counts.
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = clarity)) + geom_bar() + coord_polar(theta = "y")
+```
+
+___
+
+Also, you can try a different color palette
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = clarity)) + geom_bar() +
+scale_fill_brewer(palette = "Accent")
+```
+
+___
+
+Always keep in mind, pie charts are just bar charts folded into polar coordinates.
+
+```{r}
+ggplot(diamonds, aes(x = "", fill = clarity)) + geom_bar() +
+coord_polar(theta ="y")+scale_fill_brewer(palette = "Accent")
+```
+
+___
+
+Now if you map x to clarity, which basically becomes radius in polar coordinates, then instead of equal bar width or equal radius share, it will be determined by values of data mapped to x aesthetic.
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = clarity)) + geom_bar() +
+scale_fill_brewer(palette = "Accent")
+```
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = clarity)) + geom_bar() +
+coord_polar(theta = "x") + scale_fill_brewer(palette = "Accent")
+```
+
+___
+___
+
+## 5.3 Trivariate Analysis
+
+Trivariate plots are designed to understand the relationship between three variables.  
+
+In addition to x,y axes there are other common aesthetics in a plot:
+
+* Color
+* Shape
+* Size
+
+___
+
+### 5.3.1 Scatter Plots
+
+**Scatter plots** are used to plot data points in an attempt to show the relationship between three variables. Lets build on our example of scatter plot.
+
+```{r}
+plt = ggplot(mtcars, aes(x = wt, y = mpg, color = vs))
+plt + geom_point()
+```
+
+You can see that points have been colored according to value of variable **vs**. A legend has been added to plot automatically, which also tells you that variable vs is taken as continuous numeric hence the color scale. 
+
+___
+
+We can convert variable **vs** to factor type and legend will change.
+
+```{r}
+plt = ggplot(mtcars,aes(x = wt, y = mpg, color = factor(vs)))
+plt + geom_point()
+```
+
+___
+
+To understand better about inheritance of aesthetics, lets assign color to our data layer, add both point and a smoothing layer to it.
+
+```{r}
+plt = ggplot(mtcars, aes(x = wt, y = mpg, color = factor(vs)))
+plt + geom_point() + geom_smooth()
+```
+
+You can see that data is automatically grouped according to colors. This grouping is passed to both the
+geometric layers by default. If you assign these aesthetics to geometric layers individually instead putting it in top layer, data is grouped for those layers only.
+
+___
+
+```{r}
+plt = ggplot(mtcars, aes(x = wt, y = mpg))
+plt + geom_point(aes(color = factor(vs))) + geom_smooth()
+```
+
+You can see that points are colored by the groups defined by color aesthetic but there is no grouping in
+smoothing layer.
+
+___
+___
+
+### 5.3.2 Stacked Bar Plots
+
+**Stacked bar plot** is a plot that is used to compare the parts to the whole. The bars in a stacked bar plot are divided into categories. Each bar represents a total.
+
+A stacked bar chart lets you introduce different variables to each category.
+
+```{r}
+ggplot(data = diamonds) + geom_bar(mapping = aes(x = cut, fill = clarity)) + xlab("Cut") + ylab("Count")
+```
+
+This graph is useful in showing by types of **Cut**, what the distribution is by **Clarity**. As the quality increases in **Clarity**, it gets harder to find or becomes more rare.
+
+___
+
+The stacking is performed automatically by the position adjustment specified by the **position** argument. If you don't want a stacked bar chart, you can use one of three other options: **"identity"**, **"dodge"** or **"fill"**.
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) + 
+  geom_bar(alpha = 1/5, position = "identity")
+```
+
+**position = "identity"** will place each object exactly where it falls in the context of the graph. This is not very useful for bars, because it overlaps them.
+
+___
+
+To see that overlapping we either need to make the bars slightly transparent by setting **alpha** to a small value, or completely transparent by setting **fill = NA**.
+
+```{r}
+ggplot(data = diamonds, mapping = aes(x = cut, colour = clarity)) + 
+  geom_bar(fill = NA, position = "identity")
+```
+
+The **identity** position adjustment is more useful for 2D geoms, like points, where it is the default.
+
+___
+
+**position = "fill"** works like stacking, but makes each set of stacked bars the same height. This makes it easier to compare proportions across groups.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "fill")
+```
+
+___
+___
+
+### 5.3.3 Grouped Bar Plots
+
+A **grouped barplot** is used when you have several groups, and subgroups into these groups. 
+
+**position = "dodge"** places overlapping objects directly beside one another. This makes it easier to compare individual values.
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
+```
+
+___
+___
+
+### 5.3.4 Wind Rose Plots
+
+Incorporating another variable on fill gives the 'Wind Rose' plot:
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = cut)) + geom_bar(width = 1) +
+scale_fill_brewer(palette = "Accent")
+```
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = cut)) + geom_bar(width = 1) +
+coord_polar(theta = "x") + scale_fill_brewer(palette = "Accent")
+```
+
+Putting theta on 'Y' gives a weird sort of bulls-eye plot. Use a width of .9 to produce space between bars.
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = clarity)) + geom_bar(width =0.9) +
+scale_fill_brewer(palette = "Accent")
+```
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = clarity)) + geom_bar(width =0.9) +
+coord_polar(theta = "y") + scale_fill_brewer(palette = "Accent")
+```
+
+This becomes more interesting with a different fill:
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = cut)) + geom_bar(width = 0.9) +
+scale_fill_brewer(palette = "Accent")
+```
+
+```{r}
+ggplot(diamonds, aes(x = clarity, fill = cut)) + geom_bar(width = 0.9) +
+coord_polar(theta = "y") + scale_fill_brewer(palette = "Accent")
+```
+
+___
+___
+
+### 5.3.5 Hexbin Plots
+
+We can use the **hexbin** package in case we have multiple points in the same place (overplotting). Hexagon binning is a form of bivariate histogram useful for visualizing the structure in datasets with large n.
+
+```{r}
+a = hexbin(diamonds$price, diamonds$carat, xbins = 40)
+plot(a)
+```
+
+___
+
+We can also create a color palette and then use the hexbin plot function for a better visual effect.
+
+```{r}
+rf <- colorRampPalette(rev(brewer.pal(40,'Set3')))
+hexbinplot(diamonds$price~diamonds$carat, data=diamonds, colramp=rf)
+```
+
+___
+
+Looks like Carat is the most important factor in deciding price. 
+
+```{r}
+ggplot(diamonds, aes(carat, price)) + geom_hex(bins = 50) + xlab("Carat") + ylab("Price")
+```
+
+___
+___
+
+# 6. Multivaraite Analysis
+
+Multivariate plots are plots of the relationship or interactions between attributes. The goal is to learn something about the distribution, central tendency and spread over groups of data, typically pairs of attributes.
+
+## 6.1 Correlation Plots
+
+We can calculate the correlation between each pair of numeric attributes. These pair-wise correlations can be plotted in a correlation matrix plot to given an idea of which attributes change together.
+
+Let's look at the correlation plot a bit.  
+
+```{r}
+ggcorr(diamonds[,1:10])
+```
+
+Price and Carat weight seems to have a good correlation.
+
+___
+
+Correlated data is best visualized through corrplot. The 2D format is similar to a heat map, but it highlights statistics that are directly related.
+
+```{r}
+corr_matrix = cor(mtcars)
+
+# with circles
+
+corrplot(corr_matrix)
+```
+
+Most correlograms highlight the amount of correlation between datasets at various points in time. Comparing sales data between different months or years is a basic example.
+
+```{r}
+# with numbers and lower
+
+corrplot(corr_matrix,
+         method = 'number',
+         type = "lower")
+```
+
+___
+
+
+```{r}
+ggplot(data=diamonds, aes(x=carat, y=price)) +
+  # get rid of top percentile as they could skew the data
+  scale_x_continuous(lim=c(0,quantile(diamonds$carat,0.99))) +
+  scale_y_continuous(lim=c(0,quantile(diamonds$price,0.99))) +
+  geom_point(fill=I('#dd3333'), color= I("black"), aes(alpha=1/10),shape=21) +
+  stat_smooth(method='lm')
+```
+
+It appears that there is a positive, linear relationship between price and carat weight. We need to further investigate this.
+
+```{r}
+ggplot(data=diamonds, aes(x=carat, y=price)) +
+  # get rid of top percentile
+  scale_x_continuous(lim=c(0,quantile(diamonds$carat,0.99))) +
+  scale_y_continuous(lim=c(0,quantile(diamonds$price,0.99))) +
+  geom_point(color=I('#dd3333'),alpha=1/10) +
+  stat_smooth(method='lm') +
+  theme_xkcd()
+```
+
+Here we can see a linear fit between carat weight to price.
+
+
+
+___
+___
+
+# 7. Visualization of Distributions
+
+Another important visualization that you would like to look at will be distribution/histogram of your variable. Remember that histogram is nothing but a special case of bar charts for continuous numeric variables where x axis is made up bins depending on values of the data mapped to x aesthetic and y axis still represent counts.
+
+```{r}
+mydata=data.frame(v1=c(rnorm(2000),runif(1000)),
+dist=c(rep("Normal",2000),rep("Uniform",1000)))
+ggplot(mydata,aes(x=v1))+geom_histogram()
+```
+
+___
+
+Lets visualize **Normal** and **Uniform** distributions separately. 
+
+```{r}
+ggplot(mydata,aes(x = v1, fill = dist)) + geom_histogram()
+```
+
+___
+
+You can directly plot density curves also.
+
+```{r}
+ggplot(mydata,aes(x=v1,fill=dist))+geom_density()
+```
+
+You can see that density curves are overlapping. 
+
+___
+
+This can be dealt with setting transparency of fill by using aesthetic alpha which doesnt need to be mapped to data, hence it is specified outside aes.
+
+```{r}
+ggplot(mydata,aes(x=v1,fill=dist))+geom_density(alpha=1/5)
+```
+
+___
+
+You can add histogram and density together, but there is an issue which you'll realize soon.
+
+```{r}
+ggplot(mydata,aes(x=v1,fill=dist))+geom_density(alpha=0.6)+geom_histogram(alpha=0.6)
+```
+
+See here, density curves are no where to be seen. Believe me, they are there just that the y axis values
+for density are in percentages where as for histogram these are counts which obviously dominate. Hence
+your density curves are there but they are merely hugging x axis.
+
+___
+
+This can be taken care of by modifying y aesthetic of histograms.
+
+```{r}
+ggplot(mydata,aes(x=v1,fill=dist))+geom_density(alpha=0.7)+
+geom_histogram(aes(y=..density..),alpha=0.7)
+```
+
+___
+
+Now lets say we wanted to check whether a given data conforms to a normal distribution or not. Clearly,
+we'd like to plot a normal density curve assuming the data is from normal distribution (getting ?? and  from the data) and compare it with the natural density curve of the data. Lets see how we can achieve that.
+
+```{r}
+ggplot(mydata,aes(x=v1))+geom_density(color="red")+
+geom_histogram(aes(y=..density..),alpha=0.5)+
+stat_function(fun=dnorm,args=list(mean=mean(mydata$v1),sd=sd(mydata$v1)),color="green")
+```
+
+___
+___
+
+# 8. Drag and Drop Visualization
+
+Actually, most of us prefer Tableau to do quick data analysis before creating models in R. But, now we have a tableau-like package **esquisse** in R that provides the same flexibility of drag and drop functionality to create graphs.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/drag%20and%20drop.png"`)
+
+</center>
+
+You can also export the chart to a **PNG** or **Powerpoint** format and even copy the ggplot2 code from the tool and embed it in the R code. 
+
+___
+
+Installing esquisse in R is simple and is available in CRAN. You can run the following command in R:
+
+```{r}
+install.packages("esquisse")
+```
+
+___
+
+Next, load the library and initialize the application as shown in the below code snippet.
+
+```{r}
+library(esquisse)
+```
+
+```{r}
+esquisse::esquisser(mtcars)
+```
+
+Once it is initialized successfully, it will pop up the app.
+
+
+

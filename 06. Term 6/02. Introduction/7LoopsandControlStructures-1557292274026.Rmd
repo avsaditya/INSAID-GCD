@@ -1,0 +1,489 @@
+---
+title: "7. Loops and Control Structures"
+output:
+  html_notebook:
+    toc: yes
+    toc_depth: 4
+  html_document:
+    df_print: paged
+    toc: yes
+---
+
+Conceptually, a loop is a way to repeat a sequence of instructions under certain conditions. They allow you to automate parts of your code that are in need of repetition. There may be a situation when you need to execute a block of code several number of times. In general, statements are executed sequentially. The first statement in a function is executed first, followed by the second, and so on. A loop statement allows us to execute a statement or group of statements multiple times. 
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/loops.png"`)
+
+</center>
+
+### 7.1 For Loops
+
+A 'For loop' is a repetition control structure that allows you to efficiently write a loop that needs to execute a specific number of times. For loops enable you to do iterative operations.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/r_for_loop.jpg"`)
+
+</center>
+
+```{r}
+x = c("delhi","pune","mumbai", "bangalore","hyderabad","lucknow","chennai")
+```
+
+```{r}
+x
+```
+
+```{r}
+print(nchar(x[1]))
+print(nchar(x[2]))
+print(nchar(x[3]))
+print(nchar(x[4]))
+print(nchar(x[5]))
+print(nchar(x[6]))
+print(nchar(x[7]))
+```
+
+We had to write multiple print functions calls to get the results. But if you look at it, it looks such a waste of effort. All the print function calls are very similar. Only thing which changes is the index value. 
+
+```{r}
+for(i in c(1,2,3,4,5,6,7)){ 
+  print(nchar(x[i])) 
+}
+```
+
+In this example, you will learn to print the multiplication table of a number (entered by the user) from 1 to 10.
+
+```{r}
+# R Program to find the multiplicationtable (from 1 to 10)
+# take input from the user
+num = as.integer(readline(prompt = "Enter a number: "))
+# use for loop to iterate 10 times
+for(i in 1:10) {
+print(paste(num,'x', i, '=', num*i))
+}
+```
+
+### 7.2 While Loops
+
+There can arise another scenario where we want to do something iteratively until a condition holds. The While loop is used to repeat a block of statements for given number of times, until the specified condition is False. While loop start with the condition, and if the condition is True then statements inside the while loop will be executed. If the specified condition is false, it won't be executed at least once. 
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/while_loop.jpg"`)
+
+</center>
+
+```{r}
+x = 0
+
+while(x<10){
+  print(x)
+  
+  if(x<5){
+    print('smaller')
+  }else{
+    print('greater')
+  }
+  x = x+1
+}
+```
+
+In this example, you'll learn to check whether a number is an Armstrong number or not using a while loop.
+
+An Armstrong number, also known as narcissistic number, is a number that is equal to the sum of the cubes of its own digits.
+
+For example, 371 is an Armstrong number since 371 = 3^3 + 7^3 + 1^3.
+
+```{r}
+# take input from the user
+num = as.integer(readline(prompt="Enter a number: "))
+# initialize sum
+sum = 0
+# find the sum of the cube of each digit
+temp = num
+while(temp > 0) {
+digit = temp %% 10
+sum = sum + (digit ^ 3)
+temp = floor(temp / 10)
+}
+# display the result
+if(num == sum) {
+print(paste(num, "is an Armstrong number"))
+} else {
+print(paste(num, "is not an Armstrong number"))
+}
+```
+
+### 7.3 Repeat Loops
+
+It repeats a statement or group of statements while a given condition is true. Repeat loop is the best example of an exit controlled loop where the code is first executed and then the condition is checked to determine if the control should be inside the loop or exit from it.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/repeat-loop.jpg"`)
+
+</center>
+
+```{r}
+x=2
+repeat{
+x= x^2
+print(x)
+if(x>100)
+break 
+}
+```
+
+Lets take an example where the program allows the user to enter an integer value below 10. Using this value, compiler will add those values up to 10.
+
+```{r}
+# Repeat Loop Example
+
+total <- 0
+number <- as.integer(readline(prompt="Please enter any integer Value below 10:  "))
+
+repeat  {
+  total = total + number
+  number = number + 1
+  if (number > 10)  {
+    break
+  }
+}
+
+print(paste("The total Sum of Numbers From the Repeat Loop is:  ", total))
+```
+
+### 7.4 If-else Statements
+
+Control structures allow you to specify the execution of your code. They are extremely useful if you want to run a chunk of code multiple times, or if you want to run a chunk of code if a certain condition is met.
+
+#### 7.4.1 Understanding If statements
+
+An if-else statement is a great tool to return an output based on a condition. Basically, if-else statements are used for decision making.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/images1.png"`)
+
+</center>
+
+Use of **'If'** statements in daily life
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/images%20(2).png"`)
+
+</center>
+
+How to write an **'if'** statement:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/images.png"`)
+
+</center> 
+
+Let's say you are watching a match that decides which team makes the playoffs.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/ifelse-1.png"`)
+
+</center>
+
+An if statement tells the interpreter to run a line of code if a condition returns TRUE.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/if-statement.png"`)
+
+</center>
+
+```{r}
+team_A = 3 # Number of goals scored by Team A
+team_B = 1 # Number of goals scored by Team B
+
+if (team_A > team_B){
+    print ("Team A wins")
+}
+```
+
+What if, team_A had 1 goal and team_B had 3 goals. Our team_A > team_B conditional would evaluate to FALSE. As a result, if we ran our, expression the R interpreter would not return anything:
+
+```{r}
+team_A <- 1 # Number of goals scored by Team A
+team_B <- 3 # Number of goals scored by Team B
+
+if (team_A > team_B){
+    print ("Team A will make the playoffs")
+}
+```
+
+We've only coded out one conditional branch of our tree chart:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/team_a-1.png"`)
+
+</center>
+
+However, we'd like our program to print **"Team B will make the playoffs"** if the expression evaluates to **FALSE**. We'd like our program to be able to both conditional branches.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/team_a_b-1.png"`)
+
+</center>
+
+#### 7.4.2 Adding the else Statement
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/if-statement-1.png"`)
+
+</center>
+
+An else statement tells the interpreter to run specific lines of code if our comparison operator evaluates to **FALSE**
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/if-else-statment.png"`)
+
+</center>
+
+If our conditional expression **team_A > team_B** condition returns **FALSE**, let's print **"Team B will make the playoffs"**.
+
+```{r}
+team_A <- 1 # Number of goals scored by Team A
+team_B <- 3 # Number of goals scored by Team B
+
+if (team_A > team_B){
+    print ("Team A will make the playoffs")
+} else {
+    print ("Team B will make the playoffs")
+}
+```
+
+#### 7.4.3 The else if statement
+
+We can further customize the control level with the else if statement. With else if, you can add as many conditions as we want.
+
+An if statement can be followed by an optional else if statement, which is very useful to test various conditions using single if...else if statement.
+
+When using if, else if, else statements there are few points to keep in mind.
+
+An if can have zero or one else and it must come after any else if's.
+
+An if can have zero to many else if's and they must come before the else.
+
+Once an else if succeeds, none of the remaining else if's or else's will be tested.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/else-if-flow.jpg"`)
+
+</center>
+
+```{r}
+sale =  10
+# Create multiple condition statement
+if (sale < 20) {
+      print('Not enough for today')
+} else if (sale > 20  & sale <= 30) {
+     print('Average day')
+} else {
+      print('What a great day!')
+}
+```
+
+#### 7.4.4 Nested If else statements
+
+Placing one if statement inside another if statement is called as Nested if else in R Programming. The R if else statement allows us to print different statements depending upon the expression result (TRUE, or FALSE). Sometimes we have to check further when the condition is TRUE. In these situations, we can use this Nested if else concept. 
+
+<center>
+
+![](`r "https://github.com/insaid2018/R/blob/master/images/NESTED-IF-FLOW-CHART.jpg"`)
+
+</center>
+
+This program checks whether an year (integer) entered by the user is a leap year or not. A leap year is exactly divisible by 4 except for century years (years ending with 00). The century year is a leap year only if it is perfectly divisible by 400.
+
+```{r}
+# Program to check if the input year is a leap year or not
+year = as.integer(readline(prompt="Enter a year: "))
+if((year %% 4) == 0) {
+if((year %% 100) == 0) {
+if((year %% 400) == 0) {
+print(paste(year,"is a leap year"))
+} else {
+print(paste(year,"is not a leap year"))
+}
+} else {
+print(paste(year,"is a leap year"))
+}
+} else {
+print(paste(year,"is not a leap year"))
+}
+```
+
+#### 7.4.5 Break Statement
+
+A break statement is used inside a loop (repeat, for, while) to stop the iterations and flow the control outside of the loop.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/break-flowchart.jpg"`)
+
+</center>
+
+```{r}
+x <- 1:5
+for (i in x) {
+    if (i == 3){
+        break
+    }
+    print(i)
+}
+```
+
+#### 7.4.6 Next Statement
+
+A next statement is useful when we want to skip the current iteration of a loop without terminating it. On encountering next, the R parser skips further evaluation and starts next iteration of the loop.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/next-flowchart.png"`)
+
+</center>
+
+```{r}
+x <- 1:5
+for (i in x) {
+ if (i == 2){
+ next
+ }
+ print(i)
+}
+```
+
+#### 7.4.7 If-else statements within For Loops
+
+We can use if-else statements within for loops to give the results of multiple matches. To combine two control structures, we'll place one control structure in between the curly braces { }. Let's take the following match results of team_A:
+
+Let's say we have a list of vectors containing the results of the matches. Assuming that team_A's goals fall in the first index of the vector and team_B's on the second.
+
+```{r}
+matches = list(c(2,1),c(5,2),c(6,3))
+```
+
+And then, let's loop through it:
+
+```{r}
+matches = list(c(2,1),c(5,2),c(3,4))
+
+for (match in matches){
+    if (match[1] > match[2]){
+        print("Win")
+    } else { 
+        print ("Lose")
+        } 
+}
+```
+
+#### 7.4.8 Breaking the For Loop
+
+Let's see how to stop a for loop based on a certain condition. In our case, we can use a break statement to stop the loop as soon as team_A won a game.
+
+```{r}
+matches = list(c(2,1),c(5,2),c(6,3))
+
+for (match in matches){
+    if (match[1] > match[2]){
+        print("Win")
+        break
+    } else { 
+        print("Lose")
+        } 
+}
+```
+
+#### 7.4.9 If-else Statements within a While Loop
+
+We'll add a condition that indicates when they do make the playoffs. To do this, we'll need to add an if-else statement into our while loop.
+
+```{r}
+wins = 0
+while (wins <= 15){
+    if (wins < 15){ 
+        print("does not make playoffs")
+    } else {
+        print ("makes playoffs")
+    }
+    wins = wins + 1
+}
+```
+
+#### 7.4.10 Breaking the while loop
+
+Let's say the maximum number of wins a team can have in a season is 15. To make the playoffs, we'll still need 10 wins. We want to write a program that tells us if we made the playoffs or not. To do this, we can use a while loop and then insert a break statement when wins hits 10.
+
+```{r}
+wins = 0
+
+while (wins <= 15){
+    if (wins < 10){ 
+        print("does not make playoffs")
+        
+    } else {
+        print ("makes playoffs")
+        
+        break
+    }
+    wins = wins + 1
+}
+```
+
+Example to check whether an integer (entered by the user) is a prime number or not using control statements.
+
+A positive integer greater than 1 which has no other factors except 1 and the number itself is called a prime number.
+
+Numbers 2, 3, 5, 7, 11, 13 etc. are prime numbers as they do not have any other factors. But, 6 is not prime (it is composite) since, 2 x 3 = 6.
+
+```{r}
+# Program to check if the input number is prime or not
+# take input from the user
+num = as.integer(readline(prompt="Enter a number: "))
+flag = 0
+# prime numbers are greater than 1
+if(num > 1) {
+# check for factors
+flag = 1
+for(i in 2:(num-1)) {
+if ((num %% i) == 0) {
+flag = 0
+break
+}
+}
+} 
+if(num == 2)    flag = 1
+if(flag == 1) {
+print(paste(num,"is a prime number"))
+} else {
+print(paste(num,"is not a prime number"))
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

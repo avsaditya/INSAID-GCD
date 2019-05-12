@@ -1,0 +1,12 @@
+Brand	QuantitySold    Month 
+
+Sony	 100                 Nov,2018
+Nokia	 90                   Nov,2018
+Micromax	 80                   Nov,2018
+Apple	 120                 Nov,2018
+Asus	 110                 Nov,2018
+	
+HTC	  98                  Nov,2018
+Samung	  198                Nov,2018
+Honor         18                  Nov,2018
+Blueberry    20                 Nov,2018

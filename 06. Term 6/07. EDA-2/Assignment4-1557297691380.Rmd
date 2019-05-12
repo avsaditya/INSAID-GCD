@@ -1,0 +1,28 @@
+---
+title: "Assignment"
+output: html_notebook
+---
+
+**1. Create a data profiling report for ames_train dataset**
+
+**2. Make a labeled histogram (with 30 bins) of the ages of the houses in the data set, and describe the distribution.**
+
+**3. Find the summary stats of the calculated age of homes.**
+
+**4. Make a graphical display that relates a home price to its neighborhood in Ames, Iowa.**
+
+**5. Which summary statistics are most appropriate to use for determining the most expensive and least expensive neighborhoods?**
+
+**6. Which summary statistics are most appropriate to use for determining the most heterogeneous (having the most variation in housing price) neighborhoods?**
+
+**7. Which variable has the largest number of missing values? Explain why it makes sense that there are so many missing values for this variable.**
+
+
+
+
+
+
+
+
+
+

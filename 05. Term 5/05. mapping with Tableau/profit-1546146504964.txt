@@ -1,0 +1,13 @@
+Profit  Year State 
+.019 2010     Delhi
+.20 2011       UP
+.15 2012       UK
+.32 2013       Maharastra
+.30 2014       Orissa
+.35 2015      Karnataka
+.32 2016       Goa
+.35 2017      Telengana
+.40 2018      AndraPradesh
+
+	      
+            

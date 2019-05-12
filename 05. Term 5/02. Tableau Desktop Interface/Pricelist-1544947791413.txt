@@ -1,0 +1,24 @@
+Brand         	Price(Rs)
+	
+Sony	                    10000
+Nokia	                    10000
+Micromax	                    6000
+Apple	                    30000
+Asus	                    7000
+	
+HTC	                   12000
+Samung	                   7000
+Honor           	  6000
+Blackberry   	  15000
+Redmi            	  8999
+LG                 	  6999
+Motorola        	  9999
+Vivo               	  8990
+One PLus      	 11000
+Honor            	 6999
+Phillips           	 4999
+Zen                	 2999
+Acer             	 7599
+Lava              	 3999
+Spice             	 3500
+Oppo	                 19999

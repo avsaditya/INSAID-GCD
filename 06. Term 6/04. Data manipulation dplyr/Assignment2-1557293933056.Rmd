@@ -1,0 +1,52 @@
+---
+title: "Assignment"
+output: html_notebook
+---
+
+**1. In "census_income.csv" dataset, find out number of categories in each categorical variable. Your output should look like this:**
+
+```{r}
+## [1] "Number of categories in workclass : 9"
+## [1] "Number of categories in education : 16"
+## [1] "Number of categories in marital.status : 7"
+## [1] "Number of categories in occupation : 15"
+## [1] "Number of categories in relationship : 6"
+## [1] "Number of categories in race : 5"
+## [1] "Number of categories in sex : 2"
+## [1] "Number of categories in native.country : 42"
+```
+
+**Select variables which have 6 or less number of categories and make (n-1) dummy variables for them.** 
+
+___
+
+**2. Categorical variables which have many more distinct categories and making (n-1) dummy variables might not be a very good approach. What we can do instead is to bring down number of categories by combining similar categories. Create dummy variables with grouping categories for variable "workclass". Grouping is done on the basis of similar behaviour across classes of target which is 'Y' in this case.**
+
+```{r}
+round(prop.table(table(d$workclass,d$Y),1),1)
+```
+
+**Create dummy variables for variables for rest of the categorical variables like education, marital.status, occupation, native.country.**
+
+___
+
+**3. Check for what % of data capital.loss is zero and create a flag variable if this comes out to be high. Here is an example of creating flag variable for variable capital.gain:**
+
+```{r}
+sum(d$capital.gain==0)/nrow(d)
+```
+
+**More than 90% values are 0, lets go ahead create a flag variable for this.**
+
+```{r}
+d=d %>%
+  mutate(cg_flag0=as.numeric(capital.gain==0))
+```
+
+___
+
+**4. Right now Y takes two categorical values, convert them so that Y takes value when it is " >50K" and 0 otherwise.** 
+
+
+
+

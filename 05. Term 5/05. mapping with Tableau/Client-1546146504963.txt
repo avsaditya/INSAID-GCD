@@ -1,0 +1,11 @@
+Number  City
+50 Delhi
+20 Bangalore
+10 Agra
+50 Pune
+40 Bhubaneshwer
+15 Bangalore
+16 Mumbai
+
+	      
+            

@@ -1,0 +1,575 @@
+---
+title: "3 Chi-Square Test"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+# 3.1 The Purpose
+
+**Chi-square test** is a nonparametric test used for two specific purposes: 
+
+(a) To test the hypothesis of no association between two or more groups, population or criteria (i.e. to check independence between two variables) 
+(b) and to test how likely the observed distribution of data fits with the distribution that is expected (i.e., to test the goodness-of-fit).
+
+It is used to analyze categorical data (e.g. male or female patients, smokers and non-smokers, etc.), it is not meant to analyze parametric or continuous data (e.g., height measured in centimeters or weight measured in kg, etc.).
+
+For example, if we want to test that in a health camp attended by 50 persons the one who exercise regularly are having lesser body mass index (BMI) by taking their actual BMI values, than it cannot be tested using a Chi-square test. However, if we divide the same set of 50 persons into two categories as obese with BMI > 30 and nonobese with BMI < 30, than the same data can be tested using a Chi-square test by counting the number of obese and nonobese persons across two groups, the one who exercise regularly and the one who does not. A 2x2 cross tables can be constructed for calculating a Chi-square statistic. 
+
+# 3.2 Case Study: Effectiveness of a Drug Treatment
+
+Let's consider a case where we test the effectiveness of a drug for diabetes.
+
+Suppose we have 105 patients under study and 50 of them were treated with the drug. The remaining 55 patients were kept as control samples. The health condition of all patients was checked after a week.
+
+Based on this, we can define our hypothesis:
+
+* Ho: The two variables are independent
+* Ha: The two variables are related.
+
+The following table shows if their condition improved or not. Just by looking at it, can you tell if the drug had a positive effect on the patients.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/chi-squared-table-1.png"`)
+
+</center>
+
+As you can see, 35 out of the 50 patients showed improvement. Suppose if the drug had no effect, the 50 would have been split the same proportion as the patients who were not given the treatment. But in this case, about 70% of patients showed improvement, which is significantly higher than the control case.
+
+Since both categorical variables have only 2 levels, it was sort of intuitive to say that the drug treatment and health condition are dependent. But, as the number of categories increase, we need a quantifiable statistic to definitively say if they are dependent or not. One such a metric is the **chi-squared statistic**.
+
+# 3.3 Chi-Squared Statistic
+
+The Chi-square statistic is a tool designed to analyze group differences when the dependent variable is measured at a nominal level.
+
+The general formula for calculating the expected counts from observed count for a particular cell is:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/expected%20values.png"`)
+
+</center>
+
+Before we proceed further, we need to know how many degrees of freedom (DF) we have, when a comparison is made between one sample and another
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/Degrees%20of%20freedom.png"`)
+
+</center>
+
+For sake of understanding, lets see how the expected values are computed for the 2 by 2 case. The first cell will take the value: 50 times 61 by 105, which equals 29.04. All the expected values can be computed this way (shown in brackets).
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/chi-squared-expected-values.png"`)
+
+</center>
+
+Once that is done, the formula for calculating a Chi-square statistic is:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/chi-square%20statistic.png"`)
+
+</center>
+
+Where, **O** stands for the observed frequency and **E** stands for the expected frequency.
+
+The Chi-square statistic numeric computation as follows:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/numeric%20computation.png"`)
+
+</center>
+
+For this analysis, the significance level is 0.05. 
+
+Since there are two categories, the degrees of freedom = 1 [DF = (2 - 1) x (2 - 1) = 1 x 1 = 1)
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/chi-square%20table.png"`)
+
+</center>
+
+From the chi-squared table above we find that the critical value is 3.84 for 1 degrees of freedom at the alpha = 0.05 level. Since 5.56 is greater than the critical value, we reject the null hypothesis.
+
+# 3.4 Chi-Square Test of Independence
+
+The **chi-square test of independence** is one of the most basic and common hypothesis tests in the statistical analysis of categorical data. Given two categorical random variables x and y, the chi-square test of independence determines whether or not there exists a statistical dependence between them.
+
+Like all statistical tests, chi-square test of independence assumes a null hypothesis and an alternate hypothesis. The general practice is, if the p-value that comes out in the result is less than a pre-determined significance level, which is 0.05 usually, then we reject the null hypothesis.
+
+The null hypothesis of the chi-squared test of independence is that the two variables are independent and the alternate hypothesis is that they are related.
+
+## 3.4.1 Use Case: **Road Accident and Holidays** Dataset
+
+In this example, we will test whether there is an association in road accident data between the type of road and holiday periods. The study examines road accident in Victoria during its school and public holiday periods compared against the remainder of the year.
+
+We will begin with importing our holiday list data.
+
+```{r}
+holidays = read.csv("https://raw.githubusercontent.com/insaid2018/R/master/Data/holidaylist.csv", header = TRUE)
+```
+
+```{r}
+View(holidays)
+```
+
+```{r}
+str(holidays)
+```
+
+Now, lets import our road accident data.
+
+```{r}
+master_all = read.csv("https://raw.githubusercontent.com/insaid2018/R/master/Data/Crashes_Last_Five_Years.csv", header = TRUE, stringsAsFactors = TRUE, na.strings = c("","NA"))  
+```
+
+```{r}
+View(master_all)
+```
+
+```{r}
+str(master_all)
+```
+
+There are 72284 observations and 65 variables in the accident data.
+
+Since we are only interested in the accident dates and the road types where accidents occured, we will keep variables Accident_Date and RMA.
+
+```{r}
+#Lets keep these two variables 'Accident_Date' and 'RMA' (which refers to RMA Road classification eg. arteri, highway,freeway, etc)
+
+variables_of_interest = c("ACCIDENT_DATE","RMA")   
+```
+
+```{r}
+master = master_all[variables_of_interest]
+```
+
+```{r}
+str(master)
+```
+
+Let's look at the details of the accident data.
+
+```{r}
+summary(master)
+```
+
+There are 1462 missing values in the RMA variable, which represents 2% of total observations. Missing values are a common problem in data analysis, and can lead to biased statistical conclusion in some cases.
+
+Since in our case, the amount of missing data values is relatively small (i.e. less than 5%), leaving out observations with missing values may be the best strategy in order not to bias the result.
+
+```{r}
+# To remove RMA variable that has missing value.
+
+master = na.omit(master, cols = "RMA")  
+```
+
+```{r}
+View(master)
+```
+
+Next, we want to combine these two data sets based on Holiday_Date and Accident_Date by formatting dates.
+
+```{r}
+holidays$holiday_date = as.Date(as.character(holidays$holiday_date),"%Y%m%d") 
+```
+
+```{r}
+View(holidays)
+```
+
+```{r}
+master$ACCIDENT_DATE = as.Date(as.character(master$ACCIDENT_DATE),"%d/%m/%Y")
+```
+
+```{r}
+View(master)
+```
+
+Now, the result of date formatting works well
+
+```{r}
+head(holidays, 5)
+```
+
+```{r}
+str(holidays)
+```
+
+```{r}
+head(master$ACCIDENT_DATE,5)
+```
+
+```{r}
+str(master)
+```
+
+Now, we classify the data so that road accident that happened during holiday = True. And we will store this data in variable "holiday"
+
+```{r}
+interesting.dates = c(holidays$holiday_date)  
+```
+
+```{r}
+is.interesting = master$ACCIDENT_DATE %in% interesting.dates
+not.interesting = ! ( master$ACCIDENT_DATE %in% interesting.dates)
+```
+
+```{r}
+# to create new variable called holiday
+
+master$holiday <- is.interesting 
+str(master)
+```
+
+```{r}
+View(master)
+```
+
+```{r}
+unique(master$holiday)
+```
+
+```{r}
+table(master$holiday)
+```
+
+Ultimately we want to be able to classify that
+
+* holiday variable = True is classified as Holiday Season
+
+* holiday variable = False is classified as Non Holiday Season
+
+and we store it in variable "season"
+
+```{r}
+master$season <- ifelse(master$holiday == "TRUE", "Holiday", "Non Holiday")  
+```
+
+```{r}
+View(master)
+```
+
+```{r}
+table(master$season)
+```
+
+Creating Contingency Table
+
+```{r}
+# to create a contingency table of occurrences
+
+mytable <- table(master$season, master$RMA) 
+knitr::kable(mytable)
+```
+
+We can visualize this using bar plot from ggplot2 package
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+graph <- ggplot(data=master, aes(RMA)) +geom_bar(aes(fill=season),position = "dodge")+ theme_bw()
+graph
+```
+
+The graph and table show there are only a very small number of observations in the road type = Non Arterial.
+
+Chi Square Test of Independence
+
+Our hypotheses are:
+
+Ho: Type of road and holiday period are independent variables. There is no association in Victoria road accident between type of road and holiday period.
+
+Ha: Type of road and holiday period are dependent variables, which suggests association in Victoria road accident between type of road and holiday period.
+
+To accept or reject the null hypothesis, we choose significance level of 0.05
+
+```{r}
+chi2 <- chisq.test(mytable, correct=TRUE)
+```
+
+```{r}
+chi2
+```
+
+```{r}
+chi2$expected
+```
+
+The chi-square distribution provides a good approximation if no more than 20% of the expected counts are less than 5 and all individual expected counts are 1 or greater.
+
+In our example there is one cell (10% of total cells) with expected number less than 5. Also, there is one cell with expected number less than 1. The Chi Square is therefore not the appropriate method to test the independence. Hence the warning message.
+
+Correcting the Situation: Pooling Method and Fisher's Exact test
+
+Pooling method
+
+This method pools some values of the categorical variable together. Best practice is to pool values with adjacent meaning.
+
+I will pool road type into 3 levels based on the responsible authorities **'Arterial'**, **'Freeway'**, and **'Municipal & Local Road** using collapse.table function from vcdExtra package.
+
+```{r}
+install.packages("vcdExtra")
+```
+
+```{r}
+library(vcdExtra)
+```
+
+```{r}
+# to convert variables into character levels
+
+RMA.char = as.character(master$RMA)  
+```
+
+```{r}
+# to convert variables into character levels
+
+Season.char = as.character(master$season)  
+```
+
+```{r}
+mytable.char = table(Season.char, RMA.char)
+```
+
+```{r}
+# note that the ordering in RMA.char matters in pooling values together
+
+mytable2 = collapse.table (mytable.char, RMA.char=c("Arterial","Arterial","Freeway","Muni&Local Roads","Muni&Local Roads","Muni&Local Roads")) 
+knitr::kable(mytable2)
+```
+
+Let's check the chi square result from our new "pooled" table
+
+```{r}
+new.chi2 <- chisq.test(mytable2, correct=TRUE)
+new.chi2
+```
+
+The result gives a p-value of 0.01057 (Reject Ho).
+
+If Ho is false, the observed and expected frequencies will not be close in value and the ??2 statistic will not be close to zero (our ??2 is 9.0988)
+
+```{r}
+new.chi2$expected
+```
+
+We can therefore conclude that there is association in Victoria road accident between type of road and holiday period.
+
+Fisher Exact's Test of Independence
+
+Fisher Exact's Test is a non-parametric test used in the analysis of 2x2 contingency tables. It is called exact test because the significance from the null hypothesis (eg. p-value) can be calculated exactly, rather than relying on an approximation.
+
+Let's do more pooling to create a 2x2 table to apply the Fisher's Exact test.
+
+```{r}
+# to pool Arterial and Freeway roads together
+
+mytable3 <- collapse.table(mytable2, RMA.char=c("Arterial and Freeway", "Arterial and Freeway","Muni&Local Roads"))  
+knitr::kable(mytable3)
+```
+
+```{r}
+fisher <- fisher.test(mytable3,conf.int = T, conf.level = 0.95, simulate.p.value = T)
+fisher
+```
+
+Fisher's exact test gives a p-value of 0.0659 (Accept Ho).
+
+We can therefore conclude that there is no dependency in Victoria road accident between road type and holiday season.
+
+Strength of Association
+
+Chi square test is a test of association, but it does not tell the strength of association. To test the strength of association, we use either Phi or Cramer's V test.
+
+Cramer's V Test
+
+Cramer's V test measures relative strength between two variables. The coefficient ranges from 0 (no association) to 1 (perfect association). It can be calculated using different packages which all generate the same value.
+
+```{r}
+# total sample size
+
+n <- sum (mytable2)   
+```
+
+```{r}
+#min number of row and min number of column
+
+q <- min (nrow(mytable2),ncol(mytable2))  
+```
+
+```{r}
+# to calculate chi square
+
+chi <- chisq.test(mytable2, correct=TRUE)$statistic 
+```
+
+```{r}
+# to calculate carmer's v value using R-base
+
+cramer_value_rbase <- sqrt(chi/n*(q-1))  
+cramer_value_rbase 
+```
+
+```{r}
+install.packages("lsr")
+```
+
+```{r}
+library(lsr)
+```
+
+```{r}
+ # to calculate carmer's v value using lsr package
+
+cramer_value_lsr <- cramersV(mytable2) 
+cramer_value_lsr 
+```
+
+```{r}
+install.packages("DescTools")
+```
+
+```{r}
+library(DescTools)
+```
+
+```{r}
+# to calculate carmer's v value using DescTools package
+
+cramer_value_desctools <- CramerV(mytable2) 
+cramer_value_desctools
+```
+
+Phi test
+
+Similar to Cramer's V test, Phi test measures relative strength for 2x2 contingency table.
+
+```{r}
+# the Phi function uses DescTools package
+
+phi.test <- Phi(mytable3)  
+phi.test
+```
+
+Both Phi and Cramer's V tests showed very small numbers suggesting very weak association (level of interpretation from Computing in the Humanities and Social Sciences, 2010) of road accident between road type and holiday season. This is consistent with our chi-square and Fisher's Exact test results.
+ 
+# 3.5 Chi-Square Goodness of Fit Test
+
+The **Chi-square goodness of fit test** is a statistical hypothesis test to see how well sample data fit a distribution from a population with a normal distribution. In other words, it tells you if your sample data represents the data you would expect to find in the actual population. Goodness of fit is a statistical term referring to how far apart the expected values of a model are from the actual values.
+
+The test is applied when you have one categorical variable from a single population. It is used to determine whether sample data are consistent with a hypothesized distribution.
+
+**When to Use the Chi-Square Goodness of Fit Test**
+
+The chi-square goodness of fit test is appropriate when the following conditions are met:
+
+* The sampling method is simple random sampling.
+* The variable under study is categorical.
+* The expected value of the number of sample observations in each level of the variable is at least 5.
+
+## 3.5.1 Use Case: **Mobiles Sales** Dataset
+
+Chroma, an electronics company sells mobile phones. The company claims that 30% of the phones are Oneplus, 60% are Apple, and 10% are Samsung.
+
+Suppose a random sample of 1000 phones has 500 iphones, 450 Oneplus, and 50 Samsung. Is this consistent with Chroma's claim? Use a 0.05 level of significance.
+
+* **Null Hypothesis**: The proportion of Oneplus, Apple, and Samsung is 30%, 60% and 10%, respectively.
+
+* **Alternative Hypothesis**: At least one of the proportions in the null hypothesis is false.
+
+For this analysis, the significance level is 0.05. Using sample data, we will conduct a chi-square goodness of fit test of the null hypothesis.
+
+```{r}
+sample_data = c(500, 450, 50)
+```
+
+```{r}
+claim.prop = c(0.60, 0.30, 0.10)
+```
+
+```{r}
+chisq.test(sample_data,p = claim.prop)
+```
+
+Since the P-value is less than the significance level (0.05), we cannot accept the null hypothesis.
+
+
+
+In the built-in data set survey, the Smoke column records the survey response about the student's smoking habit. 
+
+```{r}
+library(MASS)       
+```
+
+```{r}
+View(survey)
+```
+
+```{r}
+table(survey$Smoke)
+```
+
+As there are exactly four proper response in the survey: "Heavy", "Regul" (regularly), "Occas" (occasionally) and "Never". It can be confirmed with the levels function in R.
+
+```{r}
+levels(survey$Smoke)
+```
+
+We can find the frequency distribution with the table function.
+
+```{r}
+smoke.freq = table(survey$Smoke) 
+smoke.freq 
+```
+
+```{r}
+prop.table(smoke.freq)
+```
+
+```{r}
+round(prop.table(smoke.freq),2)
+```
+
+```{r}
+round(prop.table(smoke.freq),3)*100
+```
+
+Suppose the population smoking statistics is as below. Determine whether the sample data in survey supports it at 0.05 significance level.
+
+```{r}
+paste(round(prop.table(smoke.freq),3)*100, "%", sep = "")
+```
+
+We save the campus smoking statistics in a variable named smoke.prob. 
+
+```{r}
+smoke.prob = c(0.047, 0.800, 0.081, 0.072) 
+```
+
+Then we apply the chisq.test function and perform the Chi-Squared test.
+
+```{r}
+chisq.test(smoke.freq, p = smoke.prob) 
+```
+
+As the p-value is greater than the 0.05 significance level, we do not reject the null hypothesis that the sample data in survey supports the campus-wide smoking statistics.
+
+
+
+
+
+
+
+
+

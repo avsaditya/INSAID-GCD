@@ -1,0 +1,50 @@
+---
+title: "4. Input/Output"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+### 4.1 R Output
+
+The **print()** is a function that outputs to your console window whatever you say you want to print out.
+
+It prints the specified output to the screen or other standard output device. The output can be a string, or any other object, the object will be converted into a string before written to the screen.
+
+```{r}
+print("Welcome to INSAID")
+```
+
+### 4.2 R Input
+
+In R, there are a series of functions that can be used to request an input from the user.
+
+#### 4.2.1 Reading from the keyboard
+
+To read from the keyboard you can use **'scan()'** function. Read data values into a vector or list from the console.
+
+```{r}
+x = scan()
+```
+
+___
+
+We can use **readline()** for inputing a line from the keyboard in the form of a string
+
+```{r}
+y = readline()
+```
+
+#### 4.2.2 Take input from user
+
+Lets take an example where we can see both input and output functions of R:
+
+```{r}
+name = readline(prompt="Enter name: ")
+age = readline(prompt="Enter age: ")
+# convert character into integer
+age = as.integer(age)
+print(paste("Hey,", name, "next year you will be", age+1, "years old."))
+```
+

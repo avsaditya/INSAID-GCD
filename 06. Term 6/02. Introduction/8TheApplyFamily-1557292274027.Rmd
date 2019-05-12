@@ -1,0 +1,95 @@
+---
+title: "8. The Apply Family"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+The apply functions form the basis of more complex combinations and helps to perform operations with very few lines of code. "Apply" functions keep you from having to write loops to perform some operation on every row or every column of a matrix or data frame, or on every element in a list.
+
+**'apply'**, **'lapply'**, and **'sapply'** are the most common.
+
+### 8.1 apply
+
+**'apply'** applies a function to a matrix's rows or columns (or, more generally, to dimensions of an array). 'apply' is more useful when you want to do something like row-wise, column-wise.
+
+```{r}
+x = matrix(c(1:12, 41:52), nrow = 6, ncol = 4)
+x
+```
+
+Now we can use the apply function to find the mean of each row
+
+```{r}
+apply(x,1,mean)
+```
+
+In case, if you want to find the mean of each column
+
+```{r}
+apply(x,2,mean)
+```
+
+### 8.2 lapply
+
+**'lapply'** is a list apply. It is similar to apply, but it takes a list as an input, and returns a list as the output.
+
+```{r}
+data = list(x = 1:5, y = 6:10, z = 11:15)
+data
+```
+
+Now, we can use lapply to apply a function to each element in the list
+
+```{r}
+lapply(data,median)
+```
+
+Lets take an another example where in we need to figure out the number of characters in each element of the list. 
+
+```{r}
+x = list("teenage","mutant","ninja","turtle",
+          "hamster","plumber","pickle","baby")
+lapply(x, nchar)
+```
+
+lapply applies a function to each element of a list or vector, returning a list.
+
+```{r}
+y = c("teenage","mutant","ninja","turtle",
+       "hamster","plumber","pickle","baby")
+lapply(y, nchar)
+```
+
+### 8.3 sapply
+
+**'sapply'** is a simple apply. sapply is the same as lapply, but returns a vector instead of a list.
+
+```{r}
+sapply(data,median)
+```
+
+sapply doesn't return a list always. It attempts to simplify the results into a non-list vector if possible.
+
+```{r}
+x = list("pizza","monster","jigsaw","puddle",
+          "hamster","plumber","pickle","baby")
+sapply(x, nchar)
+```
+
+```{r}
+y = c("pizza","monster","jigsaw","puddle",
+       "hamster","plumber","pickle","baby")
+sapply(y, nchar)
+```
+
+
+
+
+
+
+
+
+
+

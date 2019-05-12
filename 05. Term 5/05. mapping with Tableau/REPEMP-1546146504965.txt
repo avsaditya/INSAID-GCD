@@ -1,0 +1,16 @@
+NAME	ROLE	                         DOJ	                RATING        GENDER
+
+ASH	LEAD TEAM	  Janvary 2, 2010	   6.2	          M
+AAM	LEAD TEAM	  Janvary 2, 2011	   6.2	          M
+UDAY	A.MANAGER	 October 22, 2011	   9.7	         M
+DEL	FACULTY  	 December 2,2011	   8.2	         M
+DOLLY	IT TRAINER	 October 22,2017	   3.6	         F
+DEEP	SALES        	 November 4,2013	   7.5	         F
+GAM	IT TRAINER	 October 20, 2018	   7.2	         M
+TINA	MANAGER	 October 20, 2018	   6.6	         F
+ROY	SALES       	 November 2, 2018	   3.5	         M
+ASHI	LEAD SALES	  Janvary 2, 2010	   8.2	          F
+ZEB	FACULTY  	 December 2,2015	   7.6	          M
+DEL	FACULTY  	 December 2,2011	   8.2	          M
+PIA	SALES  	                   Janvary 2,2016	   5.4	          F
+DEV	SALES LEAD	  Janvary 2, 2010	   9.5	          M

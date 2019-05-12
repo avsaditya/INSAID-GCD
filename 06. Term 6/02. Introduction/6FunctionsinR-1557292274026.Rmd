@@ -1,0 +1,246 @@
+---
+title: "6. Functions in R"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+### 6.1 What are Functions ? 
+
+A function is a set of statements organized together to perform a specific task. A programmer builds a function to avoid repeating the same task, or reduce complexity. R has a large number of in-built functions and the user can create their own functions.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/function-diagram.png"`)
+
+</center>
+
+#### 6.1.1 Syntax for writing Functions in R
+
+An R function is created by using the keyword "function". The basic syntax of a function definition is as follows:
+
+```{r}
+function_name = function (argument) {
+statement
+}
+```
+
+Lets look at an example of simple function in R
+
+```{r}
+myfunc = function(x){
+  range = max(x) - min(x)
+  return(range)
+}
+myfunc(1:10)
+```
+
+#### 6.1.2 Components of a function
+
+The first component of the function code is the name of the function. Make sure that it is not same as existing R functions. You can quickly check for that by looking up documentation for that function. If function with the same name exist, documentation will show up.
+
+Next component is arguments which the function takes, they are listed in brackets beside the keyword 'function'. An argument is a placeholder. When a function is invoked, you pass a value to the argument. Arguments are optional; that is, a function may contain no arguments and can take multiple arguments as well. Also arguments can have default values.
+ 
+The function body contains a collection of statements that defines what the function does. Inside the curly braces whatever processing you want to do is contained. 
+
+In the end line there you return the result of your computation by using function return. The return value of a function is the last expression in the function body to be evaluated. Returning a result is not necessary.
+
+#### 6.1.3 To call a function
+
+Arguments used in the function declaration are used while calling the function. Lets see an example here:
+
+```{r}
+# function to print a raised to the power b
+power = function(a,b) {
+outcome = a**b
+print(paste(a,"raised to the power", b, "is", outcome))
+}
+```
+
+```{r}
+power(2,3)
+```
+
+**Exercise**: Let's define a function that converts temperatures from Fahrenheit to Kelvin
+
+```{r}
+fahrenheit_to_kelvin = function(temp) {
+  kelvin = ((temp - 32) * (5 / 9)) + 273.15
+  return(kelvin)
+}
+```
+
+```{r}
+# freezing point of water
+fahrenheit_to_kelvin(32)
+```
+
+```{r}
+# boiling point of water
+fahrenheit_to_kelvin(212)
+```
+
+### 6.2 Types of Functions 
+ 
+R has many in-built functions which can be directly called in the program without defining them first. We can also create and use our own functions referred as user defined functions.
+
+#### 6.2.1 Built-in Function
+
+Built-in functions are those functions whose meaning and working is already defined within the function's body and they are kept somewhere within the packages or libraries of R language. These pre-defined functions make programmers task easier.
+
+Simple examples of built-in functions are seq(), mean(), max(), sum(x), and paste() etc.
+
+```{r}
+# Create a sequence of numbers from 32 to 44.
+print(seq(22,44))
+
+# Find mean of numbers from 25 to 82.
+print(mean(45:85))
+
+# Find sum of numbers frm 41 to 68.
+print(sum(51:80))
+```
+
+#### 6.2.2 User-defined Function
+
+We can create user-defined functions in R. They are specific to what a user wants and once created they can be used like the built-in functions.
+
+```{r}
+mysummary = function(x){
+  s1 = min(x)
+  s2 = max(x)
+  s3 = mean(x)
+  s4 = sd(x)
+  s5 = median(x)
+  summary = list(min=s1,max=s2,mean=s3,sd=s4,median=s5)
+return(summary)
+}
+mysummary(2:90)
+```
+
+### 6.3 Arguments in a Function
+
+Next we'll learn about how to give default arguments to your function. While declaring your arguments , you can pass default values. Modifying the function that we wrote above, we'll now write a function, which takes input a vector x and a value y. Function first multiplies the vector x with value y and then gives the summary.
+
+```{r}
+mysummary2 = function(x,y){
+  x=x*y
+  s1=min(x)
+  s2=max(x)
+  s3=mean(x)
+  s4=sd(x)
+  s5=median(x)
+  summary=list(min=s1,max=s2,mean=s3,sd=s4,median=s5)
+  return(summary)
+}
+mysummary2(1:10,2)
+```
+
+Call to function with both arguments being passed properly gives you an expected result. Now lets try to
+miss out on one of the arguments.
+
+```{r}
+mysummary2(1:10)
+```
+
+This throws an error for missing arguments. Lets give some default values to our arguments.
+
+```{r}
+mysummary2 = function(x=2:30,y=1){
+  x=x*y
+  s1=min(x)
+  s2=max(x)
+  s3=mean(x)
+  s4=sd(x)
+  s5=median(x)
+  summary=list(min=s1,max=s2,mean=s3,sd=s4,median=s5)
+  return(summary)
+}
+mysummary2(1:10,4)
+```
+
+```{r}
+mysummary2(1:10)
+```
+
+```{r}
+mysummary2()
+```
+
+You can see that all kind of calls to function work. Whatever arguments is missing, takes default value inside the function.
+
+In this example, you'll learn to find all factors of an number using for loop and if statement.
+
+```{r}
+print_factors = function(x) {
+print(paste("The factors of",x,"are:"))
+for(i in 1:x) {
+if((x %% i) == 0) {
+print(i)
+}
+}
+}
+```
+
+### 6.4 Recursive Functions
+
+A function that calls itself is called a recursive function and this technique is known as recursion. This special programming technique can be used to solve problems by breaking them into smaller and simpler sub-problems.
+
+In this example, you'll learn to find the factorial of a number using a recursive function.
+
+The factorial of a number is the product of all the integers from 1 to the number.
+
+For example, the factorial of 6 (denoted as 6!) as
+
+1 * 2 * 3 * 4 * 5 * 6 = 720
+
+Factorial is not defined for negative numbers and the factorial of zero is one, 0! = 1.
+
+```{r}
+recur_factorial <- function(n) {
+if(n <= 1) {
+return(1)
+} else { 
+return(n * recur_factorial(n-1))
+}
+}
+```
+
+
+**Exercise**: Lets learn to print the fibonacci sequence by creating a recursive function.
+
+The first two terms of the Fibonacci sequence is 0 followed by 1. All other terms are obtained by adding the preceding two terms.
+
+This means to say the nth term is the sum of (n-1)th and (n-2)th term.
+
+The Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8, 13, 21
+
+```{r}
+# Program to display the Fibonacci sequence up to n-th term using recursive functions
+recurse_fibonacci = function(n) {
+if(n <= 1) {
+return(n)
+} else {
+return(recurse_fibonacci(n-1) + recurse_fibonacci(n-2))
+}
+}
+# take input from the user
+nterms = as.integer(readline(prompt="How many terms? "))
+# check if the number of terms is valid
+if(nterms <= 0) {
+print("Plese enter a positive integer")
+} else {
+print("Fibonacci sequence:")
+for(i in 0:(nterms-1)) {
+print(recurse_fibonacci(i))
+}
+}
+```
+
+
+
+
+
+
+

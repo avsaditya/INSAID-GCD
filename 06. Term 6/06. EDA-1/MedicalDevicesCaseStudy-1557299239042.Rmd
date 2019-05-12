@@ -1,0 +1,605 @@
+---
+title: "Medical Devices Case Study (EDA-II)"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 5
+---
+
+# 1. Problem Statement
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/diabetes-equipment.jpg"`)
+
+</center>
+
+## 1.1 Background Information
+
+Operating in the Edinburgh office of **GluMet**, a leading European medical devices company that
+provides technological solutions for the healthcare industry. One of the products GluMet manufactures is a **Blood-Glucose Meter**. A glucose meter is a medical device for determining the approximate concentration of glucose in the blood. It is essentially used for **Home Blood Glucose Monitoring (HBGM)** by people with diabetes. Leonard, the CEO, was continuing a long series of discussions with his partners Sebastian, COO, and Alfredo, Director of Sales, deliberating a market entry strategy for its gluco-meter devices in **Buckingham**, a town in England, and in **Louisa**. 
+
+## 1.2 Challenges at hand
+
+As GluMet's senior management had anticipated, entering the propsed market posed a wide variety of
+**challenges**.
+
+* The lack of **brand awareness** for gluco-meter product. 
+
+* The **disjointed** customer **support services** and technical services.
+
+* Rolling out the **updates** and **upgrade features** for the devices.
+
+Sebastian said, "I knew it would not be easy. But I still believe we can provide value to customers." Leonard agreed: "Considering our long-term growth goals, entering the proposed market is a necessary step for GluMet. But, in light of the challenges ahead, is it the step we should take now?"
+
+## 1.3 Current Scenario
+
+The management has decided to use diabetes data to double down this decision, instead of going with gut feeling. Diabetes data from the hospitals and clinics of the two places has been made available which contains patient information like age, gender, height, and weight. In addition to this, we also have anamnesis of the patients. We have diagnosis and results of the patients to see whether the patient is diabetic or not.
+
+## 1.4 Plan of Action
+
+Using this, the management plans to carry out **market research** and develop a statistical model which, given this information, predicts whether patient in question will buy the product or not. A successful model which is able to do this, will make the launch efficiently targeted. 
+
+## 1.5 End Result 
+
+Once the gluco-meter **awareness** and **acceptance** in these regions is matured, Glumet might have an easier time selling in these countries by leveraging its experiences and reputation. While these markets were small compared to the previous ones, they could offer a means for **GluMet to grow** in the short term. 
+
+___
+
+# 2. Study Questions
+
+* **What are the factors that will make the launch successful?** 
+
+* **How is the current market different from the previous ones?**
+
+* **What are the strategies that we are going to opt in?**
+
+* **What are the operational decisions need to be made?**
+
+# 3. Product Launch Process 
+
+The product launch process starts with the following steps:
+
+1. We are going to collect **patient information** from various hospitals and clinics. 
+
+2. Then we will carryout the **market research** on the data we have.
+
+3. Once it's all blended together, we will take that data and then try and come up with a **marketing analysis**.
+
+4. Finally, we will come up with a **strategy** to enter the market.
+
+# 4. Case Study
+
+___
+
+## 4.1 Introduction
+
+**HbA1c** or **Glycated Hemoglobin** is most reliable test for confirming diabetes. HbA1c measurement has a central role in management of diabetes. People with diabetes need to check their glucose levels often, hence they are more likely to buy **glucometers** for regular monitoring of their HbA1c levels. Also, it would help pre-diabetic patients to take preventive measures as well   
+
+## 4.2 What is Hemoglobin A1c (HbA1c) ?
+
+A hemoglobin A1c (HbA1c) test reflects the **average concentration of glucose in blood** over the past 2-3 months. The test measures the amount of glucose attached to hemoglobin and is reported as a percentage of total hemoglobin. 
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/hba1c-2.jpg"`)
+
+</center>
+
+## 4.3 Why measure Hemoglobin A1c?
+
+Having a consistently high HbA1c levels indicates either **Type 2 Diabetes** or a heightened risk for developing diabetes (**Pre-Diabetes**).
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/Hemoglobin%2BA1c.png"`)
+
+</center>
+
+## 4.4 Why HbA1c (Glycated Hemoglobin) is most reliable test for Diabetes?
+
+HbA1c (Glycated Hb) serves as a retrospective indicator of the average glucose concentration over the previous 6-8 weeks. HbA1c offers a potentially **easier**, **non-fasting**, and therefore more acceptable test.
+
+## 4.5 How HbA1c is interpreted?
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/HbA1c%20Levels.jpg"`)
+
+</center>
+
+Results of HbA1c can be interpreted for diagnosis of diabetes as:
+
+* 5.6 % and below = **Normal**
+
+* 5.7% - 6.4% = **Pre-Diabetes**
+
+* 6.5% and Above = **Diabetes** 
+
+___
+
+# 5. Loading Packages and Libraries
+
+Alright! lets begin our marketing research by installing some packages and loading all the libraries.
+
+```{r}
+# Load libraries
+
+library(dplyr)
+library(psych)
+library(vtree)
+library(DataExplorer)
+```
+
+___
+
+# 6. Market Research Process
+
+**Market research** is an organized effort to gather data about **target markets** or **potential customers** and then analyzing it to better understand what that group of people needs. It is a very important component of **business strategy**. The results of market research, which are usually summarized in a report, are then used to help business owners make more **informed decisions** about the company's **strategies**, **operations**, and potential customer base.
+
+## 6.1 Importing Data
+
+Lets import our data first.
+
+```{r}
+# load the data
+
+dataset = read.csv("https://raw.githubusercontent.com/insaid2018/R/master/Data/diabetes.csv")
+```
+
+## 6.2 Reading Data
+
+Lets have a complete view of our dataset.
+
+```{r}
+View(dataset)
+```
+
+___
+
+Lets have a look at the head of the data.
+
+```{r}
+head(dataset)
+```
+
+___
+
+To know how the structure of the data is, we will **str** function.
+
+```{r}
+str(dataset)
+```
+
+___
+
+**glimpse** gives you a better organized structure of the data. 
+
+```{r}
+glimpse(dataset)
+```
+
+___
+
+Using the **describe()** function, we can compute descriptive statistics for numerical data. The descriptive statistics help determine the distribution of numerical variables.
+
+```{r}
+describe(dataset)
+```
+
+## 6.3 Data Profiling
+
+Lets create a data profiling report for our dataset using the **create_report** function in **DataExplorer** package.
+
+```{r}
+create_report(dataset)
+```
+
+## 6.4 Cleaning the Data
+
+Now, lets do some data cleaning. For that, first we need to figure out the number of **missing values** in each column.
+
+```{r}
+numColumns = dim(dataset)[2]
+vector_NAs = rep(0, numColumns)               
+for (i in 1:numColumns) {
+  vector_NAs[i] = sum(is.na(dataset[,i]))
+}
+print("The missing values in each column:")
+print(vector_NAs)
+```
+
+It appears that columns **15** and **16** has maximum number of missing values which accumaltes to more than 50 percent of the data points.
+
+___
+
+**262** missing values are really high in number. Therefore, it is essential to delete these columns as they dont contribute much to our analysis.
+
+```{r}
+dataset = dataset[,-c(15,16)]
+print(dim(dataset))
+```
+
+___
+
+Now, lets remove all the rows containing missing values.
+
+```{r}
+row.has.na <- apply(dataset, 1, function(x){any(is.na(x))})
+dataset = dataset[!row.has.na,]
+print(dim(dataset))
+```
+
+Again, lets have a look at the head of the dataset.
+
+```{r}
+head(dataset)
+```
+
+____
+
+## 6.5 Analyzing the Data
+
+Lets use the **plot** function to do **univariate analysis** of some variables.
+
+### 6.5.1 Which variable turns out to be significant for the analysis?
+
+Lets begin with a very important variable **glyhb**.
+
+```{r}
+plot(dataset$glyhb)
+```
+
+Majority of patients have normal levels of **glycated hemoglobin**. However, higher levels of **glyhb** seems to be evenly spread across the sample size.
+
+___
+
+```{r}
+plot(dataset$stab.glu)
+```
+
+Same goes with the **stabilized glucose** levels. Ultimately, these patterns should match because the end goal is same although the scales are different.  
+
+___
+
+```{r}
+plot(dataset$age)
+```
+
+We have pateints from different **age groups** and the sample distibution seems to be evenly spread.
+
+___
+
+```{r}
+plot(dataset$gender)
+```
+
+**Female** patients are more as compared to the **Male** patients. Here, we can conclude that the prevalence of diabetes is more in women in comparison to men. 
+
+But, wait a minute, dont jump to conclusions in such an early stage of analysis. What I'll suggest is to lookout for some metrics or statistics before you draw some conclusion. 
+
+___
+
+```{r}
+plot(dataset$frame)
+```
+
+**Frame** variable basically talks about the body frames of the patients. Here, maximum number of pateints belong to **meduim** body frame.
+
+___
+
+```{r}
+plot(dataset$location)
+```
+
+These are the two **locations** where Glumet is planning to launch the product. Apparemtly, Louisa seems to have more number of target customers.
+
+___
+
+```{r}
+plot(dataset$glyhb, dataset$stab.glu)
+```
+
+Although, these two variables seem highly correlated but however, it is important to understand the scales of glucose levels we are looking at.
+
+___
+
+To have a better picture, lets see who our **target customers** are in colorful visualization.
+
+```{r}
+ggplot(dataset, aes(x=stab.glu, y=glyhb, color=diagnosis)) +
+geom_point() + geom_smooth(method="lm")
+```
+
+___
+
+### 6.5.2 How the distribution of data is?
+
+Lets see how the data is distributed using the **boxplots**, **histograms**, and **density plots**.
+
+```{r}
+dataset_numeric = dataset[,-c(7, 9, 12, 18)]
+```
+
+___
+
+#### 6.5.2.1 Boxplots
+
+```{r}
+#Box And Whisker Plots
+
+par(mfrow = c(3,4))     # Put four figures in a row
+
+for(i in 2:13) {
+  boxplot(dataset_numeric[,i], main=names(dataset_numeric)[i])
+}
+```
+
+___
+
+#### 8.6.5.2.2 Histograms
+
+```{r}
+#Histograms
+
+par(mfrow = c(3,4))  # Put four figures in a row
+
+for (i in 2:13) {
+  hist(dataset_numeric[,i],main=names(dataset_numeric)[i])
+}
+```
+
+___
+
+#### 6.5.2.3 Density Plots
+
+```{r}
+#Density Plots
+
+par(mfrow=c(3,4))           # Put four figures in a row
+
+for(i in 2:13) {
+  plot(density(dataset_numeric[,i]), main=names(dataset_numeric)[i])
+}
+```
+
+___
+
+### 6.5.3 Which age group does our target customers fall into?
+
+Lets bin our customers into different **age groups**.
+
+```{r}
+ggplot(dataset, aes(y = glyhb, x = age)) +
+geom_point()
+```
+
+According to the scatter plot, we can categorize our customers into different age groups.
+
+* 20 - 35 yrs : **Group 1**
+* 36 - 70 yrs : **Group 2**
+* 71 - 100 yrs : **Group 3**
+
+___
+
+Although, the spread of our potential customers is across different age groups but, primarily we need to focus on **Diabetic** and **Pre-Diabetes** patients. 
+
+```{r}
+p = ggplot(dataset, aes(x = age, y = glyhb, color = diagnosis))
+p+geom_jitter() + geom_boxplot()
+```
+
+Here, the boxplot gives wonderful depiction of **glyhb** among different **age groups** and across all the factors of **diagnosis** variable
+___
+
+Here we can clearly see our target customers with respect to the age groups we are looking at.
+
+```{r}
+p = ggplot(dataset, aes(x = age, y = glyhb, color = result))
+p+geom_point() + stat_smooth()
+```
+
+Again, **gruop 2** has got all our potential customers.
+
+___
+
+Lets see how **glyhb** and **age** vary with **frame** variable.
+
+```{r}
+ggplot(dataset, aes(x=age, y=glyhb, color=frame)) +
+geom_point() + geom_smooth(method="lm")
+```
+
+We can see some trend for **glyhb** to increase with **age**, and we tend to see **medium** and **large** body frame people at higher levels of glyhb. 
+
+___
+
+Let's try to show this trend with body weight. 
+ 
+```{r}
+ggplot(dataset, aes(x=age, y=glyhb, size=weight, color=frame)) +
+geom_point()
+```
+
+It is quite evident that age **Group 2** customers have elevated levels of **glyhb** with **large body frame** and **heavy weight**.
+
+___
+
+To focus more on **weight** of the body, lets see how the body weights are distributed.
+
+```{r}
+ggplot(dataset, aes(x = weight, y = glyhb, size=weight)) +
+geom_point()
+```
+
+What we observe here is that people with more body **weight** tend to be **diabetic**. Hence, we can take an **operational decision** here by looking at this plot.
+
+___
+
+Also, if we club body **weight** with body **frame**. 
+
+```{r}
+ggplot(dataset, aes(x = age, y = weight, size=weight, color = frame)) +
+geom_point()
+```
+
+It is obvious that **heavy weight** is **directly proportional** to the **large body frame**.
+
+___
+
+### 6.5.4 Which gender should we focus on?
+
+Here, lets see which gender is more prone to diabetes.
+
+```{r}
+ggplot(dataset, aes(x = gender, fill = diagnosis)) + geom_bar()
+```
+
+From the above bar plot, we can say that females are more prone to diabetes in comparision to males.
+
+___
+
+```{r}
+ggplot(dataset, aes(x=gender, fill=frame)) + geom_bar()
+```
+
+However, It seems there are more number of **males** with **large** body **frame**
+
+___
+
+We know that there are more number of female patients than male. But, lets just see those numbers in percentages.  
+
+```{r}
+vtree(dataset, "gender", horiz=FALSE, height=250, width=850)
+```
+
+**59%** is a good number which tells us on which gender we should keep our focus. 
+
+___
+
+Based on gender, lets see what are the percentages in different **locations**.
+
+```{r}
+vtree(dataset,"gender location",horiz=FALSE,height=250,width=850)
+```
+
+___
+
+Now let's use the **summary** parameter to show some information about a continuous variable **glyhb**. Let's specify  summary ="glyhb \nglyhb\nmean=%mean%\nSD=%SD%\nmv=%mv% %leafonly%".
+
+Here's what it means:
+
+**glyhb** at the beginning means we want a summary of that variable. Next there is a separating space. The rest of the string describes the format of the output.
+
+**\n** is a line break.
+**%mean%** is a code for the mean.
+**%SD%** is a code for the standard deviation.
+**%mv%** is a code for the number of missing values.
+**%leafonly%** requests that the summary information be shown only in leaf nodes.
+
+```{r}
+vtree(dataset,"gender location",horiz=FALSE, height=250, width=850,
+  showlevels=FALSE, summary = "glyhb \nglyhb\nmean=%mean%\nSD=%SD%\nmv=%mv% %leafonly%")
+```
+
+I think we have very good infromation here, our primary focus in gender **male** should primarily be in **Buckingham** because the **mean** glyhb levels are really high there. 
+
+___
+
+### 6.5.5 Which body frame should be targeted in a specific location?
+
+```{r}
+ggplot(dataset , aes(x=location, fill=frame)) + geom_bar()
+```
+
+___
+
+Running **vtree** on a single variable is equivalent to a one-way contingency table. **Valid** percentages are calculated after removing these missing values. Specifying **vp = FALSE** lets you calculate percentages without removing the missing values.
+
+```{r}
+vtree(dataset, "frame", horiz=FALSE, height=250, width=850)
+```
+
+We have a very good share of **large** body frame i.e. **26%** which tend to be more diabetic than the other body frames. 
+
+___
+
+Running vtree on two variables is equivalent to a two-way contingency table. Note that the variables can be listed in a single string, separated by spaces.
+
+```{r}
+vtree(dataset,"frame location",horiz=FALSE,height=250,width=850)
+```
+
+**Buckingham** is the place where we should **focus** more on the **large** body frame as it holds **60%** share. Moreover, we have **56%** of **medium** body frame people to look in **Louisa**. 
+
+___
+
+If we don't need to see the variable names on the left-hand side, we can specify **showlevels = FALSE**
+
+```{r}
+vtree(dataset,"frame location",horiz=FALSE,height=250,width=850,showlevels=FALSE)
+```
+
+___
+
+Now, lets see what are the percentages of body frames in differnet locations. 
+
+```{r}
+vtree(dataset,"frame location",horiz=FALSE, height=250, width=850,
+  showlevels = FALSE, summary = "glyhb \nglyhb\nmean=%mean%\nSD=%SD%\nmv=%mv% %leafonly%")
+```
+
+For **large** and **medium** body frames **Buckingham** should be our priority as per the **mean** glyhb levels, whereas, for **small** body frame we can focus more on **Louisa**
+
+___
+
+## 6.6 Correlation Analysis
+
+Lets see how the variables are correlated in our dataset. 
+
+```{r}
+plot_correlate(dataset)
+```
+
+As per my observation, **glyhb**, **stab.glu**, and **age** correlated with the variable **result**. 
+
+___
+
+# 7. Strategy and Operations
+
+In order to come up with **strategy** which will help us take operational decisions, what we are doing here is to transform the **result** variable which is technically a binary variable with ones and zeros. We will convert this into a factor variable with values **Positive** which is diabetic and **negative** means non-diabetic. 
+
+```{r}
+dataset$result = as.factor(unlist(dataset$result)) 
+dataset$result = factor(dataset$result, levels = c("1", "0"), labels = c("Positive", "Negative")) 
+```
+
+___
+
+Before that, lets see our **diagnosis** variable which tells us about the percentage of **Diabetic**, **Non-Diabetic**, and **Pre-Diabetes** people. 
+
+```{r}
+vtree(dataset, "diagnosis", horiz=FALSE, height=250, width=850)
+```
+
+As you can see, the percentage of diabetic customers (**18%**) are more as compared to the pre-diabetes (**10%**) which is a good sign for our launch processs.
+
+___
+
+Now, lets see the percentage of target customers we have based on the **result**
+
+```{r}
+vtree(dataset, "result", horiz=FALSE, height=250, width=850)
+```
+
+If we combine the diabetic and pre-diabetic percentages then its going to give us **28% Positive** results which is a very good number to launch our product.
+
+___
+
+To prioritize our operations, lets look at the variable result with respect to **location**.
+
+```{r}
+vtree(dataset, "result location", horiz=FALSE, height=250, width=850)
+```
+
+We see **57%** diabetic people in Buckingham. Since our potential customer base is more in Buckingham, we need to prioritize our **operations** accordingly. 

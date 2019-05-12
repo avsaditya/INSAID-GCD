@@ -1,0 +1,22 @@
+---
+title: "Assignment - 3"
+output: html_notebook
+---
+
+**1. In "census_income.csv" dataset, find out if variable hours.per.week follows normal distribution using density plots.**
+
+**2. Use stacked barcharts to find out if outcome Y is affected by (behaves differently across) variables race or relationship. Note: You'll have to explore option position in geom_bar.**
+
+**3. Show visually that hours.per.week vary similarly across age for both the sexes.**
+
+**4. Using point plots with jitter instead of boxplots, create plots for capital.gain and capital.loss with outcome Y to examine their behaviour across both outcomes.**
+
+**5. Examine behaviour of fnlwgt for classes of Y and within that for both the sexes.**
+
+**6. Examine hours.per.week by workclass, which one will be a better choice, a box plot, a violin plot or simple point plot with jitter, think and discuss pros and cons associated with each.**
+
+
+
+
+
+

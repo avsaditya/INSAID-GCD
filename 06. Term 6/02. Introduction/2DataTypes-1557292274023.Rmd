@@ -1,0 +1,264 @@
+---
+title: "2. Data Types"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+### 2.1 A digression on data types
+
+Datatype is defined as the type of data that the object is holding. Different data types are **Numeric**, **Character**, **Integer**, and **Logical**.
+
+**Logical**:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/logical.jpg"`)
+
+</center>
+
+```{r}
+c(TRUE,FALSE)
+```
+
+**Numeric**:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/numeric.png"`)
+
+</center>
+
+```{r}
+c(4,8)
+```
+
+**Integer**:
+
+```{r}
+c(1L,2L)
+```
+
+If you want a number to be integer then you have to specify capital **'L'** next to the number.  
+
+**Character**:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/character.jpg"`)
+
+</center>
+
+```{r}
+c("Hi!", "Welcome to INSAID")
+```
+
+How do you tell which of these types you have? Use the **"typeof"** function:
+
+```{r}
+typeof(c(TRUE,FALSE))
+```
+
+```{r}
+typeof(c(4,8))
+```
+
+**'Double'** is a real number stored in a double-precision floating point format. 
+
+A double type can store the special values Inf, -Inf, and NaN, which represent a positive infinity, a negative infinity, and a not a number.
+
+```{r}
+1/0
+```
+
+```{r}
+-1/0
+```
+
+```{r}
+0/0
+```
+
+```{r}
+typeof(c(1L,2L))
+```
+
+```{r}
+typeof(c("Hi!", "Welcome to INSAID"))
+```
+
+### 2.2 Hierarchy of data types
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/hierarchy.jpg"`)
+
+</center>
+
+1. Character
+2. Numeric
+3. Integer
+4. Logical
+
+According to the **hierarchy of a datatype**, you can convert the number into a character which means it will just put that number into double quotes.
+
+```{r}
+x = 5.95
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+y = as.character(x)
+```
+
+```{r}
+y
+```
+
+```{r}
+
+typeof(y)
+```
+
+But, you cannot convert a character into the numeric. That's how the hierarchy of the data types is defined.
+
+```{r}
+a = "Insaid"
+```
+
+```{r}
+typeof(a)
+```
+
+```{r}
+b = as.numeric(a)
+```
+
+```{r}
+b
+```
+
+```{r}
+typeof(b)
+```
+
+Both **'mode'** and **'storage.mode'** tells you the internal storage mode of the object.
+
+```{r}
+mode(x)
+```
+
+```{r}
+storage.mode(x)
+```
+
+```{r}
+mode(y)
+```
+
+```{r}
+storage.mode(y)
+```
+
+### 2.3 Conversion between data types
+
+R will try to convert from one mode to another as context demands. Remember that every element of a vector needs to have same mode. 
+
+As a result, if you insert a character value into a numeric vector, the whole vector will be changed to character. 
+
+These automatic conversions will always be from a more specific mode to a more general one: logical to double, and either of those to character.
+
+```{r}
+# create a string of double-precision values
+dbl_var = c(1, 2.5, 4.5)  
+dbl_var
+```
+
+```{r}
+typeof(dbl_var)
+```
+
+```{r}
+# placing an L after the values creates a string of integers
+int_var = c(1L, 6L, 10L)
+int_var
+```
+
+```{r}
+typeof(int_var)
+```
+
+```{r}
+# converts integers to double-precision values
+con_int_var =  as.double(int_var)     
+```
+
+```{r}
+con_int_var
+```
+
+```{r}
+typeof(con_int_var)
+```
+
+```{r}
+# identical to as.double()
+iden_int_var = as.numeric(int_var)    
+```
+
+```{r}
+iden_int_var
+```
+
+```{r}
+typeof(iden_int_var)
+```
+
+```{r}
+# converts doubles to integers
+con_dbl_var = as.integer(dbl_var)         
+```
+
+```{r}
+con_dbl_var
+```
+
+```{r}
+typeof(con_dbl_var)
+```
+
+___
+
+Often, you dont need to worry too much about the types, because R will implicitly convert between types for you. 
+
+For example, When the first line gets executed, x gets created as an integer vector. In the second line, R converts x to a double vector so that it can store the value 3.14
+
+```{r}
+x = 1:10
+```
+
+```{r}
+x
+```
+
+```{r}
+typeof(x)
+```
+
+```{r}
+x[[2]] = 3.14
+```
+
+```{r}
+x
+```
+
+```{r}
+typeof(x)
+```
+
+

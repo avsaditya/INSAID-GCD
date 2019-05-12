@@ -1,0 +1,933 @@
+---
+title: "Term Deposits Case Study (EDA-1)"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 5
+---
+
+# 1. Problem Statement
+
+## 1.1 Background Infromation
+
+A bank is going to offer term deposit to its customers. A term deposit is basically investing an amount of money into the bank for fixed term or length of time or for a fixed term at a fixed rate. Of course the banks love that because it's sort of income for them and then they can reinvest it themselves and make money on it. In this regard, the bank is planning to launch a marketing campaign to target its customers.  In the past, the bank ran marketing campaigns and connected to their customer base through telemarketing. Results of these previous campaigns were recorded and have been provided to the current marketing manager to use the same in making this campaign more effective.
+
+## 1.2 Challenges at hand 
+
+Challenges that the marketing manager faces are following:
+
+* Customers have recently started to complain that bank's marketing staff bothers them with irrelevant product calls and this should immediately stop.
+
+* There is no prior framework for the marketing manager to decide and choose which customer to call and which one to leave alone.
+
+## 1.3 Current Scenario
+
+So this case study is actually for a bank that has a marketing group and this marketing team, what they're trying to do is determine whether or not people are going to be likely or not to enroll them a term deposit. The manager has decided to use past data to automate this decision, instead of manually choosing through each and every customer. Previous campaign data which has been made available contains customer characteristics, campaign characteristics, previous campaign information as well as whether customer ended up subscribing to the product as a result of that campaign or not. 
+
+## 1.4 Plan of Action
+
+In this business process, we're going to take some data that we know about these customers and we're going to try and correlate it to whether or not those customers have either opted in or not opted into the term deposit program and come up with a marketing analysis. Using this, the marketing manager plans to develop a statistical model which, given this information, predicts whether customer in question will subscribe to the product or not. A successful model which is able to do this, will make the campaign efficiently targeted and less bothering to uninterested customers.
+
+## 1.5 End Result 
+
+The whole marketing piece to this is trying to reach out to customers to determine if they're interested in the term deposit. At the end, if the conversion rate is high then the marketing campaign turns out to be successful which might reflect in the quarterly profits of the bank. Hence, the marketing manager can expect a bonus or hike in the next appraisal. 
+
+___
+
+# 2. Study Questions
+
+* **What are the factors that will make the camapign successful?** 
+
+* **How will the current campaign be different from the previous ones?**
+
+* **What is the strategy that we are going to opt in?**
+
+___
+
+# 3. Business Process 
+
+1. We are going to collect some **client data** from various sources. 
+
+2. We are going to merge that data together in Excel using **VLOOKUP**.
+
+3. Once it's all blended together, we will take that data and then try and come up with a **marketing analysis**.
+
+4. Finally, we will come up with a **strategy**. 
+
+___
+
+# 4. Loading Packages and Libraries
+
+Alright! lets begin our marketing analytics by installing some packages and loading all the libraries. 
+
+```{r}
+library(tidyverse)
+```
+
+Library **tidyverse** loads a bunch of packages like **ggplot2** which is used for visualization and **dplyr** is used for manipulation and several other packages.
+
+___
+
+```{r}
+library(readxl)
+```
+
+**readxl** package is going to allow us to read Excel files.
+
+___
+
+```{r}
+library(recipes)
+```
+
+**recipes** package is kind of an advanced package but, its really useful for preparing data and adding various manipulations to it.
+
+___
+
+```{r}
+library(tidyquant)
+```
+
+The **tidyquant** package is primarily going to used for some plotting. It has got some nice themes in there.
+
+___
+
+```{r}
+library(ggrepel)
+```
+
+**ggrepel** is also a nice package for adding lines to show where different labels kind of connect up with the data points.
+
+___
+
+```{r}
+library(gridExtra)
+```
+
+___
+
+# 5. Marketing Analytics Process
+
+**Marketing analytics** is the process of measuring, managing and analyzing marketing performance to maximize its effectiveness and optimize return on investment (ROI). Understanding marketing analytics allows marketers to be more efficient at their jobs and minimize wasted web marketing dollars. 
+
+## 5.1 Importing Data
+
+Let me first setup the working directory.
+
+```{r}
+setwd("C:/Users/msrra/Desktop/INSAID/DAR/EDA")
+```
+
+___
+
+Now, lets import our data.
+
+```{r}
+dataset = "C:/Users/msrra/Desktop/INSAID/DAR/EDA/bank_term_deposit_marketing_analysis.xlsx"
+```
+
+## 5.2 Reading Data
+
+Our client information is stored in different excel sheets. Lets load those excel sheets from our current working directory. We're gonna use this **excel sheets** function and that comes from the readxl package to save the sheets.
+
+```{r}
+sheets = excel_sheets(dataset)
+```
+
+It saves the sheets. So if I output the sheets to the screen and you can see we've got all of the excel sheets that are in that excel file. 
+___
+
+What this is going to allow me to do is then target specific excel sheets to pull in. So, when I look at this, what I can see is that there are different steps here. 
+
+```{r}
+sheets
+```
+
+In the first step, there is **client info**, **loan history**, **marketing history**, and **subscription history**. So thats the data that is used to be joined in the second step client merge and then in the third step we perform the marketing analysis.
+
+___
+
+## 5.3 Investigating Data
+
+Actually, we iterate through each one of the sheets and pull them into R. We use this piece of code here to **map** through this **readxl** and apply that **read_excel** function to each one of these sheets. So, now I can actually see what's in each of the different Excel tabs. 
+
+```{r}
+sheets %>%
+    map(~ read_excel(path  = dataset, sheet = .)) %>%
+    set_names(sheets)
+```
+
+
+___
+
+Recognizing that there's only a few sheets that we want i.e. **client info**, **loan history**, **marketing history**, and **subscription history**.   
+
+```{r}
+sheets[4:7]
+```
+
+This is the feeder data that is used to be joined in the client merge step and then in the third step we perform the marketing analysis.
+
+___
+
+What we can do is just kind of extract those sheets specifically which is what this line of code does and it just read in each one.
+
+```{r}
+sheets[4:7] %>%
+    map(~read_excel(path = dataset, sheet = .))
+```
+
+You can see we've got **age**, **job**, you know what is their job, what is their **marital** status, are they single, married, divorced, and education level and so on.
+
+___
+
+## 5.4 Perform VLOOKUP Equivalent
+
+We're going to apply this **left join** function which is going to take the **ID** column since they all have ID and it's basically going to accomplish the **VLOOKUP** for us.
+
+```{r}
+data_joined_tbl <- sheets[4:7] %>%
+    map(~ read_excel(path = dataset, sheet = .)) %>%
+    reduce(left_join)
+```
+
+What we did was as you can see is joining by ID. So, by using this left join and doing this **reduce**, it's iteratively joining each of those data frames and saved it as this variable called **data_joined_tbl**
+
+___
+
+Here's what it looks like. 
+
+```{r}
+data_joined_tbl 
+```
+
+___
+
+Lets view the merged data.
+
+```{r}
+View(data_joined_tbl)
+```
+
+___
+___
+
+## 5.5 Analyze Data
+
+### 5.5.1 Is there any seasonality in the dataset?
+
+There are three distinct seasons addressing the number of contacts of the current marketing campaign:
+
+* High Season - Period with high number of contacts: May to Aug
+* Medium Season - Period with medium number of contacts: Feb, Apr, Nov
+* Low Season - Period with low number of contacts: Jan, Mar, Sept, Oct, Dec
+
+```{r}
+p = ggplot(data_joined_tbl, aes(x = MONTH, y = CAMPAIGN, color = TERM_DEPOSIT))
+p+geom_jitter()
+```
+
+### 5.5.2 Which age group is targeted the most?
+
+Two distinct age groups addressing the number of contacts of the current market campaign:
+
+* The number of contacts drops dramatically at around 62 years old
+
+* A new categorical variable will be created to address these two groups
+
+```{r}
+p = ggplot(data_joined_tbl, aes(x = AGE, y = CAMPAIGN, color = TERM_DEPOSIT))
+p+geom_jitter()
+```
+
+___
+
+Lets see if there is any relationship between customer subscribed to term deposit and customer age.
+
+```{r}
+var_age_yes = filter(data_joined_tbl, TERM_DEPOSIT == 'yes')
+var_age_no = filter(data_joined_tbl, TERM_DEPOSIT == 'no')
+rd_age_yes = ggplot(var_age_yes, aes(AGE)) + geom_histogram(binwidth = 5) + labs(title = "Term Deposits Yes by Age Count", x="age", y="Count of Yes")
+rd_age_no = ggplot(var_age_no, aes(AGE)) + geom_histogram(binwidth = 5) + labs(title = "Term Deposits No by Age Count", x="age", y="Count of No")
+grid.arrange(rd_age_yes, rd_age_no)
+```
+
+These plots makes me think that age probably doesn't have much to do with our variable of interest
+
+___
+
+### 5.5.3 Which job category enrolled for term deposit? 
+
+Lets see what kind of **job categories** opted in for term deposit.
+
+```{r}
+jobs = ggplot(data = data_joined_tbl) + 
+  geom_bar(
+    mapping = aes(x = JOB, fill = TERM_DEPOSIT), 
+    width = 0.9
+  ) + 
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+jobs + coord_flip()
+```
+
+Highest number of enrollments appears to be from **management** jobs followed by **blue-collar**, **admin**, and **technician** categories.
+
+___
+
+### 5.5.4 What are the education levels of customers opted in?
+
+Lets plot **education level** vs **term deposit** on a chart and see if there is anything interesting there.
+
+```{r}
+ggplot(data_joined_tbl, aes(EDUCATION, TERM_DEPOSIT)) + geom_jitter()
+```
+
+This again doesn't look all that meaninful. Relatively speaking, the "yes's" and the "no's" seem to line up relatively evenly across educational levels.
+
+___
+
+### 5.5.5 Is marital status really significant? 
+
+Now, we'll do **single** vs **married** folks
+
+```{r}
+ggplot(data_joined_tbl, aes(MARITAL, TERM_DEPOSIT)) + geom_jitter()
+```
+
+No, obvious relationship again but however, **married** people seem to opt more for term deposit.
+
+___
+
+### 5.5.6 Whether the customer has credit in default?
+
+How about **default yes/no** vs the **term deposit**?
+
+```{r}
+ggplot(data_joined_tbl, aes(DEFAULT, TERM_DEPOSIT)) + geom_jitter()
+```
+
+Its quite clear that the people who opted for term deposit doesnt have credit in default.
+
+___
+___
+
+## 5.6 Prepare Data
+
+We have applied this **glimpse** function to our data so we can actually see a little bit better all eighteen columns. 
+
+```{r}
+glimpse(data_joined_tbl)
+```
+
+The problem with this data is, we can't run a **correlation analysis** on it. We have to transform these variables into all binary or all numeric. We are going to use the **recipes** package to do that.
+___
+
+
+
+I'm gonna show you how the recipes package works:
+
+* First is the **recipe** function 
+* Then there's a **prep** function
+* A bunch of **steps** applied in the middle to do some transformations 
+* And then there's a **bake** function
+
+___
+
+If we run this chunk of code here, it's not going to do any transformation but, it's gonna build a recipe. So, I'm going to build this recipe object. and  
+
+```{r}
+recipe_obj = recipe(~ ., data = data_joined_tbl) %>%
+  prep()
+```
+
+___
+
+If you see, it doesn't have any steps applied here but, it's got a role that's a predictor and it's got eighteen variables. 
+
+```{r}
+recipe_obj
+```
+
+___
+
+when we apply **bake** for the data transform and give it the new data which is going to be this data_joined_tbl, what bake does is, it actually takes that recipe that we built up here and applies that to the data.
+
+```{r}
+data_transformed_tbl = data_joined_tbl %>%
+    bake(recipe_obj, new_data = .) 
+
+```
+
+We're coming up with a recipe and then we're applying that recipe to a dataset. So, if we run this, it actually doesn't do any transformation because we don't have any steps in here in the middle.
+
+___
+
+We haven't really come up with a recipe yet and we can verify that because the **data_transformed_tbl** variable is the same as the **data_joined_tbl** variable.
+
+```{r}
+glimpse(data_transformed_tbl)
+```
+
+___
+
+Alright! so the first thing we going to do is to add a **step**, we are going to remove this ID feature because that is not going to give us any information.
+
+```{r}
+recipe_obj <- recipe(~ ., data = data_joined_tbl) %>%
+    step_rm(ID) %>%
+    prep()
+```
+
+___
+
+We are going to run this again.
+
+```{r}
+data_transformed_tbl <- data_joined_tbl %>%
+    bake(recipe_obj, new_data = .) 
+```
+
+___
+
+Now, we can see that there's only 17 variables and that ID feature has been dropped.
+
+```{r}
+glimpse(data_transformed_tbl)
+```
+
+___
+
+Next one is the step **discretize**, here we take the numeric variables and bin them into quantiles and then assess the correlation of the entire numeric variable like age. You can think of age as being cohorts some people are going to be younger some some are going to be middle-aged and some are going to be older we want to separate those three out into bins so that way we can assess those kind of like cohorts or the groups within the numeric features so that's what this step is gonna do it's going to convert all of these numeric variables like age
+
+```{r}
+recipe_obj <- recipe(~ ., data = data_joined_tbl) %>%
+    step_rm(ID) %>%
+    step_discretize(all_numeric(), options = list(min_unique = 1)) %>%
+    prep()
+```
+
+We get some warnings here because some of the the variables can only be discretized into say two bins versus four bins or so on.
+
+___
+
+We will apply the bake again and then let's see what that transformation looks like so now now that age vary is this thing called a factor it has FCT
+
+```{r}
+data_transformed_tbl <- data_joined_tbl %>%
+    bake(recipe_obj, new_data = .) 
+```
+
+___
+
+Now that age variable is called a **factor**, it has **fct**. All of the numeric variables got converted into factors or categorical data.
+
+```{r}
+glimpse(data_transformed_tbl)
+```
+
+___
+
+Since we have categorical data for everything we can then apply this next step which is basically called **one hot encoding** which is going to turn all the categorical data and convert them into ones and zeros.
+
+```{r}
+recipe_obj <- recipe(~ ., data = data_joined_tbl) %>%
+    step_rm(ID) %>%
+    step_discretize(all_numeric(), options = list(min_unique = 1)) %>%
+    step_dummy(all_nominal(), one_hot = TRUE, naming = partial(dummy_names, sep = "__")) %>%
+    prep()
+```
+
+___
+
+Next we're going to apply the transformation using the bake function. and 
+
+```{r}
+data_transformed_tbl <- data_joined_tbl %>%
+    bake(recipe_obj, new_data = .) 
+```
+
+___
+
+We glimpse the data and we can see that now we have a lot more variables.
+
+```{r}
+glimpse(data_transformed_tbl)
+```
+
+___
+
+So we have **74 variables** and they're all binary, they're all zeros and ones and you can see that this is the perfect dataset to apply a **correlation analysis**.
+
+```{r}
+View(data_transformed_tbl)
+```
+
+___
+
+## 5.7 Correlation Analysis
+
+Since we've got this binary dataset now, we're ready to do some correlations. We want to correlate all of these different variables to this **term deposit** feature and we're going do that through this stepwise process.
+
+___
+
+### 5.7.1 Prepare Correlations
+
+First, we will have a look at the **data_transformed_tbl**
+
+```{r}
+data_transformed_tbl
+```
+
+___
+
+What it does is a correlation between all of the different features and it returns a kind of format which is called a matrix with a one column but, you can see each of these row names or each of the different features have got the magnitude and direction of the correlation. So, the negative is just going to be slightly negatively correlated and positive is slightly positively correlated.
+
+```{r}
+data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes)
+```
+
+___
+
+So the next piece is **data manipulation**, we're going to convert that to a **tibble** which all that does is just produces this a two-column table. It converts that matrix into a table format which is used
+in the **tidyverse**. Just think of it like a dataframe. 
+
+```{r}
+data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature")
+```
+
+___
+
+Then, we're going to rename TERM_DEPOSIT_yes. So this **V1** column is going to get renamed here. 
+
+```{r}
+data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature") %>%
+    rename(TERM_DEPOSIT__yes = V1)
+```
+
+___
+
+In **separate** function, we're taking the feature column and we're separating it into two different columns called **feature** and **bin** and we're using this **double underscore** as the separator. 
+
+```{r}
+data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature") %>%
+    rename(TERM_DEPOSIT__yes = V1) %>%
+    separate(feature, into = c("feature", "bin"), sep = "__")
+```
+
+So when we do that, we have got feature and bin and then we have got term deposit with correlation. 
+
+___
+
+Now, we are going to remove any of the NA's. 
+
+```{r}
+data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature") %>%
+    rename(TERM_DEPOSIT__yes = V1) %>%
+    separate(feature, into = c("feature", "bin"), sep = "__") %>%
+    filter(!is.na(TERM_DEPOSIT__yes))
+```
+
+___
+
+Then, we are going to filter anything with term deposit and remove that because we don't really care about that feature because that's what we're correlating everything to.
+
+```{r}
+correlation_tbl <- data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature") %>%
+    rename(TERM_DEPOSIT__yes = V1) %>%
+    separate(feature, into = c("feature", "bin"), sep = "__") %>%
+    filter(!is.na(TERM_DEPOSIT__yes)) %>%
+    filter(!str_detect(feature, "TERM_DEP"))
+```
+
+```{r}
+correlation_tbl
+```
+
+___
+
+Now, we're going to **arrange** it by the absolute value of the correlation. 
+
+```{r}
+correlation_tbl <- data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature") %>%
+    rename(TERM_DEPOSIT__yes = V1) %>%
+    separate(feature, into = c("feature", "bin"), sep = "__") %>%
+    filter(!is.na(TERM_DEPOSIT__yes)) %>%
+    filter(!str_detect(feature, "TERM_DEP")) %>%
+    arrange(abs(TERM_DEPOSIT__yes) %>% desc())
+```
+
+___
+
+See now this **DURATION** feature is at the top and that's got a 0.318 correlation. We've got **POUTCOME** success is 0.306. So these are our highest features and right there is actually the result.
+
+```{r}
+correlation_tbl
+```
+
+Duration since last contact and success of prior enrollments are correlated to success of Term Deposit opt-in.
+
+___
+
+Now, we're going to convert this column into factors because factors are very useful for visualization. 
+
+```{r}
+correlation_tbl <- data_transformed_tbl %>%
+    cor(y = data_transformed_tbl$TERM_DEPOSIT__yes) %>%
+    as_tibble(rownames = "feature") %>%
+    rename(TERM_DEPOSIT__yes = V1) %>%
+    separate(feature, into = c("feature", "bin"), sep = "__") %>%
+    filter(!is.na(TERM_DEPOSIT__yes)) %>%
+    filter(!str_detect(feature, "TERM_DEP")) %>%
+    arrange(abs(TERM_DEPOSIT__yes) %>% desc()) %>%
+    mutate(feature = as_factor(feature) %>% fct_rev())
+```
+
+So we've converted these into factors and now we're ready to visualize.
+
+___
+
+We've saved this correlation table, here's what it looks like now and we're going to turn this into a visualization using **ggplot2**
+
+```{r}
+correlation_tbl
+```
+
+___
+
+### 5.7.2 Visualize Correlations
+
+Firstly, we take the correlation data and set up the canvas. 
+
+```{r}
+correlation_tbl %>%
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin))
+```
+
+___
+
+Now, we're going to add a **v-line** which is just a line at the zero axis and this is just gonna help visually tell us where the correlations line them.
+
+```{r}
+correlation_tbl %>%
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin)) +
+    
+    # Geometries
+    geom_vline(xintercept = 0, linetype = 2, color = "red") 
+```
+
+___
+
+Next thing we're going to add some points, so what this is going to do is add the points to the visualization.
+
+```{r}
+correlation_tbl %>%
+    
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin)) +
+    
+    # Geometries
+    geom_vline(xintercept = 0, linetype = 2, color = "red") +
+    geom_point(color = "#2c3e50") 
+```
+
+___
+
+Here, the next thing that we're going to do is to use this function called **geom_txt_repel** and what this is going to do is, it's going to add the text and all the lines so we can see you know which bins each point corresponds to and so on.
+
+```{r}
+correlation_tbl %>%
+    
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin)) +
+    
+    # Geometries
+    geom_vline(xintercept = 0, linetype = 2, color = "red") +
+    geom_point(color = "#2c3e50") +
+    geom_text_repel(aes(label = bin), size = 3, color = "#2c3e50") 
+```
+
+In just a few lines of code, we've already got this **correlation funnel** visualization being developed and we can already see right here these are the the ones that we've want to focus on that are the most highly correlated to term deposit, duration and P outcome.
+
+___
+
+Just some formatting, so we're going to expand the limits from **-0.4 to 0.4** on the x-axis.
+
+```{r}
+correlation_tbl %>%
+    
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin)) +
+    
+    # Geometries
+    geom_vline(xintercept = 0, linetype = 2, color = "red") +
+    geom_point(color = "#2c3e50") +
+    geom_text_repel(aes(label = bin), size = 3, color = "#2c3e50") +
+    
+    # Formatting
+    expand_limits(x = c(-0.4, 0.4))
+```
+
+___
+
+Here, we're going to change up the theme using **tidyquant** theme, so that just gave it a white background. 
+
+```{r}
+correlation_tbl %>%
+    
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin)) +
+    
+    # Geometries
+    geom_vline(xintercept = 0, linetype = 2, color = "red") +
+    geom_point(color = "#2c3e50") +
+    geom_text_repel(aes(label = bin), size = 3, color = "#2c3e50") +
+    
+    # Formatting
+    expand_limits(x = c(-0.4, 0.4)) +
+    theme_tq()
+```
+
+___
+
+We'll add a few labels for formatting as well, this adds a title and a subtitle here and an x-axis title is converted into correlation to term deposit, it gets rid of the y-axis title. So right there we've got our visualization number one.
+
+```{r}
+correlation_tbl %>%
+    
+    ggplot(aes(TERM_DEPOSIT__yes, y = feature, text = bin)) +
+    
+    # Geometries
+    geom_vline(xintercept = 0, linetype = 2, color = "red") +
+    geom_point(color = "#2c3e50") +
+    geom_text_repel(aes(label = bin), size = 3, color = "#2c3e50") +
+    
+    # Formatting
+    expand_limits(x = c(-0.4, 0.4)) +
+    theme_tq() +
+    labs(title = "Bank Marketing Analysis",
+         subtitle = "Correlations to Enrollment in Term Deposit",
+         y = "", x = "Correlation to Term Deposit")
+
+```
+
+___
+
+### 5.7.3 Interpret Correlations
+
+Now that we've got this information in hand, what we can do is then interpret the correlations.
+
+___
+
+We have bin 2, 3, 4 but that doesn't really help us what we need to know is what's in those bins. So this recipe object that we created which was used to create those bins, when you pipe that into this **tidy** function, it outputs a data frame that tells you each of the steps and has a step number and what we want to know is what happened inside of that discretize step.
+
+```{r}
+recipe_obj %>% tidy()
+```
+
+___
+
+In step number 2, when we pipe it into the tidy function gives me each of the values of those bins so what I can then do is save this as a variable 
+
+```{r}
+bins_tbl <- recipe_obj %>% tidy(2)
+```
+
+```{r}
+bins_tbl
+```
+
+___
+
+And because we're interested in duration, we can filter that variable for terms that equals duration and when we do that we can then see the four bins. One goes from **-inf to 103** that's the **bin1** here, the next bin goes from 103 to 180, so this is the amount of days since we've contacted that person in the past, that's **bin2** is **104 to 180** days the **bin3** is going to be **181 to 319** days and then the **bin4** which is what we're interested in is **319 to inf**.  
+
+```{r}
+bins_tbl %>% filter(terms == "DURATION")
+```
+
+___
+
+# 6. Strategy
+
+So what that tells me is that when the person has not been contacted in **319 days**, it's a good idea to reach out to that person because they're probably very likely, in fact, they've got a super high correlation here **0.35 to 0.38**. So, they're going to be very likely to to be in that term deposit group of people that convert.
+
+___
+
+## 6.1 Focus on DURATION bin4 and POUTCOME == success
+
+We've got this data_join_tbl which is our untransformed data.
+
+```{r}
+data_joined_tbl
+```
+
+___
+
+What we're doing is that we're selecting **DURATION**, **POUTCOME**, and then our target which is **TERM_DPOSIT**. 
+
+```{r}
+data_joined_tbl %>%
+    select(DURATION, POUTCOME, TERM_DEPOSIT)
+```
+
+___
+
+We have a new column here called **POTENTIAL** and we've classified people as **Normal** potential when they are not greater than 319 days and not equal to P outcome == success. So everybody gets normal unless they have this duration greater than 319 days, then they get this **High Potential** tag or P outcome == success then they get a high potential tag.
+
+```{r}
+strategy_tbl <- data_joined_tbl %>%
+    select(DURATION, POUTCOME, TERM_DEPOSIT) %>%
+    mutate(POTENTIAL = case_when(
+        DURATION > 319 ~ "High Potential",
+        POUTCOME == "success" ~ "High Potential",
+        TRUE ~ "Normal"
+    ))
+```
+
+```{r}
+strategy_tbl
+```
+
+___
+
+What we are going to do is assess the proportion or the probability, so we're going to group by potential.
+
+```{r}
+strategy_tbl <- data_joined_tbl %>%
+    select(DURATION, POUTCOME, TERM_DEPOSIT) %>%
+    mutate(POTENTIAL = case_when(
+        DURATION > 319 ~ "High Potential",
+        POUTCOME == "success" ~ "High Potential",
+        TRUE ~ "Normal"
+    )) %>%
+    group_by(POTENTIAL)
+```
+
+```{r}
+strategy_tbl
+```
+
+___
+
+We're then going to count the term deposits meaning **no's** and **yes's**.
+
+```{r}
+strategy_tbl <- data_joined_tbl %>%
+    select(DURATION, POUTCOME, TERM_DEPOSIT) %>%
+    mutate(POTENTIAL = case_when(
+        DURATION > 319 ~ "High Potential",
+        POUTCOME == "success" ~ "High Potential",
+        TRUE ~ "Normal"
+    )) %>%
+    group_by(POTENTIAL) %>%
+    count(TERM_DEPOSIT)
+```
+
+```{r}
+strategy_tbl
+```
+
+___
+
+Then we're going to add proportion on here.
+
+```{r}
+strategy_tbl <- data_joined_tbl %>%
+    select(DURATION, POUTCOME, TERM_DEPOSIT) %>%
+    mutate(POTENTIAL = case_when(
+        DURATION > 319 ~ "High Potential",
+        POUTCOME == "success" ~ "High Potential",
+        TRUE ~ "Normal"
+    )) %>%
+    group_by(POTENTIAL) %>%
+    count(TERM_DEPOSIT) %>%
+    mutate(prop = n / sum(n))
+```
+
+```{r}
+strategy_tbl
+```
+
+We're getting **31%** yield out of this high potential group versus the normal group which is only **4%**.
+
+___
+
+What we're going to do at this last couple of steps is just kind of clean the data up and we're going to add an additional column called **label text**.
+
+```{r}
+strategy_tbl <- data_joined_tbl %>%
+    select(DURATION, POUTCOME, TERM_DEPOSIT) %>%
+    mutate(POTENTIAL = case_when(
+        DURATION > 319 ~ "High Potential",
+        POUTCOME == "success" ~ "High Potential",
+        TRUE ~ "Normal"
+    )) %>%
+    group_by(POTENTIAL) %>%
+    count(TERM_DEPOSIT) %>%
+    mutate(prop = n / sum(n)) %>%
+    ungroup() %>%
+    mutate(label_text = str_glue("n: {n}
+                                 prop: {scales::percent(prop)}"))
+```
+
+```{r}
+strategy_tbl
+```
+
+___
+
+## 6.2 Report Results
+
+The last piece here that we really want to show you guys, we're just going to run this code and what it does is, it takes this data frame and basically converts that into this plot, so what this plot tells us is that we've got **31%** yield out of these people that we've identified high potential. So, what we did was we converted this correlation analysis into a **strategy**
+
+```{r}
+strategy_tbl %>%
+    ggplot(aes(POTENTIAL, prop, fill = TERM_DEPOSIT)) + 
+    geom_col() +
+    geom_label(aes(label = label_text), fill = "white", color = "#2c3e50") +
+    scale_fill_tq() +
+    scale_y_continuous(labels = scales::percent_format()) +
+    theme_tq() +
+    labs(title = "Bank Marketing Strategy",
+         subtitle = str_glue("Targeting customers that haven't been contacted in 319 days 
+                             or those with prior enrollments yields 32% vs 4.3%")
+    )
+```
+
+It seems like there's going to be a strong likelihood that we're going to be able to increase the yield to 31% versus **4.3%** percent and that was basically just with a simple correlation analysis implementing a business process.
+
+___
+
+We do want to show you the R markdown and this is cool because once you create that file you can actually integrate it into a file that contains it's called R markdown but it has text so what we did was we copied and pasted the code in here and the visualization code and we added a little bit of text here and then click knit button it pulls up an actual report that we could give to boss and this is what their report looks like so it's got the strategy here it's got kind of executive summary.
+
+Also, if you say, you're not giving it to boss but, you give it to another data scientist, we can change this **echo** from false to true and rerun the document and it'll actually have the code in there too.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,322 @@
+---
+title: "3. Basic Data Operations in R"
+output:
+  html_notebook:
+    toc: yes
+    toc_depth: 4
+  html_document:
+    df_print: paged
+    toc: yes
+---
+### 3.1 Numeric Operations
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/operators.png"`)
+
+</center>
+
+Basic numeric operations such as **addition, subtraction, multiplication** etc can be simply done with naturally associated operators.
+
+```{r}
+x = 4
+y = 8
+```
+
+```{r}
+x+y
+```
+
+```{r}
+x-y
+```
+
+```{r}
+x*y
+```
+
+```{r}
+x/y
+```
+
+For evaluating expressions like x raise to the power y, you can use either symbol **'^'** or **'**'** like this:
+
+```{r}
+x^y
+```
+
+```{r}
+x**y
+```
+
+**'%%'** is a modulo operator (remainder from division) i.e. x mod y. It simply returns the value of remainder if you divide the first number by second.
+
+```{r}
+y%%x
+```
+
+
+**'%/%'** indicates integer division 
+
+```{r}
+x%/%y
+```
+
+
+You can combine multiple such calculations into one using parenthesis
+
+```{r}
+((x+y)-(x/y))**(x/5)
+```
+
+You can assign the same to an R object if you intend to store and use it in future
+
+```{r}
+z = ((x+y)-(x/y))**(x/5)
+z
+```
+
+We can also evaluate many mathematical expressions such as **logarithmic** or **trigonometric** expressions.
+
+```{r}
+tan(45)
+```
+
+```{r}
+log(10)
+```
+
+```{r}
+log(2^4)
+```
+
+You can see that a function can have sometimes multiple arguments. Second argument is used to specify base of logarithmic expression. Default value for which is e, natural log. So when you don't specify any second argument, default value is used instead.
+
+```{r}
+log(2^4,10)
+```
+
+```{r}
+log(2^4,2)
+```
+
+You'll find that most of the function in R have a lot of arguments but many of them have set defaults and in practice you'll be mostly using only few arguments.
+
+### 3.2 Character Operations
+
+#### 3.2.1 Concatenation
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/concatenation.jpg"`)
+
+</center>
+
+Concatenation is combining two character strings to form a new one. Basically you **"paste"** two or more character string together to form a new one. The function which we use to do this is called paste.
+```{r}
+x = 'Hadley'
+y = 'Wickham'
+z = 'Data Scientist'
+paste(x,y,z)
+```
+
+Function "paste"" combines input strings. You might have noticed that in the end result, input strings are separated by a space. This space is basically default value for the argument **'sep'** which is short for separator.
+```{r}
+name = paste(x,y)
+profile = paste(name,z,sep=",")
+profile
+```
+
+You could try few other separators as well
+```{r}
+paste(x,y,z,sep="@")
+```
+
+#### 3.2.2 Substitution
+
+Substitution is where you substitute a part of string with another 'word' or 'character'. Lets say, we want to convert '250-Nimble Cowork-Gurgaon' to '250,Nimble Cowork,Gurgaon". Here we are substituting - with , in the first string. 
+
+```{r}
+address = "250-Nimble Cowork-Gurgaon"
+newadd = sub("-",",",address)
+newadd
+```
+
+It turns out that function "sub" only substitutes first occurrence of the pattern with replacement.
+
+What to do if we wanted to replace both occurrences of - with , at once.
+
+```{r}
+newadd = sub("-",",",newadd)
+newadd
+```
+
+We have another function in R which does global substitution. **"gsub"** is a function named short for global substitution. "gsub" substitutes all occurrences of - in the input string at once.
+
+```{r}
+newaddress = gsub("-",",",address)
+newaddress
+```
+
+#### 3.3.3 Character Extraction
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/extraction.png"`)
+
+</center>
+
+You can extract part of character string using the function **"substr"**.
+
+```{r}
+date="24-01-2019"
+year=substr(date,7,10)
+year
+```
+Here first argument is the input string, second argument is the character position in the input string where the sub-setting starts, third argument is where the sub-setting ends.
+
+Character numbering within the string starts with 1, not 0 as opposed to some other standard programming
+languages.
+
+All characters are counted including special characters.
+
+To count the number of characters in a string, We use function "nchar" to find out number of characters in a string.
+```{r}
+x = "Hi there! Welcome to INSAID"
+nchar(x)
+```
+
+### 3.3 Logical or Conditional Operations
+
+You can use simple operators **>, <, ==, !=, <=, >=** for doing logical operations and the result of these logical operations are logical values.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/r-relational-operators.png"`)
+
+</center>
+
+```{r}
+x = 5
+y = 10
+```
+
+Greater than 
+```{r}
+x > y
+```
+
+Less than
+```{r}
+x < y
+```
+
+Equal to
+```{r}
+x == y
+```
+
+Not equal to
+```{r}
+x != y
+```
+
+Less than or equal to
+```{r}
+x <= y
+```
+
+Greater than or equal to
+```{r}
+x >= y
+```
+
+You can combine multiple conditions with **'and' '&'** and **'or' '|'** operators.
+```{r}
+x=15
+x>=10 & x<=25
+```
+
+```{r}
+y = "Insaid"
+y == "INSAID" | y == "insaid"
+```
+Note that the result above is false because strings inside quotes are case sensitive. "Insaid" is not same as "insaid" or "INSAID".
+
+You can combine as many conditions you want using **'&'** and **'|'** symbols.
+
+### 3.4 Working with Date & Time data
+
+Date and time data comes in various formats. These formats can be different in terms of with in that data in what order day, month and year appear. The way date time data is recorded is essentially as a character and when it is dealt with, its like numbers which is a difficult situation to handle. We have package **'lubridate'** to make our life pretty easy.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/DateTimeLead.png"`)
+
+</center>
+
+We'll start with converting various dates in different formats stored as characters. **'ymd'** is the name of the function in lubridate package that will parse your dates.
+
+```{r}
+library(lubridate)
+ymd("20190107")
+```
+
+```{r}
+mdy("01-07-2019")
+```
+
+```{r}
+dmy("07/01/2019")
+```
+
+Lets include time components and timezones as well by simply adding the order of time components hours
+("h"), minutes ("m") and seconds ("s").
+
+```{r}
+departure = ymd_hms("2019-01-01 14:00:00", tz = "Asia/Kolkata")
+departure
+```
+
+```{r}
+arrival = ymd_hms("2019-07-01 12:00:00", tz = "Asia/Kolkata")
+arrival
+```
+
+Lets extract and set individual elements of the date as well.
+
+```{r}
+second(arrival)
+```
+
+```{r}
+second(arrival) = 25
+```
+
+```{r}
+arrival
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

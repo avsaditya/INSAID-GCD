@@ -1,0 +1,636 @@
+---
+title: "Data Manipulation with dplyr"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 5
+---
+
+# 1. Introduction to Data Preparation
+
+**Data preparation** is the very first thing that you do and spend a lot of time on as a data analyst much before trying to build predictive models using that data.
+
+In essence data preparation is all about processing data to get it ready for all kinds of analysis. In industry data collection is mostly driven by business process at front, not by the needs of predictive models. These various processes at some or the other point become reason for introduction of errors here and there in the data.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/data%20preparation.jpg"`){width=50%}
+
+</center>
+
+___
+
+# 2. Data Processing
+
+There can be many kind of reasons not necessarily errors for which we would need to **pre-process** our data and change it for better.
+
+* Missing data
+* Potentially incorrect data
+* Need for changing form of the data
+
+## 2.1 Load Libraries and Packages
+
+Lets begin with importing all the relevant **libraries** and **packages**.
+
+```{r}
+library(dplyr)
+library(psych)
+library(vcd)
+```
+
+## 2.2 Importing Data
+
+We are going to import data file **bank-full.csv** here. Lets begin, we'll start with passing just the file name and let all other be option take their defaults. We'll change some as we come across issue with the imported data.
+
+```{r}
+bd = read.csv("https://raw.githubusercontent.com/insaid2018/R/master/Data/bank-full.csv")
+head(bd,2)
+```
+
+___
+
+## 2.3 Reading Data
+
+You can see that we have been fooled by the file extension and assumed that the separator for the data is  comma where as in reality it is ";". Lets tell that to R by using option **sep**.
+
+```{r}
+bd = read.csv("https://raw.githubusercontent.com/insaid2018/R/master/Data/bank-full.csv", sep=";")
+head(bd,2)
+```
+
+___
+
+Okay, this looks better. Now, lets look at our data.
+
+```{r}
+glimpse(bd)
+```
+
+___
+
+We can also compute the descriptive statistics using the **describe** function available in **psych** package. 
+
+```{r}
+describe(bd)
+```
+
+___
+
+Lets look at the **6 point** summary of our data using the **summary** function.
+
+```{r}
+summary(bd)
+```
+
+___
+
+## 2.4 Changing Data Types
+
+You can see that all of our character columns have been stored as factors. This needs to be avoided. And we can do so by using option **stringsAsFactors**. 
+
+```{r}
+bd=read.csv("https://raw.githubusercontent.com/insaid2018/R/master/Data/bank-full.csv", sep=";",stringsAsFactors = FALSE)
+glimpse(bd)
+```
+___
+
+## 2.5 Handling Missing Data
+
+Next, lets look at what values our variable job takes.
+
+```{r}
+table(bd$job)
+```
+
+There are 288 observations where the value is unknown, if you want, you can set it to missing by using option **na.strings**. But, remember this will set the value unknown as missing for all the columns. If
+you want to do it only for one of columns then do that after you have imported the data.
+
+```{r}
+bd=read.csv("bank-full.csv",sep=";",stringsAsFactors = FALSE,na.strings = "unknown")
+sum(is.na(bd$job))
+```
+
+You can see that, now column job has 288 missing values. This was to show you how to use option na.string. In general it is not a good practice to set any random value as missing. So, for practice its alright, but dont set unknown to missing in general unless you have good reason to do so. In fact in many of the cases of categorical variables, unknown itself can be taken as a valid category as you'll realise later.
+
+We dont need to change default values of other options for this importing. Same will be the case for you as well for most of the data. If it is not, feel free to use any of the option described above.
+
+___
+___
+
+# 3. Data Operations
+
+We'll start with discussion on apply family of functions which are very handy way to summarize as well as do other operations collectively on your data. Lets say we want to get means of all columns present in the data mtcars. We could achieve that writing a for loop across columns with function mean.
+
+```{r}
+for(i in 1:ncol(mtcars)){
+print(mean(mtcars[,i]))
+}
+```
+
+___
+
+Fine you get the result, but its not in a very convenient format and code is not pretty. What if there exists a function which lets us do this without writing these loops and having to go through managing iterations for a function. This is such a common scenario in data processing, R has a family of dedicated funcitons for this.
+
+```{r}
+x=round(rnorm(10),2)
+x
+```
+
+___
+___
+
+## 3.1 Apply Functions
+
+We'll first talk about **lapply**. This lets you apply a function repeatedly on a list/vector, the outcome is a list of results. Lets see an example.
+
+```{r}
+lapply(x,log10)
+```
+
+But above operation can be easily achieved using vector operations. Infact a simple **log(x)** will give you the same result and in a much usable format as well. But then what good is this **lapply** thing? 
+
+Lets put it to a better use and with more options. How about, if you had a lot of text files in your folder and you wanted to import them all. One solution will be to write one line of **read.csv** for all these files or may be you can run a loop. Better you could pass all those names to function **read.csv** using **lapply**.
+
+```{r}
+# Before running these codes , you'll have to set your working directory to the folder "namesbystate".
+
+file_names = list.files(getwd(), pattern = "*.TXT")
+
+files = lapply(file_names, read.csv, header = F, stringsAsFactors = F)
+```
+
+___
+
+See, we can pass other common options to function read.csv in lapply. File names in the object **file_names** are passed one by one to function read.csv. The output file is simply a list of data frames. If you want to combine them, you can do so by using function **do.call**.
+
+```{r}
+file = do.call(rbind,files)
+```
+
+**do.call** here passes all the elements in the second argument to function mentioned in first argument.
+
+___
+
+In just three simple lines of code, we have read data from 50+ files and combined it into one. In just three lines! All thanks to **lapply**. At times the output in form of a list becomes difficult to handle.
+
+You can use **sapply** in these cases. sapply works exactly like lapply, only difference being, it tries to vectorise output of lapply if it is possible.
+
+```{r}
+sapply(x, log)
+```
+
+___
+
+Coming back to our first problem of getting mean for all columns. Yes, you can use lapply, because data
+frames are nothing but list of vectors. There is another function in apply family named apply which provides better output and a little more funcitonality when you want to apply function iteratively on data frame elements.
+
+```{r}
+apply(mtcars,2,mean)
+```
+
+The first argument to apply is the name of the data frame. Third argument is the function which is going to get applied. Second argument takes two values: [1 or 2]. 1 stands for rows and 2 for columns. Which means, if you put 2 in the second argument, function in the third argument will be applied on the columns of the data frames. If the value is given as 1, function gets applied on rows.
+
+___
+
+Functions which you pass to apply are not limited to pre existing function in R. You can write your own and pass it to apply family functions. Lets write a function which returns upper limit of outliers given a variable column.
+
+```{r}
+outlier_upper=function(x){
+m=mean(x);
+s=sd(x);
+return(m+3*s);
+}
+apply(mtcars,2,outlier_upper)
+```
+
+___
+
+What you need to remember here is what goes as input to the function. In case of apply, input is the entire row or column. Lets use apply to find out how many outliers each column has according to function oulier_upper.
+
+```{r}
+apply(mtcars,2,function(x) sum(x>outlier_upper(x)))
+```
+
+___
+
+What if you want to get a group wise summary of any variable. **tapply** comes to your rescue. First arguement to tapply is the column for which we are looking for summary, second argument is the grouping variable, third argument is the function which will be applied on the groups.
+
+```{r}
+tapply(mtcars$mpg,mtcars$am,mean)
+```
+
+___
+
+For getting group wise summary of all the variable in the dataset mtcars you can use a combination of **apply** and **tapply**.
+
+```{r}
+apply(mtcars,2,function(x) tapply(x,mtcars$am,mean))
+```
+
+___
+___
+
+## 3.2 Adding Variables 
+
+Creating variables/vectors with simple algebraic operations is straight forward. Lets add one variable to data frame Arthritis.
+
+```{r}
+Arthritis$new=log(Arthritis$Age)
+head(Arthritis)
+```
+
+___
+
+What if we wanted to create an indicator variable which takes value 0 or 1 according to Age being less than or greater than 40? These simple algebraic operations will not work. We'll have to use conditional operators.
+
+```{r}
+Arthritis$new=as.numeric(Arthritis$Age<40)
+head(Arthritis)
+```
+
+___
+
+This seems trivial too, now what if we want **Age** to be floored to 40 whenever it is less than 40 and other wise kept as it is. We wont be able to achieve this with simple conditional statement either. 
+
+```{r}
+x = sample(40,10)
+x
+```
+
+___
+
+We will be using function **ifelse** to achieve the same.
+
+```{r}
+y = ifelse(x>20,20,x)
+y
+```
+
+___
+
+Now, lets use this to add a variable in the data frame.
+
+```{r}
+Arthritis$new = ifelse(Arthritis$Age<40, 40, Arthritis$Age)
+head(Arthritis)
+```
+
+___
+___
+
+# 4. Data Wrangling
+
+We have seen ways to modify and summarise data in base R. Again those functionalities are kind of scattered and not streamlined. If you think about it you can achieve almost all kind of modifications to data using these verbs:
+
+* **filter**: conditional filtering of data
+* **select**: selecting columns
+* **mutate**: adding/modifying columns
+* **arrange**: sorting columns
+* **summarise** (with adverb group_by): Collapsing data to its summaries
+
+Package **dplyr** comes with these verbs for data wrangling. Next, we'll see how to achieve different data wrangling task in base R and the same in dplyr. Of course dplyr comes with some addtional fuctionlaities too and we'll be looking at those as well. 
+
+Before we start, install packages **dplyr** and **hflights**. 
+
+```{r}
+library(dplyr)
+library(hflights)
+```
+
+___
+
+We'll be using data set **hflights**. You can get details of the data **hflights** after you have loaded library **hflights** by typing **?hflights**.
+
+```{r}
+?hflights
+```
+
+___
+
+Lets have a look at our data.
+
+```{r}
+data(hflights)
+head(hflights)
+```
+
+___
+
+We'll start with our first function **tbl_df** which converts a data.frame to a tabular format for which display on console is better. It changes nothing else about the data frame.
+
+```{r}
+flights = tbl_df(hflights)
+flights
+```
+
+___
+
+## 4.1 Filter Data
+
+Lets look at condition **filtering** of the data. We'll start with base R approach to view all flights on January 1
+
+```{r}
+flights[flights$Month==1 & flights$DayofMonth==1,]
+```
+
+___
+
+### 4.1.1 **dplyr** Approach
+
+You can use **comma** or **ampersand** to represent **AND** condition
+
+```{r}
+filter(flights, Month==1, DayofMonth==1)
+```
+
+___
+
+You can use **pipe** for **OR** condition
+
+```{r}
+filter(flights, UniqueCarrier=="AA" | UniqueCarrier=="UA")
+```
+
+___
+
+You can also use **%in%** operator.
+
+```{r}
+filter(flights, UniqueCarrier %in% c("AA", "UA"))
+```
+
+See, you don't need to bother with that $ reference to data frame all the time. Code is much neater and
+readable. 
+
+___
+
+## 4.2 Select Data
+
+Lets look at **column selection dropping** by name. You'll be definietly surprised by the additional functionalities of dplyr.
+
+```{r}
+# base R approach to select DepTime, ArrTime, and FlightNum columns
+
+flights[, c("DepTime", "ArrTime", "FlightNum")]
+
+```
+
+```{r}
+# dplyr approach
+
+select(flights, DepTime, ArrTime, FlightNum)
+```
+
+___
+
+Use colon to select multiple continuous columns, and use **contains** to match columns by name note:
+"starts_with", "ends_with" can also be used to match columns by name
+
+```{r}
+select(flights, Year:DayofMonth, contains("Taxi"), contains("Delay"))
+```
+
+___
+
+Now, what if we wanted to do many operations at once; for example, selction and conditional filtering. We can do so by nesting our functions.
+
+```{r}
+# nesting method to select UniqueCarrier and DepDelay columns and filter for delays over 60 minutes
+
+filter(select(flights, UniqueCarrier, DepDelay), DepDelay > 60)
+```
+
+This nesting methodology becomes very cumbersome. This defies the purpose with which we started, making our code more readable. 
+
+___
+
+Here comes to your rescue **%>%** operator, also called **chaining operator**. Basically, when you use this operator, every subsequent line of code inherits inputs from the previous line. You'll be able to better understand this with the following example. Later on we'll rewrite the above nested code with the chaining operator.
+
+```{r}
+x=sample(10,6)
+x %>%
+log() %>%
+sum()
+```
+
+See, you don't have to pass any input to those functions, x goes as input to log and then modified x as
+log(x) goes as input to sum. 
+
+___
+
+Lets see how we can use this to rewrite the nested function that we saw above.
+
+```{r}
+# chaining method
+flights %>%
+select(UniqueCarrier, DepDelay) %>%
+filter(DepDelay > 60)
+```
+
+See, no need to nest or keep on giving data reference for every operation. Isn't that neat!! 
+
+___
+___
+
+## 4.3 Sort Data
+
+Next we move to ordering/sorting our data by using verb arrange.
+
+```{r}
+# base R approach to select UniqueCarrier and DepDelay columns and sort by DepDelay
+
+flights[order(flights$DepDelay), c("UniqueCarrier", "DepDelay")]
+```
+
+```{r}
+# dplyr approach
+
+flights %>%
+select(UniqueCarrier, DepDelay) %>%
+arrange(DepDelay)
+```
+
+___
+___
+
+## 4.4 Modify Data
+
+Next step is to **mutate** or modifying/adding data to existing data.
+
+```{r}
+# base R approach to create a new variable Speed (in mph)
+
+flights$Speed <- flights$Distance / flights$AirTime*60
+flights[, c("Distance", "AirTime", "Speed")]
+```
+
+```{r}
+# dplyr approach
+
+flights %>%
+select(Distance, AirTime) %>%
+mutate(Speed = Distance/AirTime*60)
+```
+
+___
+
+What we have been doing is getting the output to display, if you wanted to save it could do as we usually do in R. Say, we wanted to save above output to some data frame.
+
+```{r}
+flight_sub=flights %>%
+select(Distance, AirTime) %>%
+mutate(Speed = Distance/AirTime*60)
+```
+
+___
+___
+
+## 4.5 Summarizing Data
+
+We are done with data wrangling without collapsing it. Next we look at exactly that, **summarising data** by groups or collapsing data to its group wise summaries using dplyr.
+
+```{r}
+# dplyr approach: create a table grouped by Dest, and then summarise each group by taking the mean of ArrDelay
+
+flights %>%
+group_by(Dest) %>%
+summarise(avg_delay = mean(ArrDelay, na.rm=TRUE))
+```
+
+___
+
+This pretty much finishes our discussion on dplyr verbs and adverbs. We have given few more examples to
+learn new useful functionalities which we havent been introduced yet.
+
+For each day of the year, count the total number of flights and sort in descending order
+
+```{r}
+z=flights %>%
+group_by(Month, DayofMonth) %>%
+summarise(flight_count = n()) %>%
+arrange(desc(flight_count))
+```
+
+___
+
+Lets rewrite more simply with the **tally** function
+
+```{r}
+flights %>%
+group_by(Month, DayofMonth) %>%
+tally(sort = TRUE)
+```
+
+___
+
+For each destination, count the total number of flights and the number of distinct planes that flew there.
+
+```{r}
+flights %>%
+group_by(Dest) %>%
+summarise(flight_count = n(), plane_count = n_distinct(TailNum))
+```
+
+___
+
+For each destination, show the number of cancelled and not cancelled flights.
+
+```{r}
+flights %>%
+group_by(Dest) %>%
+select(Cancelled) %>%
+table() %>%
+head()
+```
+
+___
+
+For each month, calculate the number of flights and the change from the previous month.
+
+```{r}
+flights %>%
+group_by(Month) %>%
+summarise(flight_count = n()) %>%
+mutate(change = flight_count - lag(flight_count))
+```
+
+___
+
+Again, lets rewrite more simply with the **tally** function.
+
+```{r}
+
+
+flights %>%
+group_by(Month) %>%
+tally() %>%
+mutate(change = n - lag(n))
+```
+
+___
+
+Base R approach to view the structure of an object
+
+```{r}
+str(flights)
+```
+
+___
+
+dplyr approach: better formatting, and adapts to your screen width.
+
+```{r}
+glimpse(flights)
+```
+
+___
+___
+
+# 5. Sampling Data
+
+As moving slowly towards predictive modelling, you'd need to take randome sample from your data for
+different purposes. You can achieve that in a rather simple manner by using the function sample which we
+have used a lot so far. Here goes an example for taking 70% random data from data frame mtcars.
+
+```{r}
+# we are using set.seed for our random sample to be reproducible
+
+set.seed(1)
+s=sample(1:nrow(mtcars),0.7*nrow(mtcars))
+```
+
+___
+
+You can now use this vector **s** as row index vector to take sample data from the data frame.
+
+```{r}
+mtcars_sample=mtcars[s,]
+```
+
+___
+
+How do I get the rest of the observations which are not in sample taken above?
+
+```{r}
+mtcars_remaining=mtcars[-s,]
+```
+
+___
+
+How to randomly bootstrap your data? Again, you can achieve that by using sampling with replacement
+with function sample
+
+```{r}
+set.seed(1)
+s=sample(1:nrow(mtcars),100,replace = TRUE)
+mtcars_bootstrapped=mtcars[s,]
+```
+
+
+
+
+
+
+
+
+

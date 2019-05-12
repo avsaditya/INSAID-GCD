@@ -1,0 +1,350 @@
+---
+title: "2. Distributions and Central Limit Theorem"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+# 2.1 Normal Distribution
+
+To start with a **normal distribution** is a continuous symmetric, bell-shaped distribution of a variable in statisitcs.  
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/ND.png"`)
+
+</center>
+ 
+R has four in built functions to generate normal distribution.
+
+## 2.1.1 dnorm
+
+**dnorm** function gives height of the probability distribution at each point for a given mean and standard deviation.
+
+```{r}
+# Create a sequence of numbers between -10 and 10 incrementing by 0.1.
+x <- seq(-10, 10, by = .1)
+
+# Choose the mean as 2.5 and standard deviation as 0.5.
+y <- dnorm(x, mean = 2.5, sd = 0.5)
+
+# Give the chart file a name.
+png(file = "dnorm.png")
+
+plot(x,y)
+```
+
+## 2.1.2 pnorm
+
+**pnorm** function gives the probability of a normally distributed random number to be less that the value of a given number. It is also called "Cumulative Distribution Function".
+
+```{r}
+# Create a sequence of numbers between -10 and 10 incrementing by 0.2.
+x <- seq(-10,10,by = .2)
+ 
+# Choose the mean as 2.5 and standard deviation as 2. 
+y <- pnorm(x, mean = 2.5, sd = 2)
+
+# Give the chart file a name.
+png(file = "pnorm.png")
+
+# Plot the graph.
+plot(x,y)
+```
+
+## 2.1.3 qnorm
+
+**qnorm** function takes the probability value and gives a number whose cumulative value matches the probability value.
+
+```{r}
+# Create a sequence of probability values incrementing by 0.02.
+x <- seq(0, 1, by = 0.02)
+
+# Choose the mean as 2 and standard deviation as 3.
+y <- qnorm(x, mean = 2, sd = 1)
+
+# Give the chart file a name.
+png(file = "qnorm.png")
+
+# Plot the graph.
+plot(x,y)
+
+```
+
+## 2.1.4 rnorm
+
+**rnorm** function is used to generate random numbers whose distribution is normal. It takes the sample size as input and generates that many random numbers. We draw a histogram to show the distribution of the generated numbers.
+
+```{r}
+# Create a sample of 50 numbers which are normally distributed.
+y <- rnorm(50)
+
+# Give the chart file a name.
+png(file = "rnorm.png")
+
+# Plot the histogram for this sample.
+hist(y, main = "Normal DIstribution")
+```
+
+___
+___
+
+# 2.2 Standard Normal Distribution
+
+The **Standrad Normal Distribution** is a distribution with a mean 0 and standard deviation of 1.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/SND.png"`)
+
+</center>
+
+The main goal of standardization is:
+
+* It helps you bring all the variables on the same scale for them to be compared.
+
+* It gives you the interpretability of the values by looking at the standard deviations and see how far the values are from the standard deviation. 
+
+To create a standard normal distribution we'll make a data.table "standardNormal" that has 20,000 normally distributed numbers with a mean of 0 and a standard deviation of 1.
+
+```{r}
+library(data.table)
+```
+
+```{r}
+standardNormal <- data.table(data=rnorm(20000, 0, 1))
+```
+
+___
+
+We can print some summary statistics
+
+```{r}
+print(standardNormal)
+```
+
+```{r}
+summary(standardNormal$data)
+```
+
+```{r}
+sd(standardNormal$data)
+```
+
+And plot the data with a vertical line showing the mean.
+
+___
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(standardNormal, aes(data)) +
+  geom_density() + geom_vline(xintercept = c(mean(standardNormal$data)))
+```
+
+___
+___
+
+# 2.3 Central Limit Theorem (CLT)
+
+The gist of the Central Limit Theorem is that if you have a data set and take many random samples of the same size from this population, average each sample, and then plot these averages in a histogram, the plot will look like a normal distribution regardless of the distribution of data in the original data set.
+
+The assumption that data is from a normal distribution simplifies matters but seems a little unrealistic. Just a little work with some real-world data shows that outliers, skewness, multiple peaks and asymmetry show up quite routinely. We can get around the problem of data from a population that is not normal. The use of an appropriate sample size and the central limit theorem help us to get around the problem of data from populations that are not normal.
+
+## 2.3.1 Example
+
+Lets try to understand with an example:
+
+Let's say we are studying the population of wine drinkers in France. We would like to understand the mean age of those people but you don't have time to survey the entire French population.
+
+Instead of surveying the whole population, you collect one sample of 100 wine drinkers in France. With this data, you are able to calculate the mean. Maybe for this sample, the mean age is 35 years old. Say we collect another sample of 100 wine drinkers. For that new sample, the mean age is 39 years old. As we collect more and more means of those samples of 100 wine drinkers, we get what is called a sampling distribution. The sampling distribution is the distribution of the samples mean. In this example, 35 and 39 would be two observations in that sampling distribution.
+
+The statement of the theorem says that the sampling distribution, the distribution of the samples mean we collected, will approximately take the shape of a bell curve around the population mean. This shape is also known as a normal distribution. Don't get the statement wrong. The CLT is not saying that any population will have a normal distribution. It says the sampling distribution will.
+
+The theorem gives us the ability to quantify the likelihood that our sample will deviate from the population without having to take any new sample to compare it with. We don't need the characteristics about the whole population to understand the likelihood of our sample being representative of it.
+
+The CLT is not limited to making inferences from a sample about a population. There are four kinds of inferences we can make based on the CLT
+
+* We have the information of a valid sample. We can make accurate assumptions about it's population.
+
+* We have the information of the population. We can make accurate assumptions about a valid sample from
+that population.
+
+* We have the information of a population and a valid sample. We can accurately infer if the sample was drawn from that population.
+
+* We have the information about two different valid samples. We can accurately infer if the two samples where drawn from the same population.
+
+The idea that the sampling distribution will take the shape of a normal distribution is what makes the theorem so powerful. With a few information about a sample, we are able to calculate the probability that the sample mean will differ from the population mean and by how much it will differ.
+
+**Population Distribution**:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/population%20distribution.PNG"`)
+
+</center>
+
+**Sampling Distribution**:
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/sampling%20distribution.png"`)
+
+</center>
+
+* The mean of the sampling distribution will cluster around the population mean.
+
+* The standard deviation of the population distribution is tied with the standard deviation of the sampling distribution. With the standard deviation of the sampling distribution and the sample size, we are able to calculate the standard deviation of the population distribution. The standard deviation of the sampling distribution is called the standard error.
+
+___
+___
+
+# 2.4 Case Study: Solving real life business problem using Central Limit Theorem (CLT)
+
+Just imagine, you are working as a Business Analyst for DTDC, an Indian courier delivery services company. And you have been challenged to tell the executives quickly whether or not they can do certain delivery.
+
+A business client of DTDC wants to deliver urgently a large freight from Bangalore to Delhi. When asked about the weight of the cargo they could not supply the exact weight, however they have specified that there are total of 36 boxes.
+
+Since, we have worked with them for so many years and have seen so many freights from them we can confidently say that the type of cargo they follow is a distribution with a mean of mu = 72 lb (32.66 kg) and a standard deviation of sigma = 3 lb (1.36 kg).
+
+The plane you have can carry the max cargo weight upto 2640 lb (1193 kg).
+
+Based on this information what is the probability that all of the cargo can be safely loaded onto the planes and transported ?
+
+**The approach and the steps**:
+
+1. Using CLT, we'll find the mean and std deviation of the sample mean.
+
+2. Next, calculate the critical mass (X crit) of each box by dividing the allowable capacity of the plane to carry weight with the total number of boxes. So, to safely takeoff the plane, the average weight of the each box should not exceed 73.06 lb/box.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/CLT.png"`)
+
+</center>
+
+3. Finally, calculate the Z-score from the above formula and then we refer the Z value from the table below to find out the probability.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/z-score%20table.png"`)
+
+</center>
+
+Now, you can go to the manager and tell him that I have done the calculations and the probability that the plan can safely takeoff is 98.3% and 1.7 % chance it cannot takeoff.
+
+And now its up-to the manager to make a decision whether they are ready to take risk of 1.7% or not.
+
+___
+
+# 2.5 Use Case: Random Sample
+
+Lets take a random sample and see how normal distribution looks like.
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+set.seed(2)
+df = data.frame(X = rbeta(20000,2,5))
+p = ggplot(df,aes(x = X))
+p+geom_histogram(aes(y=..density..))+ylab("Frequency Percent")
+```
+
+Its very obvious that the distribution of the variable X here doesnt look normal or symmetric. 
+
+___
+
+What we can do is to take 10000 samples of size 100 each from this population and then plot histogram for their averages and see whether that looks like a normal distribution.
+
+```{r}
+k=numeric(10000)
+for (i in 1:10000){
+j=sample(1:20000,100)
+k[i]=mean(df$X[j])
+}
+d1=data.frame(k)
+p=ggplot(d1,aes(x=k))
+p+geom_histogram(aes(y=..density..))+ylab("Frequency Percent")+xlab("Sample Averages")+
+stat_function(fun=dnorm,
+args=list(mean=mean(d1$k),sd=sd(d1$k)),
+color="green")
+```
+
+___
+
+Lets try this with a parabolic distribution and see if sample averages still follow normal distribution.
+
+```{r}
+set.seed(1)
+t=runif(20000)
+set.seed(2)
+k=runif(20000)
+X=ifelse(k>0.5,4+sqrt(1-1.332*t),4-sqrt(1-1.332*t))
+d=data.frame(X=X)
+p=ggplot(d,aes(x=X))
+p+geom_histogram(aes(y=..density..))+ylab("Frequency Percent")
+```
+
+___
+
+This again is distribution which is no where close to a normal distribution, lets see how sample averages behave in this case.
+
+```{r}
+k=numeric(10000)
+for (i in 1:10000){
+j=sample(1:20000,100)
+k[i]=mean(d$X[j],na.rm=T)
+}
+d1=data.frame(k)
+p=ggplot(d1,aes(x=k))
+p+geom_histogram(aes(y=..density..))+ylab("Frequency Percent")+xlab("Sample Averages")+
+stat_function(fun=dnorm,
+args=list(mean=mean(d1$k),sd=sd(d1$k)),
+color="green")
+```
+
+And again, here it is, sample averages seem to follow normal distribution in this case as well. Without
+going into mathematical details of Central Limit Theorem, our take aways from here is that irrespective of underlying population distribution, samples averages follow normal distribution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

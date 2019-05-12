@@ -1,0 +1,342 @@
+---
+title: "5. Higher Data Types"
+output: 
+  html_notebook: 
+    toc: yes
+    toc_depth: 4
+---
+
+Basic data types are only the building blocks. Eventually, what you'll use in practice when solving real
+life data analysis problems is collections of these data types. R has a wide variety of data types including Lists, Data frames, Vectors, Matrices, and Factors that come to your rescue in R.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/data_structures.png"`)
+
+</center>
+
+### 5.1 Lists
+
+List are recursive data types. They can contain all sorts of objects and they don't need to be of same type either. An ordered collection of objects. A list allows you to gather a variety of objects under one name.
+
+```{r}
+x = 1:10
+y = rep(c("a","b","c"),each=5)
+z = 5.90
+list_1 = list(x,y,z)
+list_1
+```
+
+Here is how to access individual list elements
+
+```{r}
+list_1 [[2]] 
+```
+
+Note the double bracket [[]] instead of single bracket [] used to access the indiviual list element of the list.
+
+However, if you want to access the element of that particular individual list element. Lets say, to get third element of the second element of the above list we'd simply write:
+
+```{r}
+list_1 [[2]] [5]
+```
+
+If you find double bracket [[]] to be really cumbersome, you can name your list elements while creating the list.
+
+```{r}
+list_2 = list(num = x, char = y, val = z)
+list_2
+```
+
+If you notice that now, instead of those [[]] indices you simply see $ signs with the name of elements. 
+
+```{r}
+list_2$char
+```
+
+To access 5th element of the 2nd element (named char) of this list:
+
+```{r}
+list_2$char[5]
+```
+
+So now you can also access list elements with single bracket []
+
+### 5.2 Data Frames
+
+Data frames are actually a special kind of list. They are list of vectors of equal length.
+
+```{r}
+states = c('delhi','andhra','kerala','maharashtra','karnataka','gujrat','tamilnadu','goa','punjab','Bengal','odisha')
+languages = c('hindi','telugu','malayalam','marathi','kannad','gujrati','tamil','konkani','punjabi','bengali','odiya')
+df = data.frame(states,languages)
+df
+```
+
+You can view this data frame by typing in View(dataframe name) or simply clicking on the data set name in the 'Environment' window on top left.
+
+```{r}
+View(df)
+```
+
+To know the variable names of the data set
+
+```{r}
+names(df)
+```
+
+You can also use this to assign new variable names
+
+```{r}
+names(df) = c("state","lang")
+df
+```
+
+This gives row names of the data set. It can be used to assign row names.
+
+```{r}
+rownames(df)
+```
+
+"dim" gives dimension of the data set in terms of number rows and columns. 
+
+```{r}
+dim(df)
+```
+
+You can get individual row numbers and column numbers using nrow and ncol.
+
+```{r}
+nrow(df)
+```
+
+```{r}
+ncol(df)
+```
+
+"str" gives you a quick glimpse of the data in terms of variable names, their type and first few values.
+
+```{r}
+str(df)
+```
+
+How to access dataframes ? 
+
+Lets say we want to get 3rd value in the 2nd column.
+
+```{r}
+df[3,2]
+```
+
+To access 3rd row, all columns
+
+```{r}
+df[3,]
+```
+
+All rows, 2nd colunmn
+
+```{r}
+df[,2]
+```
+
+### 5.3 Vectors
+
+Vectors are most used collections of basic data types in R. An important property of the vectors is that they can contain only one type of basic data type, either numeric or character.
+
+```{r}
+vec = c(2,4,89,-10,5,6)
+is.vector(x)
+```
+
+c means combine and it is a function.
+
+If you do class(vector), result will be type of basic data type which the vector contains.
+
+```{r}
+class(vec)
+```
+
+#### 5.3.1 Accessing Vector Elements with Numerical Indices
+
+You need to pass index numbers to access individual elements or subsets of the vector. Access a value insdie a vector using square brackets.
+
+```{r}
+vec[4]
+```
+
+If you want to access multiple elements, you can pass vector of indices.
+
+```{r}
+sub_vec = vec[c(1,3,5)]
+is.vector(sub_vec)
+```
+
+Vector indices that you pass need not be in order or unique.
+
+```{r}
+vec[c(3,4,2,2,6,3)]
+```
+
+if index exceeds the number of elements in the vector, NA is returned as output.
+
+```{r}
+vec[c(2,3,8,5,4,9)]
+```
+
+One very important aspect of accessing vector elements with numerical indices is to pass -ve indices.
+
+```{r}
+vec
+```
+
+```{r}
+vec[-2]
+```
+
+You can see that x[-2] gives you all elements of x except the second one. This is how you can exclude
+elements from a vector.
+
+If you pass a vector of indices and put a -ve sign in front of it.
+
+```{r}
+vec[-c(2,3,6)]
+```
+
+You can not pass positive and negative index for vector sub-setting. This will throw an error.
+
+```{r}
+vec[c(2,3,-1)]
+```
+
+#### 5.3.2 Accessing Vector Elements with Logical Indices
+
+```{r}
+vec
+```
+
+Lets create a logical vector here which takes values TRUE and FALSE for corresponding elements
+of vec. For elements where condition > 4 is true, x takes value TRUE otherwise FALSE
+
+```{r}
+x = vec > 4
+x
+```
+
+Now if you use this logical vector for sub-setting, output will get only those elements for which x takes value TRUE.
+
+```{r}
+vec[x]
+```
+
+You can directly put in the condition as well.
+
+```{r}
+vec[vec > 4]
+```
+
+You can negate or, flip a condition by putting a **!** sign infront of it.
+
+```{r}
+vec
+```
+
+```{r}
+x
+```
+
+```{r}
+!x
+```
+
+```{r}
+vec[!x]
+```
+
+#### 5.3.3 Some Handy ways of creating a vector
+
+If we want to create a vector containing numbers from x to y with increment 1, we can simply write x:y
+
+```{r}
+z = 5:15
+z
+```
+
+we can use function **seq** to generate a vector using a arithmetic sequence as well
+
+```{r}
+x = seq(2,7, by = 0.8)
+x
+```
+
+
+
+### 5.4 Matrices
+
+Matrices are very much similar to your dataframes, exactly the same like dataframe, only difference is, that the matrix can hold only one type of data i.e. all the rows and columns can be either numbers or characters not numbers and characters.
+
+Matrix is useful when you know that there are only numbers and majorly matrix comes handy for the purpose of doing some algorithmic calculations. In that sense, matrix is the best data structure to be used. 
+
+This will fill the matrix column wise
+
+```{r}
+matx = matrix(c(4,7,3,8,5,9), nrow = 2, ncol = 3)
+matx
+```
+
+This will fill the matrix row wise
+
+```{r}
+matx = matrix(c(4,7,3,8,5,9), nrow = 2, ncol = 3, byrow = TRUE)
+matx
+```
+
+To convert matrix into dataframe
+
+```{r}
+as.data.frame(matx)
+```
+
+Accessing matrix is exactly similar as dataframes
+
+To access row names and column names of a matrix
+
+```{r}
+dimnames(matx)
+```
+
+To change the column names and row names of a matrix, we use
+
+```{r}
+dimnames(matx) = list(c("row1","row2"), c("col1","col2","col3"))
+```
+
+To access the elements of a matrix
+
+```{r}
+matx[1,2]
+```
+
+```{r}
+matx["row2","col3"]
+```
+
+### 5.5 Factors
+
+Conceptually, factors are variables in R which take on a limited number of different values, such variables are often refered to as categorical variables. One of the most important uses of factors is in statistical modeling, since categorical variables enter into statistical models differently than continuous variables, storing data as factors insures that the modeling functions will treat such data correctly.
+
+```{r}
+season = c("winter","fall","summer","fall","autmn","summer","winter","fall","autmn","summer","winter")
+
+print(season)
+print(is.factor(season))
+
+factor_season = factor(season)
+
+print(factor_season)
+print(is.factor(factor_season))
+```
+
+
+
+

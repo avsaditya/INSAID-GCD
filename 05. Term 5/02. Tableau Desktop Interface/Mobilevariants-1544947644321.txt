@@ -1,0 +1,10 @@
+Brand	Variants 
+
+Sony	 5
+Nokia	 3
+Micromax	 8
+Apple	 3
+Asus	 4
+	
+HTC	  5
+Samung	  10

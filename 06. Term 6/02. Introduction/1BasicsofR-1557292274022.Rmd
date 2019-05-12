@@ -1,0 +1,423 @@
+---
+title: "1. Basics of R"
+output:
+  html_notebook:
+    toc: yes
+    toc_depth: 4
+  html_document:
+    df_print: paged
+    toc: yes
+---
+
+Before taking off, just a small advice for all to always write your codes in a **script** or **editor** and not on **console** even when you are just practicing, especially in the beginning. Because, this is the best way to conserve your code and comments which will come very handy for reference later on.
+
+### 1.1 Object assignment
+
+Alright! lets start with introduction to **R object assignmet**. objects in R are value containers.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/download.jpg"`)
+
+</center>
+
+```{r}
+x = 4
+```
+
+Hit **run** and you will create an R object named **"x"** which contains value **4**.
+
+You can double check by typing in just **x** and execute that.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/object.jpg"`)
+
+</center>
+
+```{r}
+x 
+```
+
+You can see the output to be 4, the value which is stored in the object named "x".
+
+R is **case sensitive**. Now lets try typing in capital **'X'**
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/case_sensitive.jpg"`)
+
+</center>
+
+```{r}
+X
+```
+
+Small 'x' is different from capital 'X'. You haven't yet created object named 'X'.So you get the error object 'X' not found.
+
+To store text inside an object, you give it between the double quotes. Single quotes is also allowed.
+
+```{r}
+x = "Hi there!"
+```
+Anything in double quotes is a character
+
+### 1.2 Object name restrictions
+
+Object name should start with a **character**.
+```{r}
+Company = "INSAID"
+```
+
+You can use **numbers** also in object, but not at the begining.
+```{r}
+1.Company = "INSAID"
+```
+
+This will throw an error.
+
+
+You can only use **dot(.)** and **underscore(_)** in the object name.
+
+```{r}
+Company.name = "INSAID"
+# or
+Company_name = "INSAID"
+```
+
+You cannot have **other special characters** in the object name.
+
+```{r}
+Company@name = "INSAID"
+```
+
+Again it will throw an error.
+
+### 1.3 Comments in R
+
+Comments are the description written in the code with some special characters so as to get ignored by the compiler while running the code. Comments are used to make the code easy to understand.
+
+<center>
+
+![](`r "https://raw.githubusercontent.com/insaid2018/R/master/images/comments.jpg"`)
+
+</center>
+
+#### 1.3.1 Single-line comments
+
+Use **#** to write comment and to execute the comment you have to select the whole comment and run it.
+
+```{r}
+# Basics of R
+```
+
+#### 1.3.2 Multi-line comments
+
+If you want to comment multiple lines then all you need to do is to select the multiple lines of comments and then select the code option on the top, there in the drop down you'll have comments option, select it. 
+
+```{r}
+# Hi there!
+# Welcome to INSAID
+# Lets learn basics of R 
+```
+
+Alternatively, you can use a shortcut **Ctrl + Shift + C** to do the same.
+
+### 1.4 A sneak peak on utility functions
+
+Lets use our first function **'class'**. It tells us what class the R object falls in. Argument that it takes is the object name and it returns class of the object.
+
+```{r}
+a = 'Data Science'
+```
+
+```{r}
+class(x)
+```
+
+```{r}
+b = F
+```
+
+```{r}
+class(b)
+```
+
+```{r}
+c = 4.8
+```
+
+```{r}
+class(c)
+```
+
+Lets look at a function which can transform an object to another class. It's called **as.** function.
+
+```{r}
+x = "44.95"
+class(x)
+```
+
+Lets convert it to a number now.
+
+```{r}
+y = as.numeric(x)
+class(y)
+```
+
+Sometimes its not possible to convert them to class as intended. Then the result value is NA.
+
+```{r}
+z = "R Studio"
+class(z)
+```
+
+```{r}
+v = as.numeric(z)
+```
+
+```{r}
+v
+```
+
+```{r}
+class(v)
+```
+
+There are lot of these as.* functions such as as.numeric, as.character, as.data.frame etc. We'll get to use and know about these as we progress in the course.
+
+c() generic function to combine arguments with the default forming a vector.
+
+```{r}
+
+```
+
+"from:to" generates a sequence.
+
+```{r}
+1:5
+```
+
+":" has operator priority; 1:5 + 1 is "2,3,4,5,6"
+
+```{r}
+1:5 + 1
+```
+
+seq() generates a sequence of numbers ; .
+
+```{r}
+# seq(x:y)
+seq(1:10)
+```
+
+```{r}
+# seq(x,y)
+seq(1,10)
+```
+
+by = specifies increment
+
+```{r}
+# seq(x,y, by = z)
+seq(2,20,by = 2)
+```
+
+Alternatively,
+
+```{r}
+# seq(x,y,z)
+seq(2,20,2)
+```
+
+length = specifies desired length
+
+```{r}
+# seq(x,y, length = z)
+seq(5,50, length = 10)
+```
+
+rep(x,times) replicate x times
+
+```{r}
+rep(5,10)
+```
+
+```{r}
+rep(c('a','b','c'),2)
+```
+
+Use each = to repeat "each" element of x each times
+
+```{r}
+rep(c('a','b','c'), each = 2)
+```
+
+We can use function "is.na" to create a logical vector indication missing values with TRUE
+
+```{r}
+x=c(1,2,3,NA,NA,3,4,5)
+is.na(x)
+```
+
+**'length'** will give the length for any vector or the number of elements in any vector.
+
+```{r}
+length(x)
+```
+
+**'match'** gives for the first vector elements, index numbers at which they are present in the second vector. If an element of first vector is not present in second, you will get NA for an index reference.
+
+```{r}
+a = c("v","k","&","2","s","j","$","1","f")
+b = letters
+match(a,b)
+```
+
+Functionality of **"%in%"** operator is similar to match function. Instead of returning straight up indices, it returns a logical vector telling whether an element is present in another vector or not.
+
+```{r}
+a %in% b
+```
+
+**'which'** function gives you information regarding presence of elements of one vector in another. It returns indices of elements in a vector which fulfill the specified condition.
+
+```{r}
+x = 2:99
+which(x%%2!=0)
+```
+
+You can get the values by passing these indices to vector for sub-setting.
+
+```{r}
+x[which(x%%2!=0)]
+```
+
+**'sort'** function sorts the elements in increasing order. Default sorting order for numeric is ascending. 
+
+```{r}
+x = c(6,-3,7,4,-9,5,-10,1,2,0)
+sort(x)
+```
+
+In alphabetical sorting, **lexicographic / dictionary** order is followed.
+
+```{r}
+y = c("cat","art","Dog","hat","Ant","Bat","eat","Fat")
+sort(y)
+```
+
+If you need to sort this in descending order you can use option decreasing.
+
+```{r}
+sort(x,decreasing = T)
+```
+
+```{r}
+sort(y,decreasing = T)
+```
+
+**'rev'** can be used to simply flip/reverse a vector. No sorting happens by default. It just reverses the elements.
+
+```{r}
+rev(x)
+```
+
+```{r}
+rev(y)
+```
+
+Use **'sample'** function for taking random sample from your vector.
+
+```{r}
+x=1:50
+sample(x,4)
+```
+
+This function 'sample' returns 4 randomly chosen numbers from the vector x.
+
+Lets run it again and see what it returns
+
+```{r}
+sample(x,4)
+```
+
+Notice that those 4 numbers in these two iterations are different because each randomly chosen
+numbers differs. 
+
+This can be avoided by using a fixed **'set.seed'** for the randomizing algorithm.
+
+```{r}
+set.seed(2)
+sample(x,4)
+```
+
+Default call to function sample assumes sampling without replacement. We can do sampling with replacement as well by using **'replace=T'**.
+
+```{r}
+x=1:15
+sample(x, 10, replace=T)
+```
+
+We can use sample function for all kind of vectors. It is not limited to numeric vectors.
+
+```{r}
+sample(c("a","b","c"),15,replace=T)
+```
+
+If you want to know what a particular function does, you can find that out by looking at the function documentation. But, how to find that documentation? It's really simple. You can simply type **help(function name)** or **?function name** and documentation will open on the right bottom page in Rstudio
+
+```{r}
+help(sum)
+```
+
+```{r}
+?sum 
+```
+
+If you pass on a function name which does exist
+
+```{r}
+?muta
+```
+
+Two question marks means "search the entire R repository for a key word". It does an approx match for the keyword.
+
+```{r}
+??muta
+```
+
+It returns list of all R object names in various packages which are loaded in the current session of R containing the word "smu".
+
+To remove the object from the environment
+
+```{r}
+rm()
+```
+
+To remove multiple objects
+
+```{r}
+rm(x,y,z)
+```
+
+To list all the objects that are there in your environment
+
+```{r}
+ls()
+```
+
+If you want to remove all the objects
+
+```{r}
+rm(list = ls())
+```
+
+### 1.5 Few shortcuts
+
+To execute the code in R use **Ctrl + Enter**.
+
+To enter a comment use **Ctrl + Shift + C**
+
+To clear the console use **Crtl + L**
+

@@ -1,0 +1,12 @@
+Number  State
+50            Delhi
+20            UP
+10            UK
+50            Maharastra
+40            Orissa
+15           Karnataka
+16           Goa
+10           Telangana
+14           AndraPradesh
+	      
+            
