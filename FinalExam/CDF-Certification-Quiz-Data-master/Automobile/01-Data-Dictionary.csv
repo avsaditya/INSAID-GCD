@@ -1,0 +1,8 @@
+Target Variable--------------->,mpg:           continuous,fuel consumption in miles per gallon
+,cylinders:     multi-valued discrete,
+,displacement:  continuous,
+,horsepower:    continuous,
+,weight:        continuous,
+,acceleration:  continuous,
+,origin:        string( Factory1 / Factory2 / Factory3,
+,car name:      string (unique for each instance),
