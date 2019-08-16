@@ -1,0 +1,10 @@
+| Sr no.| Model | Accuracy score | Precision | Recall | f1-score |
+| - | - | - | - | - | - |
+| 1. | Logistic Regression  | 77.82 | 0.75 | 0.78 | 0.75 | 
+| 2. | Decision Tree Clasifiers | 96.72 | 0.97 | 0.97 | 0.97 |
+| 3. | Random Forest Classifier | 97.80 | 0.98 | 0.98 | 0.98 |
+| 4. | KNN Model | 90.79 | 0.91 | 0.91 | 0.91 |
+| 5. | Naive Bayes classifier | 81.66 | 0.80 | 0.82 | 0.81 |
+| 6. | SVC Model | 91.83 | 0.92 | 0.92 | 0.92 |
+| 7. | Gradient Boosting Model | 96.87 | 0.97 | 0.97 | 0.97 |
+| 8. | XGBoost Model | 96.64 | 0.97 | 0.97 | 0.97 |
